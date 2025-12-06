@@ -1,4 +1,4 @@
-/* GLOBAL STYLING */
+/* GLOBAL */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -19,40 +19,34 @@ body {
 .header-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 10px 40px;
+    padding: 12px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
+/* FIXED LOGO SIZE (clean + balanced) */
 .logo img {
-    height: 110px; /* Adjust size as needed */
+    height: 65px;   /* ← Perfect balanced size */
     object-fit: contain;
 }
 
+/* NAVIGATION */
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 35px;
+    gap: 32px;
 }
 
 .nav-links a {
     text-decoration: none;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 600;
     color: #000;
 }
 
-.login-btn {
-    padding: 8px 18px;
-    background: #007bff;
-    color: white !important;
-    border-radius: 6px;
-}
-
-/* Space below fixed header */
 .header-offset {
-    height: 140px;
+    height: 100px; /* Prevent content from hiding behind header */
 }
 
 /* ---------------- HERO ---------------- */
@@ -65,7 +59,6 @@ body {
 
 .hero h1 {
     font-size: 36px;
-    margin-bottom: 20px;
 }
 
 /* ---------------- HOW IT WORKS ---------------- */
@@ -89,10 +82,6 @@ body {
     box-shadow: 0 3px 12px rgba(0,0,0,0.1);
 }
 
-.step h3 {
-    margin-bottom: 10px;
-}
-
 /* ---------------- FAQ ---------------- */
 .faq-item {
     max-width: 700px;
@@ -110,5 +99,4 @@ body {
 
 .footer a {
     color: #007bff;
-    text-decoration: none;
 }
