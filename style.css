@@ -1,37 +1,42 @@
-/* GLOBAL */
+/* ================= GLOBAL ================= */
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     color: #111;
+    padding-top: 100px; /* space for sticky header */
 }
 
-/* ---------------- HEADER ---------------- */
+/* ================= HEADER ================= */
 .header {
     width: 100%;
     background: #ffffff;
     border-bottom: 1px solid #e5e5e5;
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 0;
     z-index: 1000;
 }
 
 .header-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 12px 40px;
+    padding: 16px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-/* FIXED LOGO SIZE (clean + balanced) */
+/* Logo */
 .logo img {
-    height: 65px;   /* ← Perfect balanced size */
-    object-fit: contain;
+    height: 80px;
+    width: auto;
+    display: block;
 }
 
-/* NAVIGATION */
+/* Navigation */
 .nav-links {
     display: flex;
     align-items: center;
@@ -43,30 +48,39 @@ body {
     font-size: 17px;
     font-weight: 600;
     color: #000;
+    transition: color 0.2s ease;
 }
 
-.header-offset {
-    height: 100px; /* Prevent content from hiding behind header */
+.nav-links a:hover {
+    color: #0d6efd;
 }
 
-/* ---------------- HERO ---------------- */
+/* ================= HERO ================= */
 .hero {
-    background: #0d6efd;
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
     color: white;
-    padding: 120px 40px;
+    padding: 140px 20px 120px;
     text-align: center;
 }
 
 .hero h1 {
-    font-size: 36px;
+    font-size: 44px;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 
-/* ---------------- HOW IT WORKS ---------------- */
+.hero p {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+/* ================= SECTION ================= */
 .section {
-    padding: 80px 40px;
+    padding: 80px 20px;
     text-align: center;
 }
 
+/* ================= HOW IT WORKS ================= */
 .steps {
     display: flex;
     justify-content: center;
@@ -79,38 +93,95 @@ body {
     width: 260px;
     padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* ---------------- FAQ ---------------- */
+.step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+/* ================= FAQ ================= */
 .faq-item {
     max-width: 700px;
     margin: 20px auto;
     text-align: left;
 }
 
-/* ---------------- FOOTER ---------------- */
+/* ================= TRUST / DPIIT ================= */
+.trust-section {
+    background: #f5f5f7;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.trust-badge {
+    height: 70px;
+    margin-bottom: 12px;
+}
+
+.trust-text {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+}
+
+/* ================= FOOTER ================= */
 .footer {
-    padding: 40px;
+    padding: 40px 20px;
     text-align: center;
     background: #f5f5f7;
     color: #777;
 }
-.footer-trust {
-    text-align: center;
-    margin-bottom: 15px;
-}
 
-.footer-trust img {
-    height: 50px;
-    opacity: 0.95;
-}
-
-.footer-trust p {
-    font-size: 12px;
-    color: #bbb;
-    margin-top: 6px;
-}
 .footer a {
     color: #007bff;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+
+    body {
+        padding-top: 90px;
+    }
+
+    .header-container {
+        padding: 12px 20px;
+    }
+
+    .logo img {
+        height: 56px;
+    }
+
+    .nav-links {
+        gap: 16px;
+        font-size: 15px;
+    }
+
+    .hero {
+        padding: 120px 20px 100px;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .step {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .trust-badge {
+        height: 55px;
+    }
 }
