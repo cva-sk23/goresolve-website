@@ -14,11 +14,15 @@ line-height:1.6;
 /* HEADER */
 
 .header{
-background:#fff;
-border-bottom:1px solid #eee;
+background:#f8f9fb;
+border-bottom:1px solid #e6e6e6;
 position:sticky;
 top:0;
 z-index:1000;
+}
+
+.logo img{
+height:55px;
 }
 
 .header-container{
