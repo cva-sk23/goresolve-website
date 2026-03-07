@@ -57,10 +57,10 @@ color:#0d6efd;
 /* HERO */
 
 .hero{
-background:linear-gradient(135deg,#0d6efd,#0b5ed7);
+background:linear-gradient(135deg,#1a5fd1,#0d4ecf);
 color:white;
 text-align:center;
-padding:120px 20px;
+padding:140px 20px;
 }
 
 .hero h1{
