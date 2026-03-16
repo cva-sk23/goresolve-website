@@ -128,14 +128,22 @@
     .plan-minis{display:flex;flex-direction:column;gap:.75rem;margin-bottom:1rem}
     .plan-mini{border:2px solid var(--border);border-radius:10px;padding:1rem 1.2rem;
                 cursor:pointer;transition:all .2s;display:flex;justify-content:space-between;align-items:center}
-    .plan-mini:hover{border-color:var(--teal-m)}
+    .plan-mini:hover:not(.locked){border-color:var(--teal-m)}
     .plan-mini.sel{border-color:var(--teal);background:var(--teal-l)}
+    .plan-mini.locked{opacity:.42;cursor:not-allowed;background:#F5F5F5;border-color:#E0E0E0;pointer-events:none}
+    .plan-mini.recommended{border-color:var(--gold);background:var(--gold-l)}
     .pm-name{font-weight:700;font-size:.88rem;color:var(--ink)}
     .pm-exp{font-size:.73rem;color:var(--muted);margin-top:.18rem}
     .pm-price{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--teal-d);text-align:right}
     .pm-yr{font-size:.68rem;color:var(--muted)}
     .pop-tag{background:var(--teal);color:white;font-size:.6rem;font-weight:700;
               padding:.18rem .55rem;border-radius:999px;letter-spacing:.06em;margin-left:.4rem;vertical-align:middle}
+    .rec-tag{background:var(--gold);color:white;font-size:.6rem;font-weight:700;
+              padding:.18rem .6rem;border-radius:999px;letter-spacing:.06em;margin-left:.4rem;vertical-align:middle}
+    .lock-tag{background:#BDBDBD;color:white;font-size:.6rem;font-weight:700;
+               padding:.18rem .6rem;border-radius:999px;margin-left:.4rem;vertical-align:middle}
+    .plan-lock-notice{background:#FFF8E1;border:1px solid var(--gold-m);border-radius:8px;
+                       padding:.7rem 1rem;font-size:.79rem;color:#7A5C00;line-height:1.6;margin-bottom:1rem}
 
     /* ALERT */
     .alert{padding:.72rem 1rem;border-radius:8px;font-size:.81rem;
@@ -344,7 +352,8 @@ const PLANS = {
   D:{name:'Custom Plan',     price:4999, exp:'Outstanding above ₹10 Lakh', max:Infinity}
 };
 
-let lc=0, selPlan=null;
+let lc=0, selPlan=null, detPlan=null;
+const PLAN_ORDER=['A','B','C','D'];
 
 // ── PRE-FILL FROM URL PARAM (from pricing page) ──
 (function(){
@@ -395,14 +404,34 @@ function recalc(){
   updateSumLoans(total);
   if(total<=0){
     document.getElementById('detectBox').classList.remove('show');
-    selPlan=null;updateSumPlan(null);return;
+    detPlan=null;selPlan=null;updateSumPlan(null);return;
   }
+  // Detect minimum eligible plan
   let p='D';
   if(total<200000)p='A';
   else if(total<500000)p='B';
   else if(total<=1000000)p='C';
-  const ov=document.getElementById('planOverride').value;
-  selPlan=ov||p;
+  detPlan=p; // store globally for buildPlanCards
+
+  // Rebuild override dropdown — only show plans >= detected minimum
+  const overrideSel=document.getElementById('planOverride');
+  const detIdx=PLAN_ORDER.indexOf(p);
+  overrideSel.innerHTML='<option value="">Use recommended plan</option>';
+  PLAN_ORDER.forEach((k,i)=>{
+    if(i>=detIdx){
+      const opt=document.createElement('option');
+      opt.value=k;
+      opt.textContent=PLANS[k].name+' – ₹'+PLANS[k].price.toLocaleString('en-IN')+'/yr'+(k===p?' ✓ Recommended':'');
+      overrideSel.appendChild(opt);
+    }
+  });
+
+  // Enforce: if current override is now below minimum, reset it
+  const ov=overrideSel.value;
+  const ovIdx=PLAN_ORDER.indexOf(ov);
+  if(ov && ovIdx < detIdx) overrideSel.value='';
+
+  selPlan=overrideSel.value||p;
   const pl=PLANS[selPlan];
   document.getElementById('dName').textContent=pl.name;
   document.getElementById('dPrice').textContent='₹'+pl.price.toLocaleString('en-IN')+'/yr';
@@ -499,26 +528,56 @@ function toStep2(){
 }
 
 // ── BUILD PLAN CARDS (step 2) ──
+// Plan order for comparison: A < B < C < D
+const PLAN_ORDER=['A','B','C','D'];
+
 function buildPlanCards(){
-  const c=document.getElementById('planMinis');c.innerHTML='';
+  const c=document.getElementById('planMinis');
+  c.innerHTML='';
+
+  // Add lock notice
+  const notice=document.createElement('div');
+  notice.className='plan-lock-notice';
+  notice.innerHTML='⚠️ Plans below your detected tier are <strong>locked</strong> — your outstanding amount requires a minimum plan. You may upgrade to a higher plan if needed.';
+  c.appendChild(notice);
+
+  const detectedIdx=PLAN_ORDER.indexOf(detPlan);
+
   Object.entries(PLANS).forEach(([k,pl])=>{
-    const isSel=k===selPlan;
+    const planIdx=PLAN_ORDER.indexOf(k);
+    const isLocked=planIdx < detectedIdx;      // plans BELOW detected are locked
+    const isRecommended=k===detPlan;           // exact match = recommended
+    const isSel=k===selPlan && !isLocked;
+
     const d=document.createElement('div');
-    d.className='plan-mini'+(isSel?' sel':'');
-    d.onclick=()=>{
-      selPlan=k;
-      document.querySelectorAll('.plan-mini').forEach(x=>x.classList.remove('sel'));
-      d.classList.add('sel');
-      updateSumPlan(k);
-    };
+    let cls='plan-mini';
+    if(isLocked) cls+=' locked';
+    else if(isRecommended) cls+=' recommended';
+    if(isSel) cls+=' sel';
+    d.className=cls;
+
+    if(!isLocked){
+      d.onclick=()=>{
+        selPlan=k;
+        document.querySelectorAll('.plan-mini:not(.locked)').forEach(x=>x.classList.remove('sel'));
+        d.classList.add('sel');
+        updateSumPlan(k);
+      };
+    }
+
+    const tags=`
+      ${pl.pop&&!isLocked?'<span class="pop-tag">POPULAR</span>':''}
+      ${isRecommended?'<span class="rec-tag">✓ RECOMMENDED</span>':''}
+      ${isLocked?'<span class="lock-tag">🔒 LOCKED</span>':''}`;
+
     d.innerHTML=`
       <div>
-        <div class="pm-name">${pl.name}${pl.pop?'<span class="pop-tag">POPULAR</span>':''}</div>
-        <div class="pm-exp">${pl.exp}</div>
+        <div class="pm-name">${pl.name}${tags}</div>
+        <div class="pm-exp">${pl.exp}${isLocked?' · Not eligible based on your outstanding':''}</div>
       </div>
       <div style="text-align:right">
-        <div class="pm-price">₹${pl.price.toLocaleString('en-IN')}</div>
-        <div class="pm-yr">per year</div>
+        <div class="pm-price" style="${isLocked?'color:var(--muted)':''}">₹${pl.price.toLocaleString('en-IN')}</div>
+        <div class="pm-yr">${isLocked?'unavailable':'per year'}</div>
       </div>`;
     c.appendChild(d);
   });
