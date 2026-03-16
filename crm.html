@@ -969,7 +969,7 @@ function openCase(id){
   if(c.loans&&c.loans.length){
     document.getElementById('modalLoans').innerHTML=c.loans.map(l=>
       `<div class="loan-detail-row">
-        <span style="font-weight:600">${l.type} · ${l.lender}</span>
+        <span style="font-weight:600">${l.type||'Loan'} · ${l.lender||'—'}${l.accno?` <span style="font-size:.75rem;color:var(--muted);font-family:monospace">#${l.accno}</span>`:''}</span>
         <span style="font-weight:700;color:var(--teal-d)">${l.amount?'₹'+parseFloat(l.amount).toLocaleString('en-IN'):'—'}</span>
       </div>`).join('');
   } else {

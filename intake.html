@@ -69,8 +69,8 @@
     /* LOAN ROWS */
     .loan-rows{display:flex;flex-direction:column;gap:.7rem;margin-bottom:.9rem}
     .loan-row{background:var(--off);border:1.5px solid var(--border);border-radius:10px;
-               padding:.9rem 1rem;display:grid;
-               grid-template-columns:1.1fr 1.1fr .95fr auto;gap:.7rem;align-items:end}
+               padding:.9rem 1rem 1rem;display:grid;
+               grid-template-columns:1fr 1fr 1fr 1fr auto;gap:.7rem;align-items:end}
     .loan-row .fg{margin-bottom:0}
     .rm-btn{width:32px;height:32px;border-radius:7px;border:1.5px solid #FDD;
              background:#FFF5F5;color:#C0392B;font-size:1rem;cursor:pointer;
@@ -82,6 +82,25 @@
               font-size:.8rem;font-weight:600;cursor:pointer;transition:background .2s;
               font-family:'Plus Jakarta Sans',sans-serif;width:fit-content}
     .add-btn:hover{background:#D0ECEC}
+
+    /* CIBIL UPLOAD */
+    .cibil-section{background:linear-gradient(135deg,#FDF6E3,#FFFBF0);
+                    border:1.5px solid var(--gold-m);border-radius:12px;
+                    padding:1.3rem 1.4rem;margin-top:1rem}
+    .cibil-section-title{font-size:.82rem;font-weight:700;color:var(--gold-d);
+                           margin-bottom:.3rem;display:flex;align-items:center;gap:.5rem}
+    .cibil-section-sub{font-size:.76rem;color:#7A5C00;line-height:1.6;margin-bottom:1rem}
+    .cibil-upload-zone{border:2px dashed var(--gold-m);border-radius:10px;padding:1.4rem;
+                        text-align:center;cursor:pointer;background:white;transition:background .2s}
+    .cibil-upload-zone:hover{background:var(--gold-l)}
+    .cibil-upload-zone input{display:none}
+    .cibil-uz-icon{font-size:1.6rem;margin-bottom:.4rem}
+    .cibil-uz-text{font-size:.82rem;color:var(--gold-d);font-weight:600}
+    .cibil-uz-sub{font-size:.7rem;color:var(--muted);margin-top:.2rem}
+    .cibil-preview{display:none;margin-top:.8rem;background:var(--gold-l);
+                    border-radius:8px;padding:.7rem 1rem;font-size:.8rem;
+                    color:var(--gold-d);font-weight:600;display:flex;align-items:center;gap:.6rem}
+    .cibil-optional{font-size:.72rem;color:var(--muted);margin-top:.6rem;line-height:1.5}
 
     /* PLAN DETECT BOX */
     .detect-box{background:linear-gradient(135deg,var(--teal-l),#DFF3F5);
@@ -282,6 +301,27 @@
     <textarea id="f-desc" placeholder="Tell us what's happening — missed EMIs, harassment calls, bank notices, legal threats, etc. The more you share the better we can help."></textarea>
   </div>
 
+  <!-- CIBIL UPLOAD -->
+  <div class="cibil-section">
+    <div class="cibil-section-title">📊 Upload Your CIBIL / Credit Report</div>
+    <div class="cibil-section-sub">
+      Uploading your CIBIL report helps our team assess your case faster and provide more accurate guidance.
+      You can download your free CIBIL report from <strong>cibil.com</strong> or any credit bureau app.
+    </div>
+    <div class="cibil-upload-zone" onclick="document.getElementById('cibilFile').click()">
+      <input type="file" id="cibilFile" accept=".pdf,.jpg,.jpeg,.png" onchange="handleCibilUpload(event)"/>
+      <div class="cibil-uz-icon">📄</div>
+      <div class="cibil-uz-text">Tap to upload CIBIL / Credit Report</div>
+      <div class="cibil-uz-sub">PDF, JPG or PNG · max 10MB · Your data is 100% confidential</div>
+    </div>
+    <div class="cibil-preview" id="cibilPreview" style="display:none">
+      <span>&#128196;</span>
+      <span id="cibilFileName">report.pdf</span>
+      <span style="margin-left:auto;cursor:pointer;color:#C0392B" onclick="removeCibil()">✕ Remove</span>
+    </div>
+    <div class="cibil-optional">&#10003; Optional but strongly recommended · Helps us identify CIBIL sync errors and "Settled" → "Closed" upgrade opportunities</div>
+  </div>
+
   <div class="btn-row">
     <div></div>
     <button class="btn-next" onclick="toStep2()">Continue to Plan Selection &#8594;</button>
@@ -365,12 +405,12 @@ const PLAN_ORDER=['A','B','C','D'];
 })();
 
 // ── LOAN ROWS ──
-function addLoan(t,l,a){
+function addLoan(t,l,a,acc){
   lc++;const id=lc;
   const r=document.createElement('div');
   r.className='loan-row';r.id='lr'+id;
   r.innerHTML=`
-    <div class="fg"><label>Type</label>
+    <div class="fg"><label>Loan Type</label>
       <select onchange="recalc()">
         <option value="">Select</option>
         <option${t=='Credit Card'?' selected':''}>Credit Card</option>
@@ -382,9 +422,11 @@ function addLoan(t,l,a){
       </select></div>
     <div class="fg"><label>Lender / Bank</label>
       <input type="text" placeholder="e.g. HDFC Bank" value="${l||''}" oninput="recalc()"/></div>
-    <div class="fg"><label>Outstanding (₹)</label>
+    <div class="fg"><label>Account / Card No.</label>
+      <input type="text" placeholder="Last 4 digits or full no." value="${acc||''}" maxlength="20" style="letter-spacing:.06em" oninput="recalc()"/></div>
+    <div class="fg"><label>Outstanding (&#8377;)</label>
       <input type="number" placeholder="e.g. 150000" value="${a||''}" min="0" oninput="recalc()"/></div>
-    <button class="rm-btn" onclick="rmLoan(${id})" title="Remove">✕</button>`;
+    <button class="rm-btn" onclick="rmLoan(${id})" title="Remove">\u2715</button>`;
   document.getElementById('loanRows').appendChild(r);
   recalc();
 }
@@ -398,7 +440,7 @@ function rmLoan(id){
 function recalc(){
   let total=0;
   document.querySelectorAll('.loan-row').forEach(r=>{
-    const n=r.querySelectorAll('input')[1];
+    const n=r.querySelectorAll('input')[2]; // index 2 = outstanding (after lender + account no)
     if(n&&n.value)total+=parseFloat(n.value)||0;
   });
   updateSumLoans(total);
@@ -459,11 +501,13 @@ function updateSumLoans(total){
   rows.forEach(r=>{
     const s=r.querySelector('select');
     const ins=r.querySelectorAll('input');
-    const lender=ins[0]?.value;const amt=ins[1]?.value;
+    const lender=ins[0]?.value;
+    const accno=ins[1]?.value;
+    const amt=ins[2]?.value;
     if(lender||amt){
       has=true;
       const d=document.createElement('div');d.className='loan-sum-item';
-      d.innerHTML=`<span>${s?.value||'Loan'} · ${lender||'—'}</span>
+      d.innerHTML=`<span>${s?.value||'Loan'} · ${lender||'—'}${accno?' (···'+accno.slice(-4)+')':''}</span>
                    <span style="font-weight:700">${amt?'₹'+parseFloat(amt).toLocaleString('en-IN'):'—'}</span>`;
       list.appendChild(d);
     }
@@ -484,6 +528,25 @@ function liveSync(){
 function pickChip(el){
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
   el.classList.add('on');
+}
+
+// ── CIBIL UPLOAD ──
+function handleCibilUpload(e){
+  const f=e.target.files[0];
+  if(!f)return;
+  if(f.size>10*1024*1024){
+    alert('File too large. Please upload a file under 10MB.');
+    e.target.value='';return;
+  }
+  document.getElementById('cibilFileName').textContent=f.name;
+  document.getElementById('cibilPreview').style.display='flex';
+  // Store file name in session
+  sessionStorage.setItem('cibil_filename', f.name);
+}
+function removeCibil(){
+  document.getElementById('cibilFile').value='';
+  document.getElementById('cibilPreview').style.display='none';
+  sessionStorage.removeItem('cibil_filename');
 }
 
 // ── STEP NAVIGATION ──
@@ -605,7 +668,8 @@ function toPayment(){
     data.loans.push({
       type:   s?.value||'',
       lender: ins[0]?.value||'',
-      amount: ins[1]?.value||''
+      accno:  ins[1]?.value||'',
+      amount: ins[2]?.value||''
     });
   });
   sessionStorage.setItem('goresolve_intake', JSON.stringify(data));

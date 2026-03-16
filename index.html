@@ -24,12 +24,12 @@
       position:fixed;top:0;left:0;right:0;z-index:200;
       background:rgba(255,255,255,.96);backdrop-filter:blur(16px);
       border-bottom:1px solid var(--border);
-      padding:0 5vw;height:68px;
+      padding:0 5vw;height:74px;
       display:flex;align-items:center;justify-content:space-between;
       box-shadow:0 2px 12px rgba(30,100,110,.06);
     }
     .nav-logo{display:flex;align-items:center;text-decoration:none}
-    .nav-logo img{height:46px;width:auto}
+    .nav-logo img{height:52px;width:auto;max-width:200px}
     .nav-links{display:flex;gap:2rem;list-style:none}
     .nav-links a{text-decoration:none;color:var(--ink2);font-size:.85rem;font-weight:500;transition:color .2s}
     .nav-links a:hover{color:var(--teal)}
@@ -340,9 +340,9 @@
       border-radius:6px;padding:.38rem .85rem;font-size:.7rem;color:rgba(255,255,255,.4);
     }
 
-    /* ANIMATIONS */
+    /* ANIMATIONS — always visible, animate in when scrolled to */
     @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
-    .anim{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+    .anim{opacity:1;transform:translateY(0);transition:opacity .6s ease,transform .6s ease}
     .anim.vis{opacity:1;transform:translateY(0)}
 
     /* RESPONSIVE */
@@ -434,10 +434,41 @@
     <div class="stag">Who We Help</div>
     <h2>You Are Not Alone.<br/>We're on <em>Your Side.</em></h2>
     <p class="subdesc">Thousands of borrowers across India face harassment and unfair recovery pressure every day. GOresolve was built specifically for them.</p>
+
+    <!-- SCOPE NOTICE -->
+    <div style="background:#FFF8E1;border:1px solid var(--gold-m);border-radius:10px;padding:1rem 1.4rem;margin:1.2rem 0 2rem;display:flex;align-items:flex-start;gap:.8rem">
+      <div style="font-size:1.2rem;margin-top:.1rem">ℹ️</div>
+      <div>
+        <div style="font-size:.75rem;font-weight:700;color:var(--gold-d);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Service Scope — Please Read</div>
+        <p style="font-size:.82rem;color:#5A4010;line-height:1.7">GOresolve currently provides support for <strong>unsecured loans only</strong> — Credit Cards, Personal Loans, and Business Loans. We are <strong>unable to assist</strong> with secured loans such as Home Loans, Car Loans, or Two-Wheeler Loans at this time.</p>
+      </div>
+    </div>
+
     <div class="who-grid anim">
-      <div class="who-card"><div class="who-icon">😰</div><h3>Facing Recovery Harassment?</h3><p>Being threatened, called repeatedly, or visited at home by recovery agents? We help you assert your RBI-protected rights immediately.</p></div>
-      <div class="who-card"><div class="who-icon">💳</div><h3>Credit Card or Personal Loan Stress?</h3><p>Overwhelmed by accumulating interest and penalties? Our experts guide you toward a fair, negotiated settlement that works for your situation.</p></div>
-      <div class="who-card"><div class="who-icon">🏢</div><h3>Business Loan in Default?</h3><p>Navigating bank communication for a business loan gone wrong? We provide structured guidance to protect your assets and negotiate professionally.</p></div>
+      <div class="who-card">
+        <div class="who-icon">😰</div>
+        <h3>Facing Recovery Harassment?</h3>
+        <p>Being threatened, called repeatedly, or visited at home by recovery agents for credit card or personal loan dues? We help you assert your RBI-protected rights immediately.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">💳</div>
+        <h3>Credit Card Debt Stress?</h3>
+        <p>Overwhelmed by accumulating credit card interest, penalties and collection pressure? Our DRA-trained experts guide you toward a fair, negotiated settlement.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">🏢</div>
+        <h3>Personal or Business Loan Default?</h3>
+        <p>Struggling with an overdue personal loan or business loan? We provide structured guidance to communicate ethically with lenders and work toward resolution.</p>
+      </div>
+    </div>
+
+    <!-- NOT ELIGIBLE NOTICE -->
+    <div style="background:var(--off);border:1px solid var(--border);border-radius:10px;padding:1rem 1.4rem;margin-top:1.5rem;display:flex;align-items:flex-start;gap:.8rem">
+      <div style="font-size:1.1rem;margin-top:.1rem">🚫</div>
+      <div>
+        <div style="font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Not Covered by GOresolve</div>
+        <p style="font-size:.82rem;color:var(--muted);line-height:1.7">Home Loans · Car Loans · Two-Wheeler Loans · Gold Loans · Any secured loan with collateral. For these, please consult a qualified financial advisor or advocate.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -545,28 +576,34 @@
     <div class="testi-hdr">
       <div class="stag">Client Stories</div>
       <h2>Real People. <em>Real Relief.</em></h2>
+      <p style="font-size:.92rem;color:var(--muted);max-width:540px;margin:.5rem auto 0;line-height:1.75">We believe in complete transparency. Client testimonials will be published here only with the explicit written consent of our clients — protecting their privacy at all times.</p>
     </div>
-    <div class="testi-grid anim">
-      <div class="testi-card">
-        <span class="testi-qmark">"</span>
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-text">I was getting 20+ calls a day from recovery agents. Within 48 hours of submitting to GOresolve, the harassment stopped. They knew exactly what to do.</p>
-        <div class="testi-person"><div class="testi-av">RV</div><div><div class="testi-name">Ramesh V.</div><div class="testi-loc">Bangalore, Karnataka</div></div></div>
-        <div class="testi-outcome">✓ Harassment stopped · Credit card settlement reached</div>
+
+    <!-- ETHICS NOTICE -->
+    <div style="max-width:680px;margin:0 auto 2.5rem;background:var(--teal-l);border:1px solid var(--teal-m);border-radius:14px;padding:2rem;text-align:center">
+      <div style="font-size:2rem;margin-bottom:.8rem">🤝</div>
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--teal-d);margin-bottom:.6rem">Our Commitment to Honest Reviews</h3>
+      <p style="font-size:.85rem;color:var(--ink2);line-height:1.75;margin-bottom:1rem">GOresolve does not publish fake, fabricated, or incentivised testimonials. As a DPIIT-recognised startup built on ethics, we will only share real client stories once we receive proper consent. Check back as we grow.</p>
+      <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap">
+        <span style="background:white;border:1px solid var(--teal-m);border-radius:999px;padding:.28rem .85rem;font-size:.75rem;font-weight:600;color:var(--teal-d)">✓ No fake reviews</span>
+        <span style="background:white;border:1px solid var(--teal-m);border-radius:999px;padding:.28rem .85rem;font-size:.75rem;font-weight:600;color:var(--teal-d)">✓ Client privacy protected</span>
+        <span style="background:white;border:1px solid var(--teal-m);border-radius:999px;padding:.28rem .85rem;font-size:.75rem;font-weight:600;color:var(--teal-d)">✓ Consent-first publishing</span>
       </div>
-      <div class="testi-card">
-        <span class="testi-qmark">"</span>
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-text">GOresolve explained my rights clearly and helped me negotiate a fair settlement without any legal trouble. Truly borrower-first service.</p>
-        <div class="testi-person"><div class="testi-av">PT</div><div><div class="testi-name">Priya T.</div><div class="testi-loc">Mumbai, Maharashtra</div></div></div>
-        <div class="testi-outcome">✓ Personal loan of ₹3.2L settled at ₹1.8L</div>
+    </div>
+
+    <!-- TRUST STATS instead of fake testimonials -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:800px;margin:0 auto">
+      <div style="background:white;border-radius:12px;border:1px solid var(--border);padding:1.6rem;text-align:center;box-shadow:var(--shadow)">
+        <div style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--teal-d)">100%</div>
+        <div style="font-size:.78rem;color:var(--muted);margin-top:.3rem;font-weight:500">RBI Compliant Process</div>
       </div>
-      <div class="testi-card">
-        <span class="testi-qmark">"</span>
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-text">As a small business owner I was afraid of losing everything. GOresolve's team guided me step by step and I got a structured plan that actually works.</p>
-        <div class="testi-person"><div class="testi-av">AK</div><div><div class="testi-name">Arjun K.</div><div class="testi-loc">Hyderabad, Telangana</div></div></div>
-        <div class="testi-outcome">✓ Business loan restructured · Operations continued</div>
+      <div style="background:white;border-radius:12px;border:1px solid var(--border);padding:1.6rem;text-align:center;box-shadow:var(--shadow)">
+        <div style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--teal-d)">24–48hr</div>
+        <div style="font-size:.78rem;color:var(--muted);margin-top:.3rem;font-weight:500">Response Time</div>
+      </div>
+      <div style="background:white;border-radius:12px;border:1px solid var(--border);padding:1.6rem;text-align:center;box-shadow:var(--shadow)">
+        <div style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--teal-d)">0</div>
+        <div style="font-size:.78rem;color:var(--muted);margin-top:.3rem;font-weight:500">Fake Reviews Published</div>
       </div>
     </div>
   </div>
@@ -579,14 +616,19 @@
       <div class="stag">FAQ</div>
       <h2>Common <em>Questions</em></h2>
       <p class="subdesc">Everything you need to know about GOresolve and how we protect borrowers.</p>
+      <div style="margin-top:1.5rem;background:#FFF8E1;border:1px solid var(--gold-m);border-radius:10px;padding:1rem 1.2rem;">
+        <div style="font-size:.72rem;font-weight:700;color:var(--gold-d);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem">⚠️ Important Disclaimer</div>
+        <p style="font-size:.8rem;color:#5A4010;line-height:1.7">GOresolve is <strong>not a law firm</strong> and does not provide legal advice. We are <strong>not legal representatives</strong>. We provide guidance, documentation support and ethical communication assistance based on RBI recovery guidelines. For legal representation, please consult a qualified advocate.</p>
+      </div>
     </div>
     <div class="faq-list">
-      <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)">Is GOresolve a collection agency? <span class="arr">▾</span></button><div class="faq-a">No — absolutely not. GOresolve works ONLY for borrower protection. We are 100% on the borrower's side and never work with lenders, banks, or recovery agencies.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)">Do you negotiate with banks on my behalf? <span class="arr">▾</span></button><div class="faq-a">Our DRA-trained professionals guide ethical communication with lenders during settlement discussions. We empower you with rights, scripts, and legal protections.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)">Will my personal data be safe? <span class="arr">▾</span></button><div class="faq-a">Yes. We follow strict confidentiality standards. Your information is never shared with banks, lenders, recovery agencies, or any third party.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)">How quickly will someone contact me? <span class="arr">▾</span></button><div class="faq-a">Our team reviews every submission and responds within 24–48 hours by phone or email. For urgent harassment, email <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="81f2f4f1f1eef3f5c1e6eef3e4f2eeedf7e4afe8ef">[email&#160;protected]</a> for faster response.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)">What does GOresolve cost? <span class="arr">▾</span></button><div class="faq-a">Plans start at ₹1,499/year based on your outstanding loan exposure. There are no hidden charges and no recovery pressure. See our pricing section above.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)">Can you help if I am being legally threatened? <span class="arr">▾</span></button><div class="faq-a">Yes. We have experience guiding borrowers through legally sensitive situations. Our team can help you understand your rights and connect you with appropriate resources.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)">Is GOresolve a collection agency? <span class="arr">▾</span></button><div class="faq-a">No — absolutely not. GOresolve works ONLY for borrower protection. We are 100% on the borrower's side and never work with lenders, banks, or recovery agencies. We are also not a legal firm or legal representative.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)">Do you negotiate with banks on my behalf? <span class="arr">▾</span></button><div class="faq-a">Our DRA-trained professionals guide ethical communication with lenders during settlement discussions. We help you understand your rights, prepare communication, and navigate the process — but we are not legal representatives. We empower you to negotiate confidently.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)">Are you legal representatives or lawyers? <span class="arr">▾</span></button><div class="faq-a">No. GOresolve is not a law firm and does not provide legal advice or legal representation. We provide borrower guidance, RBI-compliant escalation support, and harassment protection assistance. If you need legal representation in court, we recommend consulting a qualified advocate.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)">Will my personal data be safe? <span class="arr">▾</span></button><div class="faq-a">Yes. We follow strict confidentiality standards. Your information is never shared with banks, lenders, recovery agencies, or any third party. It is used solely to assist with your case resolution.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)">How quickly will someone contact me? <span class="arr">▾</span></button><div class="faq-a">Our team reviews every submission and responds within 24–48 hours by phone or email. For urgent harassment situations, email us directly at support@goresolve.in for a faster response.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)">What does GOresolve cost? <span class="arr">▾</span></button><div class="faq-a">Plans start at ₹1,499/year based on your outstanding loan exposure. There are no hidden charges, no recovery pressure, and no upfront fees before case review. See our pricing section above for full details.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)">Can you help if I am being legally threatened? <span class="arr">▾</span></button><div class="faq-a">We can help you understand your rights under RBI guidelines and guide you through the process. However, if you have received a court notice or legal summons, we strongly recommend also consulting a qualified lawyer. GOresolve is not a legal representative.</div></div>
     </div>
   </div>
 </section>
@@ -599,7 +641,7 @@
     <input type="email" id="ctaEmail" placeholder="Enter your work or personal email"/>
     <a href="intake.html" class="btn-gold" onclick="saveCTAEmail()">Start Resolution →</a>
   </div>
-  <p style="margin-top:1rem;font-size:.75rem;color:rgba(255,255,255,.4)">🔒 Confidential · No spam · We respond within 24–48 hrs · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="88fbfdf8f8e7fafcc8efe7faedfbe7e4feeda6e1e6">[email&#160;protected]</a></p>
+  <p style="margin-top:1rem;font-size:.75rem;color:rgba(255,255,255,.4)">🔒 Confidential · No spam · We respond within 24–48 hrs · support@goresolve.in</p>
 </section>
 
 <!-- ── FOOTER ── -->
@@ -630,7 +672,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2025 Invok Nectar Private Limited. GOresolve™ is not a law firm or collection agency.</p>
+    <p>© 2025 Invok Nectar Private Limited. GOresolve™ is not a law firm, legal representative, or collection agency.</p>
     <div class="dpiit-pill">🇮🇳 DPIIT: DIPP237434 · Startup India</div>
   </div>
 </footer>
