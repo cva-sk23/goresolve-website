@@ -223,6 +223,40 @@ const PLANS={
         dt.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})+
         ' '+dt.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
     }
+    // ── Write case to CRM localStorage ──
+    try{
+      const existing=localStorage.getItem('crm_cases');
+      const crmCases=existing?JSON.parse(existing):[];
+      // Avoid duplicate if ref already exists
+      if(!crmCases.find(c=>c.id===ref)){
+        // Build loans array from intake data
+        const loans=[];
+        if(d.loanTypes&&Array.isArray(d.loanTypes)){
+          d.loanTypes.forEach(t=>loans.push({type:t,lender:d.lenders||'',amount:d.totalDebt||''}));
+        }
+        if(!loans.length&&d.totalDebt){
+          loans.push({type:'Loan',lender:'',amount:d.totalDebt});
+        }
+        crmCases.push({
+          id: ref,
+          name: d.name||'—',
+          email: d.email||'—',
+          phone: d.phone||'—',
+          city: d.city||'—',
+          plan: d.plan||'A',
+          urgency: d.urgency||'—',
+          desc: d.situation||d.urgency||'Submitted via website',
+          loans: loans,
+          status: 'new',
+          payStatus: d.utr?'paid':'pending',
+          utr: d.utr||'',
+          expert: '',
+          notes: '',
+          submittedAt: d.submittedAt||new Date().toISOString()
+        });
+        localStorage.setItem('crm_cases', JSON.stringify(crmCases));
+      }
+    }catch(ex){}
     // Clear session after showing
     sessionStorage.removeItem('goresolve_intake');
   }catch(e){}

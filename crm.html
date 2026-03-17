@@ -564,6 +564,7 @@
         <div class="page-sub">Summary analytics and export</div></div>
         <div class="topbar-right">
           <button class="add-case-btn" onclick="exportCSV()">⬇ Export CSV</button>
+          <button class="add-case-btn" onclick="clearDemoData()" style="background:#fff;color:#e74c3c;border:1.5px solid #e74c3c;margin-left:.5rem">🗑 Clear Demo Data</button>
         </div>
       </div>
       <div class="charts-row">
@@ -692,6 +693,17 @@ const CREDS={admin:'goresolve2025',manager:'invok2025'};
 let cases=[], currentCaseId=null, caseFilter='all';
 
 // ── SEED DEMO DATA ──
+function clearDemoData(){
+  if(!confirm('This will remove the 5 demo/sample cases and keep only real submitted cases. Continue?')) return;
+  const allCases=JSON.parse(localStorage.getItem('crm_cases')||'[]');
+  // Demo case IDs to remove
+  const demoIds=['GOR-A1B2C3','GOR-D4E5F6','GOR-G7H8I9','GOR-J1K2L3','GOR-M4N5O6'];
+  const realCases=allCases.filter(c=>!demoIds.includes(c.id));
+  localStorage.setItem('crm_cases',JSON.stringify(realCases));
+  loadCases(); refreshDashboard();
+  showToast('✅ Demo data cleared. Showing real submissions only.');
+}
+
 function seedDemoData(){
   if(localStorage.getItem('crm_cases')) return;
   const demo=[
