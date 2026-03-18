@@ -3,28 +3,12 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>CRM Dashboard – GOresolve Internal</title>
+  <title>CRM Dashboard – GOresolve Internal</title>
   <meta name="description" content="GOresolve internal CRM dashboard for case management, payment verification and expert assignment."/>
-  <meta name="keywords" content="GOresolve CRM, internal dashboard"/>
-  <meta name="author" content="Invok Nectar Private Limited"/>
-  <meta name="robots" content="index, follow"/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:url" content="https://goresolve.in/crm.html"/>
-  <meta property="og:title" content="GOresolve CRM – Internal"/>
-  <meta property="og:description" content="Internal case management dashboard."/>
-  <meta property="og:image" content="https://goresolve.in/assets/logo.png"/>
-  <meta name="twitter:card" content="summary"/>
-  <meta name="twitter:title" content="GOresolve CRM – Internal"/>
-  <meta name="twitter:description" content="Internal case management dashboard."/>
+  <meta name="robots" content="noindex, nofollow"/>
   <link rel="canonical" href="https://goresolve.in/crm.html"/>
-  <!-- Google Analytics GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-JF3LELNZDE"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-JF3LELNZDE');
-  </script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-JF3LELNZDE');</script>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -40,175 +24,108 @@
     html{scroll-behavior:smooth}
     body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--off);color:var(--ink);min-height:100vh}
 
-    /* ── LOGIN SCREEN ── */
-    .login-screen{
-      position:fixed;inset:0;background:linear-gradient(135deg,var(--teal-d),#0A4A55);
-      display:flex;align-items:center;justify-content:center;z-index:999;
-    }
-    .login-box{
-      background:white;border-radius:16px;padding:2.5rem 2rem;
-      width:100%;max-width:380px;box-shadow:var(--shadow-lg);text-align:center;
-    }
+    /* ── LOGIN ── */
+    .login-screen{position:fixed;inset:0;background:linear-gradient(135deg,var(--teal-d),#0A4A55);display:flex;align-items:center;justify-content:center;z-index:999}
+    .login-box{background:white;border-radius:16px;padding:2.5rem 2rem;width:100%;max-width:380px;box-shadow:var(--shadow-lg);text-align:center}
     .login-box h2{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--ink);margin-bottom:.3rem}
     .login-box p{font-size:.82rem;color:var(--muted);margin-bottom:1.6rem}
     .login-fg{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem;text-align:left}
     .login-fg label{font-size:.7rem;font-weight:700;color:var(--ink2);letter-spacing:.06em;text-transform:uppercase}
-    .login-fg input{
-      padding:.72rem 1rem;border-radius:8px;border:1.5px solid var(--border);
-      background:var(--off);font-size:.9rem;color:var(--ink);
-      font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border-color .2s;width:100%;
-    }
+    .login-fg input{padding:.72rem 1rem;border-radius:8px;border:1.5px solid var(--border);background:var(--off);font-size:.9rem;color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border-color .2s;width:100%}
     .login-fg input:focus{border-color:var(--teal)}
-    .login-btn{
-      width:100%;background:var(--teal);color:white;padding:.82rem;border-radius:8px;border:none;
-      font-size:.92rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;
-      transition:background .2s;margin-top:.5rem;
-    }
+    .login-btn{width:100%;background:var(--teal);color:white;padding:.82rem;border-radius:8px;border:none;font-size:.92rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:background .2s;margin-top:.5rem}
     .login-btn:hover{background:var(--teal-d)}
-    .login-err{background:#FFF0F0;border:1px solid #FFCCCC;color:#C0392B;
-                border-radius:7px;padding:.6rem .9rem;font-size:.8rem;display:none;margin-bottom:.8rem}
+    .login-err{background:#FFF0F0;border:1px solid #FFCCCC;color:#C0392B;border-radius:7px;padding:.6rem .9rem;font-size:.8rem;display:none;margin-bottom:.8rem}
     .login-note{font-size:.72rem;color:var(--muted);margin-top:.9rem}
-    .role-badge{display:inline-block;padding:.15rem .55rem;border-radius:5px;font-size:.65rem;font-weight:700;
-                text-transform:uppercase;letter-spacing:.08em;margin-left:.4rem}
+
+    /* ── ROLE BADGES ── */
+    .role-badge{display:inline-block;padding:.15rem .55rem;border-radius:5px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-left:.4rem}
     .role-badge.admin{background:#EAF5F7;color:var(--teal-d)}
     .role-badge.manager{background:var(--gold-l);color:var(--gold-d)}
     .role-badge.agent{background:#EAF7EE;color:#1A6B3A}
-    .sb-role{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
-             padding:.15rem .55rem;border-radius:5px;display:inline-block;margin-top:.3rem}
+    .sb-role{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:.15rem .55rem;border-radius:5px;display:inline-block;margin-top:.3rem}
     .sb-role.admin{background:rgba(46,139,154,.3);color:#9DD0D8}
     .sb-role.manager{background:rgba(196,154,26,.25);color:#E8CC7A}
     .sb-role.agent{background:rgba(39,174,96,.2);color:#A8DFB8}
-    .team-card{background:white;border-radius:12px;border:1px solid var(--border);
-               padding:1.2rem 1.4rem;box-shadow:var(--shadow);margin-bottom:.8rem;
-               display:flex;align-items:center;justify-content:space-between;gap:1rem}
+
+    /* ── TEAM CARDS ── */
+    .team-card{background:white;border-radius:12px;border:1px solid var(--border);padding:1.2rem 1.4rem;box-shadow:var(--shadow);margin-bottom:.8rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
     .tc-info{display:flex;align-items:center;gap:.9rem;flex:1}
-    .tc-avatar{width:40px;height:40px;border-radius:50%;background:var(--teal-l);
-               display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+    .tc-avatar{width:40px;height:40px;border-radius:50%;background:var(--teal-l);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;font-weight:700;color:var(--teal-d)}
     .tc-name{font-weight:700;color:var(--ink);font-size:.9rem}
     .tc-meta{font-size:.75rem;color:var(--muted);margin-top:.1rem}
     .tc-actions{display:flex;gap:.5rem;align-items:center}
-    .del-btn{padding:.28rem .7rem;border-radius:6px;border:1.5px solid #FFCCCC;
-             background:#FFF0F0;font-size:.73rem;font-weight:600;cursor:pointer;
-             color:#C0392B;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+    .del-btn{padding:.28rem .7rem;border-radius:6px;border:1.5px solid #FFCCCC;background:#FFF0F0;font-size:.73rem;font-weight:600;cursor:pointer;color:#C0392B;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
     .del-btn:hover{background:#E74C3C;color:white;border-color:#E74C3C}
-    .add-agent-form{background:var(--off);border-radius:12px;padding:1.2rem 1.4rem;
-                    border:1.5px dashed var(--border);margin-bottom:1.5rem}
-    .agent-form-row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:.8rem;align-items:end}
+    .edit-btn{padding:.28rem .7rem;border-radius:6px;border:1.5px solid var(--border);background:white;font-size:.73rem;font-weight:600;cursor:pointer;color:var(--ink2);font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+    .edit-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-l)}
+
+    /* ── ADD AGENT FORM ── */
+    .add-agent-form{background:var(--off);border-radius:12px;padding:1.2rem 1.4rem;border:1.5px dashed var(--border);margin-bottom:1.5rem}
+    .agent-form-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:.8rem;align-items:end}
     .form-group{display:flex;flex-direction:column;gap:.3rem}
     .form-group label{font-size:.68rem;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.07em}
-    .form-group input,.form-group select{
-      padding:.6rem .9rem;border-radius:7px;border:1.5px solid var(--border);
-      background:white;font-size:.85rem;color:var(--ink);
-      font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border-color .2s;
-    }
+    .form-group input,.form-group select{padding:.6rem .9rem;border-radius:7px;border:1.5px solid var(--border);background:white;font-size:.85rem;color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border-color .2s}
     .form-group input:focus,.form-group select:focus{border-color:var(--teal)}
-    .admin-only{display:none}
 
     /* ── APP SHELL ── */
     .app{display:none;min-height:100vh}
-
-    /* SIDEBAR */
-    .sidebar{
-      position:fixed;top:0;left:0;bottom:0;width:var(--sidebar);
-      background:var(--ink);display:flex;flex-direction:column;z-index:100;
-      overflow-y:auto;
-    }
+    .sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sidebar);background:var(--ink);display:flex;flex-direction:column;z-index:100;overflow-y:auto}
     .sb-logo{padding:1.2rem 1.4rem;border-bottom:1px solid rgba(255,255,255,.08)}
     .sb-logo-wordmark{display:flex;flex-direction:column;line-height:1}
     .sb-logo-name{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:white;letter-spacing:-.01em}
     .sb-logo-name span{color:#4FC3D4}
     .sb-logo-tagline{font-size:.48rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:2px}
-    .sb-label{font-size:.6rem;color:rgba(255,255,255,.35);text-transform:uppercase;
-               letter-spacing:.12em;padding:.9rem 1.4rem .3rem;font-weight:700}
+    .sb-label{font-size:.6rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.12em;padding:.9rem 1.4rem .3rem;font-weight:700}
     .sb-nav{list-style:none;padding:.3rem 0}
-    .sb-nav li a{
-      display:flex;align-items:center;gap:.7rem;padding:.72rem 1.4rem;
-      text-decoration:none;font-size:.84rem;font-weight:500;color:rgba(255,255,255,.55);
-      transition:all .2s;border-left:3px solid transparent;
-    }
+    .sb-nav li a{display:flex;align-items:center;gap:.7rem;padding:.72rem 1.4rem;text-decoration:none;font-size:.84rem;font-weight:500;color:rgba(255,255,255,.55);transition:all .2s;border-left:3px solid transparent}
     .sb-nav li a:hover{color:white;background:rgba(255,255,255,.05)}
     .sb-nav li a.active{color:white;background:rgba(46,139,154,.2);border-left-color:var(--teal)}
     .sb-icon{font-size:1rem;min-width:20px;text-align:center}
     .sb-bottom{margin-top:auto;padding:1.2rem 1.4rem;border-top:1px solid rgba(255,255,255,.08)}
     .sb-user{font-size:.78rem;color:rgba(255,255,255,.5)}
     .sb-user strong{display:block;color:rgba(255,255,255,.8);margin-bottom:.2rem}
-    .logout-btn{
-      display:block;margin-top:.7rem;width:100%;background:rgba(255,255,255,.07);
-      border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);
-      padding:.5rem;border-radius:7px;font-size:.78rem;cursor:pointer;
-      font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;text-align:center;
-    }
+    .logout-btn{display:block;margin-top:.7rem;width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);padding:.5rem;border-radius:7px;font-size:.78rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;text-align:center}
     .logout-btn:hover{background:rgba(255,255,255,.12);color:white}
-
-    /* MAIN AREA */
     .main{margin-left:var(--sidebar);padding:2rem;min-height:100vh}
-
-    /* TOP BAR */
-    .topbar{
-      display:flex;align-items:center;justify-content:space-between;
-      margin-bottom:2rem;flex-wrap:wrap;gap:1rem;
-    }
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
     .page-title{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--ink)}
     .page-sub{font-size:.8rem;color:var(--muted);margin-top:.2rem}
-    .topbar-right{display:flex;align-items:center;gap:.8rem}
-    .search-box{
-      display:flex;align-items:center;gap:.5rem;
-      background:white;border:1.5px solid var(--border);border-radius:8px;
-      padding:.5rem 1rem;font-size:.83rem;color:var(--ink2);
-    }
-    .search-box input{border:none;outline:none;font-family:'Plus Jakarta Sans',sans-serif;
-                       font-size:.83rem;color:var(--ink);width:180px;background:transparent}
-    .add-case-btn{
-      background:var(--gold);color:white;padding:.55rem 1.2rem;border-radius:7px;
-      font-size:.83rem;font-weight:700;border:none;cursor:pointer;
-      font-family:'Plus Jakarta Sans',sans-serif;transition:background .2s;
-    }
+    .topbar-right{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+    .search-box{display:flex;align-items:center;gap:.5rem;background:white;border:1.5px solid var(--border);border-radius:8px;padding:.5rem 1rem;font-size:.83rem;color:var(--ink2)}
+    .search-box input{border:none;outline:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:.83rem;color:var(--ink);width:180px;background:transparent}
+    .add-case-btn{background:var(--gold);color:white;padding:.55rem 1.2rem;border-radius:7px;font-size:.83rem;font-weight:700;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:background .2s}
     .add-case-btn:hover{background:var(--gold-d)}
+    .danger-btn{background:white;color:#e74c3c;border:1.5px solid #e74c3c;padding:.55rem 1.2rem;border-radius:7px;font-size:.83rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+    .danger-btn:hover{background:#e74c3c;color:white}
 
-    /* STAT CARDS */
+    /* ── STAT CARDS ── */
     .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-bottom:2rem}
-    .stat-card{
-      background:white;border-radius:12px;border:1px solid var(--border);
-      padding:1.3rem 1.5rem;box-shadow:var(--shadow);
-    }
+    .stat-card{background:white;border-radius:12px;border:1px solid var(--border);padding:1.3rem 1.5rem;box-shadow:var(--shadow)}
     .stat-card .sc-icon{font-size:1.5rem;margin-bottom:.6rem}
-    .stat-card .sc-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;
-                        color:var(--teal-d);line-height:1}
+    .stat-card .sc-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--teal-d);line-height:1}
     .stat-card .sc-lbl{font-size:.75rem;color:var(--muted);margin-top:.3rem;font-weight:500}
     .stat-card.gold .sc-num{color:var(--gold-d)}
     .stat-card.red .sc-num{color:#C0392B}
     .stat-card.green .sc-num{color:#1A6B3A}
 
-    /* SECTION */
-    .section{background:white;border-radius:14px;border:1px solid var(--border);
-              box-shadow:var(--shadow);margin-bottom:2rem;overflow:hidden}
-    .section-hdr{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);
-    }
+    /* ── SECTION ── */
+    .section{background:white;border-radius:14px;border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:2rem;overflow:hidden}
+    .section-hdr{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.5rem;border-bottom:1px solid var(--border)}
     .section-hdr h3{font-size:.95rem;font-weight:700;color:var(--ink)}
     .section-hdr p{font-size:.75rem;color:var(--muted);margin-top:.1rem}
-
-    /* FILTERS */
-    .filters{display:flex;gap:.6rem;flex-wrap:wrap;padding:1rem 1.5rem;
-              border-bottom:1px solid var(--border);background:var(--off)}
-    .filter-btn{
-      padding:.35rem .85rem;border-radius:999px;border:1.5px solid var(--border);
-      background:white;font-size:.76rem;font-weight:600;cursor:pointer;
-      color:var(--ink2);transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;
-    }
+    .filters{display:flex;gap:.6rem;flex-wrap:wrap;padding:1rem 1.5rem;border-bottom:1px solid var(--border);background:var(--off)}
+    .filter-btn{padding:.35rem .85rem;border-radius:999px;border:1.5px solid var(--border);background:white;font-size:.76rem;font-weight:600;cursor:pointer;color:var(--ink2);transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif}
     .filter-btn:hover,.filter-btn.on{border-color:var(--teal);background:var(--teal-l);color:var(--teal-d)}
     .filter-btn.red.on{border-color:#E74C3C;background:#FFF0F0;color:#C0392B}
     .filter-btn.gold.on{border-color:var(--gold);background:var(--gold-l);color:var(--gold-d)}
     .filter-btn.green.on{border-color:#27AE60;background:#EAF7EE;color:#1A6B3A}
 
-    /* TABLE */
+    /* ── TABLE ── */
     .table-wrap{overflow-x:auto}
     table{width:100%;border-collapse:collapse;font-size:.82rem}
     thead tr{background:var(--off)}
-    th{padding:.75rem 1rem;text-align:left;font-size:.7rem;font-weight:700;
-        color:var(--muted);text-transform:uppercase;letter-spacing:.06em;
-        border-bottom:1px solid var(--border);white-space:nowrap}
+    th{padding:.75rem 1rem;text-align:left;font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border);white-space:nowrap}
     td{padding:.85rem 1rem;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--ink2)}
     tr:last-child td{border-bottom:none}
     tr:hover td{background:#F5FAFA}
@@ -217,155 +134,138 @@
     .td-phone a{color:var(--teal);text-decoration:none;font-weight:600}
     .td-phone a:hover{color:var(--teal-d)}
 
-    /* STATUS BADGES */
-    .badge{
-      display:inline-flex;align-items:center;gap:.3rem;padding:.22rem .7rem;
-      border-radius:999px;font-size:.7rem;font-weight:700;white-space:nowrap;
-    }
+    /* ── BADGES ── */
+    .badge{display:inline-flex;align-items:center;gap:.3rem;padding:.22rem .7rem;border-radius:999px;font-size:.7rem;font-weight:700;white-space:nowrap}
     .badge.new{background:#EAF5F7;color:var(--teal-d);border:1px solid var(--teal-m)}
     .badge.pending{background:var(--gold-l);color:var(--gold-d);border:1px solid var(--gold-m)}
     .badge.active{background:#EAF7EE;color:#1A6B3A;border:1px solid #A8DFB8}
     .badge.resolved{background:#E8F8F5;color:#0E6655;border:1px solid #A2D9CE}
     .badge.urgent{background:#FFF0F0;color:#C0392B;border:1px solid #FFCCCC}
     .badge.harassed{background:#FDEDEC;color:#922B21;border:1px solid #F5B7B1}
-
-    /* PLAN BADGE */
-    .plan-pill{
-      display:inline-block;padding:.18rem .6rem;border-radius:5px;
-      font-size:.7rem;font-weight:700;
-    }
+    .plan-pill{display:inline-block;padding:.18rem .6rem;border-radius:5px;font-size:.7rem;font-weight:700}
     .plan-pill.A{background:#EAF5F7;color:var(--teal-d)}
     .plan-pill.B{background:var(--teal-l);color:var(--teal-d);border:1px solid var(--teal-m)}
     .plan-pill.C{background:var(--gold-l);color:var(--gold-d)}
     .plan-pill.D{background:#FDEDEC;color:#922B21}
 
-    /* ACTION BTNS */
-    .act-btn{
-      padding:.28rem .7rem;border-radius:6px;border:1.5px solid var(--border);
-      background:white;font-size:.73rem;font-weight:600;cursor:pointer;
-      font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;color:var(--ink2);
-    }
+    /* ── ACTION BTNS ── */
+    .act-btn{padding:.28rem .7rem;border-radius:6px;border:1.5px solid var(--border);background:white;font-size:.73rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;color:var(--ink2)}
     .act-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-l)}
     .act-btn.red:hover{border-color:#E74C3C;color:#C0392B;background:#FFF0F0}
 
-    /* MODAL */
-    .modal-overlay{
-      position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;
-      display:none;align-items:center;justify-content:center;padding:1.5rem;
-    }
+    /* ── MODAL ── */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;display:none;align-items:center;justify-content:center;padding:1.5rem}
     .modal-overlay.open{display:flex}
-    .modal{
-      background:white;border-radius:16px;width:100%;max-width:620px;
-      max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);
-    }
-    .modal-hdr{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:1.3rem 1.6rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:white;
-    }
+    .modal{background:white;border-radius:16px;width:100%;max-width:620px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
+    .modal-hdr{display:flex;align-items:center;justify-content:space-between;padding:1.3rem 1.6rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:white;z-index:1}
     .modal-hdr h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--ink)}
     .modal-close{background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--muted);transition:color .2s}
     .modal-close:hover{color:var(--ink)}
     .modal-body{padding:1.5rem 1.6rem}
     .modal-section{margin-bottom:1.4rem}
-    .modal-section h4{font-size:.72rem;font-weight:700;text-transform:uppercase;
-                       letter-spacing:.1em;color:var(--muted);margin-bottom:.7rem}
+    .modal-section h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.7rem}
     .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
     .detail-item{background:var(--off);border-radius:8px;padding:.7rem .9rem}
     .detail-item .dl{font-size:.67rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
     .detail-item .dv{font-size:.85rem;font-weight:600;color:var(--ink);margin-top:.2rem;word-break:break-word}
-    .loan-detail-row{
-      background:var(--off);border-radius:8px;padding:.65rem .9rem;margin-bottom:.5rem;
-      display:flex;justify-content:space-between;font-size:.82rem;align-items:center;
-    }
-    .notes-area{
-      width:100%;padding:.7rem 1rem;border-radius:8px;border:1.5px solid var(--border);
-      background:var(--off);font-size:.85rem;color:var(--ink);
-      font-family:'Plus Jakarta Sans',sans-serif;outline:none;resize:vertical;min-height:80px;
-      transition:border-color .2s;
-    }
+    .loan-detail-row{background:var(--off);border-radius:8px;padding:.65rem .9rem;margin-bottom:.5rem;display:flex;justify-content:space-between;font-size:.82rem;align-items:center}
+    .notes-area{width:100%;padding:.7rem 1rem;border-radius:8px;border:1.5px solid var(--border);background:var(--off);font-size:.85rem;color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;outline:none;resize:vertical;min-height:80px;transition:border-color .2s}
     .notes-area:focus{border-color:var(--teal);background:white}
-    .status-select{
-      padding:.6rem .9rem;border-radius:7px;border:1.5px solid var(--border);
-      background:white;font-size:.85rem;color:var(--ink);
-      font-family:'Plus Jakarta Sans',sans-serif;outline:none;cursor:pointer;width:100%;
-      transition:border-color .2s;
-    }
-    .status-select:focus{border-color:var(--teal)}
-    .assign-input{
-      padding:.62rem 1rem;border-radius:7px;border:1.5px solid var(--border);
-      background:var(--off);font-size:.85rem;color:var(--ink);
-      font-family:'Plus Jakarta Sans',sans-serif;outline:none;width:100%;transition:border-color .2s;
-    }
-    .assign-input:focus{border-color:var(--teal);background:white}
-    .modal-footer{
-      display:flex;gap:.8rem;justify-content:flex-end;padding:1.2rem 1.6rem;
-      border-top:1px solid var(--border);position:sticky;bottom:0;background:white;
-    }
-    .save-btn{
-      background:var(--teal);color:white;padding:.72rem 1.8rem;border-radius:8px;border:none;
-      font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;
-      transition:background .2s;
-    }
+    .status-select,.assign-input{padding:.62rem 1rem;border-radius:7px;border:1.5px solid var(--border);background:var(--off);font-size:.85rem;color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;outline:none;width:100%;transition:border-color .2s}
+    .status-select:focus,.assign-input:focus{border-color:var(--teal);background:white}
+    .modal-footer{display:flex;gap:.8rem;justify-content:flex-end;padding:1.2rem 1.6rem;border-top:1px solid var(--border);position:sticky;bottom:0;background:white}
+    .save-btn{background:var(--teal);color:white;padding:.72rem 1.8rem;border-radius:8px;border:none;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:background .2s}
     .save-btn:hover{background:var(--teal-d)}
-    .cancel-btn{
-      background:none;border:1.5px solid var(--border);color:var(--ink2);padding:.72rem 1.2rem;
-      border-radius:8px;font-size:.88rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;
-    }
+    .cancel-btn{background:none;border:1.5px solid var(--border);color:var(--ink2);padding:.72rem 1.2rem;border-radius:8px;font-size:.88rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
     .cancel-btn:hover{border-color:var(--teal);color:var(--teal)}
 
-    /* PAYMENT VERIFY */
+    /* ── PAYMENT ── */
     .pay-verify{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
-    .verify-btn{
-      padding:.28rem .7rem;border-radius:6px;font-size:.73rem;font-weight:700;cursor:pointer;
-      border:none;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;
-    }
+    .verify-btn{padding:.28rem .7rem;border-radius:6px;font-size:.73rem;font-weight:700;cursor:pointer;border:none;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
     .verify-btn.approve{background:#EAF7EE;color:#1A6B3A;border:1px solid #A8DFB8}
     .verify-btn.approve:hover{background:#27AE60;color:white}
     .verify-btn.reject{background:#FFF0F0;color:#C0392B;border:1px solid #FFCCCC}
     .verify-btn.reject:hover{background:#E74C3C;color:white}
 
-    /* TOAST */
-    .toast{
-      position:fixed;bottom:2rem;right:2rem;background:var(--ink);color:white;
-      padding:.8rem 1.4rem;border-radius:10px;font-size:.83rem;font-weight:600;
-      box-shadow:var(--shadow-lg);z-index:9999;opacity:0;transform:translateY(10px);
-      transition:all .3s;pointer-events:none;
-    }
-    .toast.show{opacity:1;transform:translateY(0)}
-
-    /* CHARTS SECTION */
+    /* ── CHARTS ── */
     .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:2rem}
-    .chart-card{background:white;border-radius:12px;border:1px solid var(--border);
-                 padding:1.3rem 1.5rem;box-shadow:var(--shadow)}
+    .chart-card{background:white;border-radius:12px;border:1px solid var(--border);padding:1.3rem 1.5rem;box-shadow:var(--shadow)}
     .chart-card h4{font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:1rem}
     .bar-chart{display:flex;flex-direction:column;gap:.6rem}
     .bar-row{display:flex;align-items:center;gap:.8rem;font-size:.78rem}
-    .bar-lbl{width:90px;color:var(--ink2);font-weight:500;text-align:right;flex-shrink:0}
+    .bar-lbl{width:100px;color:var(--ink2);font-weight:500;text-align:right;flex-shrink:0}
     .bar-track{flex:1;background:var(--off);border-radius:999px;height:10px;overflow:hidden}
     .bar-fill{height:100%;border-radius:999px;background:var(--teal);transition:width .6s ease}
     .bar-val{width:40px;color:var(--muted);font-size:.73rem;flex-shrink:0}
-    .donut-wrap{display:flex;align-items:center;gap:1.5rem}
-    .donut-legend{display:flex;flex-direction:column;gap:.5rem}
-    .legend-item{display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--ink2)}
-    .legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 
-    /* EMPTY STATE */
+    /* ── EMPTY & TOAST ── */
     .empty-state{text-align:center;padding:3rem 1.5rem;color:var(--muted)}
     .empty-state .es-icon{font-size:2.5rem;margin-bottom:.8rem}
     .empty-state p{font-size:.85rem;line-height:1.7}
+    .toast{position:fixed;bottom:2rem;right:2rem;background:var(--ink);color:white;padding:.8rem 1.4rem;border-radius:10px;font-size:.83rem;font-weight:600;box-shadow:var(--shadow-lg);z-index:9999;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none}
+    .toast.show{opacity:1;transform:translateY(0)}
 
-    /* RESPONSIVE */
-    @media(max-width:960px){
-      .stats-row{grid-template-columns:1fr 1fr}
-      .charts-row{grid-template-columns:1fr}
-    }
-    @media(max-width:720px){
-      .sidebar{transform:translateX(-100%);transition:transform .3s}
-      .sidebar.open{transform:translateX(0)}
-      .main{margin-left:0}
-      .stats-row{grid-template-columns:1fr 1fr}
-    }
+    /* ── SYNC BANNER ── */
+    .sync-banner{background:var(--teal-l);border:1px solid var(--teal-m);border-radius:10px;padding:.75rem 1.2rem;font-size:.78rem;color:var(--teal-d);margin-bottom:1.5rem;display:flex;align-items:center;gap:.6rem;font-weight:500}
+
+    /* ── EXPIRY BADGES ── */
+    .expiry-badge{display:inline-flex;align-items:center;gap:.3rem;padding:.22rem .7rem;border-radius:999px;font-size:.7rem;font-weight:700;white-space:nowrap}
+    .expiry-badge.active{background:#EAF7EE;color:#1A6B3A;border:1px solid #A8DFB8}
+    .expiry-badge.warn30{background:#FDF6E3;color:#9A7510;border:1px solid #E8CC7A}
+    .expiry-badge.warn7{background:#FFF4E5;color:#B7570A;border:1px solid #F5C878}
+    .expiry-badge.expired{background:#FFF0F0;color:#C0392B;border:1px solid #FFCCCC}
+    .expiry-badge.unset{background:var(--off);color:var(--muted);border:1px solid var(--border)}
+    .stat-card.orange .sc-num{color:#B7570A}
+    .expiry-input{padding:.6rem .9rem;border-radius:7px;border:1.5px solid var(--border);background:var(--off);font-size:.85rem;color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border-color .2s;width:100%}
+    .expiry-input:focus{border-color:var(--teal);background:white}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:960px){.stats-row{grid-template-columns:1fr 1fr}.charts-row{grid-template-columns:1fr}.agent-form-row{grid-template-columns:1fr 1fr}}
+    @media(max-width:720px){.sidebar{transform:translateX(-100%);transition:transform .3s}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.stats-row{grid-template-columns:1fr 1fr}}
   </style>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+    import {
+      getFirestore, collection, doc,
+      getDocs, getDoc, setDoc, updateDoc, deleteDoc, addDoc,
+      query, orderBy, onSnapshot, serverTimestamp, writeBatch
+    } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+    // ── FIREBASE CONFIG ─────────────────────────────────────────
+    // Paste your Firebase project config here after setup
+    const FB_CONFIG_KEY = 'gor_fb_config';
+
+    function getSavedConfig(){
+      try{ return JSON.parse(localStorage.getItem(FB_CONFIG_KEY)||'null'); }catch(e){return null;}
+    }
+
+    // Expose globals so non-module scripts can call them
+    window._fbReady = false;
+    window._db = null;
+    window._fbError = null;
+
+    async function initFirebase(){
+      const cfg = getSavedConfig();
+      if(!cfg){ window._fbError='no_config'; window.dispatchEvent(new Event('fb_ready')); return; }
+      try{
+        const app = initializeApp(cfg);
+        const db  = getFirestore(app);
+        window._db = db;
+        window._fbReady = true;
+        // Expose Firestore helpers globally
+        window._fs = { collection, doc, getDocs, getDoc, setDoc, updateDoc,
+                       deleteDoc, addDoc, query, orderBy, onSnapshot,
+                       serverTimestamp, writeBatch };
+        window.dispatchEvent(new Event('fb_ready'));
+      } catch(e){
+        window._fbError = e.message;
+        window.dispatchEvent(new Event('fb_ready'));
+      }
+    }
+    initFirebase();
+  </script>
 </head>
 <body>
 
@@ -378,10 +278,10 @@
     </div>
     <h2>CRM Dashboard</h2>
     <p>Internal use only — Invok Nectar Pvt. Ltd.</p>
-    <div class="login-err" id="loginErr">Incorrect password. Please try again.</div>
+    <div class="login-err" id="loginErr">Incorrect credentials. Please try again.</div>
     <div class="login-fg">
       <label>Username</label>
-      <input id="loginUser" type="text" placeholder="admin" onkeydown="if(event.key==='Enter')doLogin()"/>
+      <input id="loginUser" type="text" placeholder="admin / manager / agent" onkeydown="if(event.key==='Enter')doLogin()"/>
     </div>
     <div class="login-fg">
       <label>Password</label>
@@ -389,6 +289,37 @@
     </div>
     <button class="login-btn" onclick="doLogin()">Login to Dashboard</button>
     <div class="login-note" id="loginNote">🔒 Authorised personnel only · GOresolve Internal</div>
+  </div>
+</div>
+
+
+<!-- ── FIREBASE SETUP SCREEN ── -->
+<div class="login-screen" id="fbSetupScreen" style="display:none">
+  <div class="login-box" style="max-width:460px">
+    <div style="margin-bottom:1.2rem;display:inline-flex;flex-direction:column;align-items:center;line-height:1">
+      <span style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--ink);letter-spacing:-.01em">GO<span style="color:var(--teal)">resolve</span></span>
+      <span style="font-size:.52rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:3px">CRM Setup</span>
+    </div>
+    <h2>Connect Firebase</h2>
+    <p>Paste your Firebase project config below. This is a one-time setup — it saves locally and syncs all devices going forward.</p>
+    <div style="background:var(--teal-l);border:1px solid var(--teal-m);border-radius:8px;padding:.9rem 1rem;font-size:.78rem;color:var(--teal-d);margin-bottom:1.2rem;text-align:left;line-height:1.6">
+      <strong>How to get this:</strong><br>
+      1. Go to <strong>console.firebase.google.com</strong><br>
+      2. Create project → Add web app<br>
+      3. Copy the <code>firebaseConfig</code> object<br>
+      4. Paste it in the box below
+    </div>
+    <div class="login-err" id="fbSetupErr">Invalid config. Please check and try again.</div>
+    <div class="login-fg" style="margin-bottom:1rem">
+      <label>Firebase Config (JSON)</label>
+      <textarea id="fbConfigInput" rows="7" placeholder='{&#10;  "apiKey": "AIza...",&#10;  "authDomain": "your-app.firebaseapp.com",&#10;  "projectId": "your-app",&#10;  "storageBucket": "your-app.appspot.com",&#10;  "messagingSenderId": "1234567890",&#10;  "appId": "1:1234...",&#10;  "measurementId": "G-..."&#10;}' style="padding:.72rem 1rem;border-radius:8px;border:1.5px solid var(--border);background:var(--off);font-size:.78rem;color:var(--ink);font-family:monospace;outline:none;transition:border-color .2s;width:100%;resize:vertical"></textarea>
+    </div>
+    <button class="login-btn" onclick="saveFbConfig()">Save & Connect</button>
+    <div class="login-note" style="margin-top:.8rem">
+      <a href="https://console.firebase.google.com" target="_blank" style="color:var(--teal);text-decoration:none">Open Firebase Console ↗</a>
+      &nbsp;·&nbsp;
+      <span id="fbSetupSkip" onclick="skipFbSetup()" style="cursor:pointer;color:var(--muted);text-decoration:underline">Skip (use local only)</span>
+    </div>
   </div>
 </div>
 
@@ -418,18 +349,20 @@
     </ul>
     <div class="sb-bottom">
       <div class="sb-user">
-        <strong id="sbUsername">Admin</strong>
-        <span class="sb-role" id="sbRole">admin</span>
-        <div style="margin-top:.3rem;font-size:.72rem;color:rgba(255,255,255,.4)">GOresolve CRM</div>
+        <strong id="sbUsername">—</strong>
+        <span class="sb-role" id="sbRole">—</span>
+        <div id="fbStatusBadge" style="margin-top:.4rem;font-size:.64rem;font-weight:700;letter-spacing:.06em;padding:.12rem .45rem;border-radius:4px;display:inline-block;background:rgba(255,255,255,.07);color:rgba(255,255,255,.35)">⬤ Local only</div>
+        <div style="margin-top:.2rem;font-size:.65rem;color:rgba(255,255,255,.3)">GOresolve CRM</div>
       </div>
-      <button class="logout-btn" onclick="doLogout()">← Logout</button>
+      <button class="logout-btn" style="margin-bottom:.4rem" onclick="doLogout()">← Logout</button>
+      <button class="logout-btn" onclick="document.getElementById('fbSetupScreen').style.display='flex'" style="font-size:.72rem;opacity:.65">⚙ Firebase Settings</button>
     </div>
   </div>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <div class="main">
 
-    <!-- ═══ DASHBOARD PAGE ═══ -->
+    <!-- ═══ DASHBOARD ═══ -->
     <div id="page-dashboard">
       <div class="topbar">
         <div>
@@ -440,71 +373,39 @@
           <button class="add-case-btn" onclick="openAddCase()">+ Add Case Manually</button>
         </div>
       </div>
-
-      <!-- STATS -->
       <div class="stats-row">
-        <div class="stat-card">
-          <div class="sc-icon">📋</div>
-          <div class="sc-num" id="stat-total">0</div>
-          <div class="sc-lbl">Total Cases</div>
-        </div>
-        <div class="stat-card gold">
-          <div class="sc-icon">⏳</div>
-          <div class="sc-num" id="stat-pending">0</div>
-          <div class="sc-lbl">Payment Pending</div>
-        </div>
-        <div class="stat-card green">
-          <div class="sc-icon">✅</div>
-          <div class="sc-num" id="stat-active">0</div>
-          <div class="sc-lbl">Active Cases</div>
-        </div>
-        <div class="stat-card red">
-          <div class="sc-icon">🚨</div>
-          <div class="sc-num" id="stat-urgent">0</div>
-          <div class="sc-lbl">Urgent / Harassed</div>
-        </div>
+        <div class="stat-card"><div class="sc-icon">📋</div><div class="sc-num" id="stat-total">0</div><div class="sc-lbl">Total Cases</div></div>
+        <div class="stat-card gold"><div class="sc-icon">⏳</div><div class="sc-num" id="stat-pending">0</div><div class="sc-lbl">Payment Pending</div></div>
+        <div class="stat-card green"><div class="sc-icon">✅</div><div class="sc-num" id="stat-active">0</div><div class="sc-lbl">Active Cases</div></div>
+        <div class="stat-card red"><div class="sc-icon">🚨</div><div class="sc-num" id="stat-urgent">0</div><div class="sc-lbl">Urgent / Harassed</div></div>
       </div>
-
-      <!-- CHARTS -->
+      <!-- Expiry warning row -->
+      <div class="stats-row" style="grid-template-columns:repeat(3,1fr);margin-top:-.4rem">
+        <div class="stat-card orange"><div class="sc-icon">📅</div><div class="sc-num" id="stat-exp30">0</div><div class="sc-lbl">Expiring in 30 Days</div></div>
+        <div class="stat-card red"><div class="sc-icon">⏰</div><div class="sc-num" id="stat-exp7">0</div><div class="sc-lbl">Expiring in 7 Days</div></div>
+        <div class="stat-card red"><div class="sc-icon">💀</div><div class="sc-num" id="stat-expired">0</div><div class="sc-lbl">Already Expired</div></div>
+      </div>
       <div class="charts-row">
-        <div class="chart-card">
-          <h4>Cases by Plan</h4>
-          <div class="bar-chart" id="planChart"></div>
-        </div>
-        <div class="chart-card">
-          <h4>Cases by Status</h4>
-          <div class="bar-chart" id="statusChart"></div>
-        </div>
+        <div class="chart-card"><h4>Cases by Plan</h4><div class="bar-chart" id="planChart"></div></div>
+        <div class="chart-card"><h4>Cases by Status</h4><div class="bar-chart" id="statusChart"></div></div>
       </div>
-
-      <!-- RECENT CASES -->
       <div class="section">
-        <div class="section-hdr">
-          <div><h3>Recent Submissions</h3><p>Latest 10 cases submitted</p></div>
-        </div>
+        <div class="section-hdr"><div><h3>Recent Submissions</h3><p>Latest 10 cases submitted</p></div></div>
         <div class="table-wrap">
           <table id="recentTable">
-            <thead><tr>
-              <th>Ref #</th><th>Name</th><th>Phone</th><th>Plan</th>
-              <th>Urgency</th><th>Payment</th><th>Submitted</th><th>Actions</th>
-            </tr></thead>
+            <thead><tr><th>Ref #</th><th>Name</th><th>Phone</th><th>Plan</th><th>Urgency</th><th>Payment</th><th>Expiry</th><th>Submitted</th><th>Actions</th></tr></thead>
             <tbody id="recentTbody"></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- ═══ ALL CASES PAGE ═══ -->
+    <!-- ═══ ALL CASES ═══ -->
     <div id="page-cases" style="display:none">
       <div class="topbar">
-        <div>
-          <div class="page-title">All Cases</div>
-          <div class="page-sub">Complete case registry</div>
-        </div>
+        <div><div class="page-title">All Cases</div><div class="page-sub">Complete case registry</div></div>
         <div class="topbar-right">
-          <div class="search-box">
-            🔍 <input id="caseSearch" type="text" placeholder="Search name, phone, ref..." oninput="renderCasesTable()"/>
-          </div>
+          <div class="search-box">🔍 <input id="caseSearch" type="text" placeholder="Search name, phone, ref..." oninput="renderCasesTable()"/></div>
           <button class="add-case-btn" onclick="openAddCase()">+ Add Case</button>
         </div>
       </div>
@@ -515,101 +416,69 @@
           <button class="filter-btn green" onclick="filterCases('active',this)">Active</button>
           <button class="filter-btn gold" onclick="filterCases('payment_pending',this)">Payment Pending</button>
           <button class="filter-btn" onclick="filterCases('resolved',this)">Resolved</button>
-          <button class="filter-btn red" onclick="filterCases('urgent',this)">Urgent</button>
-          <button class="filter-btn red" onclick="filterCases('harassed',this)">Being Harassed</button>
+          <button class="filter-btn red" onclick="filterCases('urgent',this)">Urgent / Harassed</button>
         </div>
         <div class="table-wrap">
-          <table>
-            <thead><tr>
-              <th>Ref #</th><th>Name</th><th>Phone</th><th>Plan</th><th>Amount</th>
-              <th>Urgency</th><th>Status</th><th>Expert</th><th>Date</th><th>Actions</th>
-            </tr></thead>
-            <tbody id="casesTbody"></tbody>
-          </table>
+          <table><thead><tr><th>Ref #</th><th>Name</th><th>Phone</th><th>Plan</th><th>Amount</th><th>Urgency</th><th>Status</th><th>Expiry</th><th>Expert</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="casesTbody"></tbody></table>
         </div>
       </div>
     </div>
 
-    <!-- ═══ PAYMENTS PAGE ═══ -->
+    <!-- ═══ PAYMENTS ═══ -->
     <div id="page-payments" style="display:none">
-      <div class="topbar">
-        <div><div class="page-title">Payment Verification</div>
-        <div class="page-sub">Verify and approve incoming payments</div></div>
-      </div>
+      <div class="topbar"><div><div class="page-title">Payment Verification</div><div class="page-sub">Verify and approve incoming payments</div></div></div>
       <div class="stats-row" style="grid-template-columns:repeat(3,1fr)">
-        <div class="stat-card gold"><div class="sc-icon">⏳</div>
-          <div class="sc-num" id="pay-pending-count">0</div><div class="sc-lbl">Awaiting Verification</div></div>
-        <div class="stat-card green"><div class="sc-icon">✅</div>
-          <div class="sc-num" id="pay-verified-count">0</div><div class="sc-lbl">Verified</div></div>
-        <div class="stat-card"><div class="sc-icon">💰</div>
-          <div class="sc-num" id="pay-revenue">₹0</div><div class="sc-lbl">Total Revenue</div></div>
+        <div class="stat-card gold"><div class="sc-icon">⏳</div><div class="sc-num" id="pay-pending-count">0</div><div class="sc-lbl">Awaiting Verification</div></div>
+        <div class="stat-card green"><div class="sc-icon">✅</div><div class="sc-num" id="pay-verified-count">0</div><div class="sc-lbl">Verified</div></div>
+        <div class="stat-card"><div class="sc-icon">💰</div><div class="sc-num" id="pay-revenue">₹0</div><div class="sc-lbl">Total Revenue</div></div>
       </div>
       <div class="section">
         <div class="section-hdr"><div><h3>Payment Records</h3></div></div>
         <div class="table-wrap">
-          <table>
-            <thead><tr>
-              <th>Ref #</th><th>Name</th><th>Plan</th><th>Amount</th>
-              <th>UTR / Proof</th><th>Payment Status</th><th>Actions</th>
-            </tr></thead>
-            <tbody id="paymentsTbody"></tbody>
-          </table>
+          <table><thead><tr><th>Ref #</th><th>Name</th><th>Plan</th><th>Amount</th><th>UTR / Proof</th><th>Payment Status</th><th>Actions</th></tr></thead>
+          <tbody id="paymentsTbody"></tbody></table>
         </div>
       </div>
     </div>
 
-    <!-- ═══ URGENT PAGE ═══ -->
+    <!-- ═══ URGENT ═══ -->
     <div id="page-urgent" style="display:none">
-      <div class="topbar">
-        <div><div class="page-title">Urgent Cases</div>
-        <div class="page-sub">Cases marked Urgent or Being Harassed — act immediately</div></div>
-      </div>
+      <div class="topbar"><div><div class="page-title">Urgent Cases</div><div class="page-sub">Cases marked Urgent or Being Harassed — act immediately</div></div></div>
       <div class="section">
         <div class="table-wrap">
-          <table>
-            <thead><tr>
-              <th>Ref #</th><th>Name</th><th>Phone</th><th>Urgency</th>
-              <th>Plan</th><th>Status</th><th>Expert</th><th>Actions</th>
-            </tr></thead>
-            <tbody id="urgentTbody"></tbody>
-          </table>
+          <table><thead><tr><th>Ref #</th><th>Name</th><th>Phone</th><th>Urgency</th><th>Plan</th><th>Status</th><th>Expert</th><th>Actions</th></tr></thead>
+          <tbody id="urgentTbody"></tbody></table>
         </div>
       </div>
     </div>
 
-    <!-- ═══ EXPERT ASSIGNMENT PAGE ═══ -->
+    <!-- ═══ EXPERT ASSIGNMENT ═══ -->
     <div id="page-experts" style="display:none">
-      <div class="topbar">
-        <div><div class="page-title">Expert Assignment</div>
-        <div class="page-sub">Assign DRA-trained professionals to cases</div></div>
-      </div>
+      <div class="topbar"><div><div class="page-title">Expert Assignment</div><div class="page-sub">Assign DRA-trained agents to cases</div></div></div>
       <div class="section">
         <div class="table-wrap">
-          <table>
-            <thead><tr>
-              <th>Ref #</th><th>Name</th><th>Plan</th><th>Urgency</th>
-              <th>Assigned Expert</th><th>Status</th><th>Actions</th>
-            </tr></thead>
-            <tbody id="expertsTbody"></tbody>
-          </table>
+          <table><thead><tr><th>Ref #</th><th>Name</th><th>Plan</th><th>Urgency</th><th>Assign Agent</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="expertsTbody"></tbody></table>
         </div>
       </div>
     </div>
 
-
-    <!-- ═══ TEAM & AGENTS PAGE ═══ -->
+    <!-- ═══ TEAM & AGENTS ═══ -->
     <div id="page-team" style="display:none">
       <div class="topbar">
-        <div><div class="page-title">Team &amp; Agents</div>
-        <div class="page-sub" id="teamPageSub">Manage agents and roles</div></div>
-        <div class="topbar-right">
-          <button class="add-case-btn" id="clearDemoBtn" onclick="clearDemoData()" style="background:#fff;color:#e74c3c;border:1.5px solid #e74c3c">🗑 Clear Demo Data</button>
-        </div>
+        <div><div class="page-title">Team & Agents</div><div class="page-sub" id="teamPageSub">Manage agents and roles</div></div>
+        <div class="topbar-right" id="teamTopbarRight"></div>
       </div>
 
-      <!-- Add Agent Form (admin & manager can add) -->
+      <!-- Sync notice for manager -->
+      <div class="sync-banner" id="syncBanner" style="display:none">
+        🔄 <span>All changes sync automatically with Admin. Cases assigned to agents are visible to them immediately.</span>
+      </div>
+
+      <!-- Add Agent Form -->
       <div class="section" id="addAgentSection">
-        <div class="section-hdr"><div><h3>Add New Agent</h3><p>Add a new agent to the team</p></div></div>
+        <div class="section-hdr"><div><h3 id="addAgentTitle">Add New Agent</h3><p id="addAgentSub">Fill in details to add a new team member</p></div></div>
         <div class="modal-body">
           <div class="add-agent-form">
             <div class="agent-form-row">
@@ -625,16 +494,17 @@
                 <label>Password</label>
                 <input id="ag-pass" type="text" placeholder="Set password"/>
               </div>
-              <div class="form-group">
+              <div class="form-group" id="roleFieldGroup">
                 <label>Role</label>
                 <select id="ag-role">
                   <option value="agent">Agent</option>
                   <option value="manager" id="managerOption">Manager</option>
                 </select>
               </div>
-            </div>
-            <div style="margin-top:.8rem">
-              <button class="save-btn" onclick="addAgent()" style="padding:.6rem 1.5rem;font-size:.85rem">+ Add Agent</button>
+              <div class="form-group">
+                <label>&nbsp;</label>
+                <button class="save-btn" onclick="addAgent()" style="padding:.6rem 1.5rem;font-size:.85rem;white-space:nowrap">+ Add</button>
+              </div>
             </div>
           </div>
         </div>
@@ -642,21 +512,22 @@
 
       <!-- Team List -->
       <div class="section">
-        <div class="section-hdr"><div><h3>Team Members</h3><p id="teamCountLabel">Loading...</p></div></div>
-        <div class="modal-body" id="teamList" style="padding:1.2rem 1.4rem">
+        <div class="section-hdr">
+          <div><h3>Team Members</h3><p id="teamCountLabel">Loading...</p></div>
+        </div>
+        <div style="padding:1.2rem 1.4rem" id="teamList">
           <div class="empty-state"><div class="es-icon">👥</div><p>No agents yet.</p></div>
         </div>
       </div>
     </div>
 
-    <!-- ═══ REPORTS PAGE ═══ -->
+    <!-- ═══ REPORTS ═══ -->
     <div id="page-reports" style="display:none">
       <div class="topbar">
-        <div><div class="page-title">Reports</div>
-        <div class="page-sub">Summary analytics and export</div></div>
+        <div><div class="page-title">Reports</div><div class="page-sub">Summary analytics and export</div></div>
         <div class="topbar-right">
           <button class="add-case-btn" onclick="exportCSV()">⬇ Export CSV</button>
-          <button class="add-case-btn" onclick="clearDemoData()" style="background:#fff;color:#e74c3c;border:1.5px solid #e74c3c;margin-left:.5rem">🗑 Clear Demo Data</button>
+          <button class="danger-btn" id="clearDemoReportsBtn" onclick="clearDemoData()" style="display:none">🗑 Clear Demo Data</button>
         </div>
       </div>
       <div class="charts-row">
@@ -666,13 +537,8 @@
       <div class="section">
         <div class="section-hdr"><div><h3>Full Case Export</h3><p>All cases in tabular format</p></div></div>
         <div class="table-wrap">
-          <table>
-            <thead><tr>
-              <th>Ref #</th><th>Name</th><th>Phone</th><th>Email</th><th>Plan</th>
-              <th>Amount</th><th>Status</th><th>Payment</th><th>Expert</th><th>Date</th>
-            </tr></thead>
-            <tbody id="reportsTbody"></tbody>
-          </table>
+          <table><thead><tr><th>Ref #</th><th>Name</th><th>Phone</th><th>City</th><th>State</th><th>Email</th><th>Plan</th><th>Amount</th><th>Status</th><th>Payment</th><th>Expiry</th><th>Expert</th><th>Date</th></tr></thead>
+          <tbody id="reportsTbody"></tbody></table>
         </div>
       </div>
     </div>
@@ -680,7 +546,7 @@
   </div><!-- end main -->
 </div><!-- end app -->
 
-<!-- ═══ CASE DETAIL / EDIT MODAL ═══ -->
+<!-- ═══ CASE DETAIL MODAL ═══ -->
 <div class="modal-overlay" id="caseModal">
   <div class="modal">
     <div class="modal-hdr">
@@ -688,25 +554,21 @@
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body">
-      <div class="modal-section">
-        <h4>Personal Details</h4>
-        <div class="detail-grid" id="modalPersonal"></div>
+      <div class="modal-section"><h4>Personal Details</h4><div class="detail-grid" id="modalPersonal"></div></div>
+      <div class="modal-section" id="modalLoansSection"><h4>Loan Accounts</h4><div id="modalLoans"></div></div>
+      <div class="modal-section"><h4>Payment</h4><div class="detail-grid" id="modalPayment"></div></div>
+      <div class="modal-section"><h4>Case Description</h4><div id="modalDesc" style="font-size:.85rem;color:var(--ink2);line-height:1.7;background:var(--off);border-radius:8px;padding:.8rem 1rem"></div></div>
+      <div class="modal-section"><h4>Plan Expiry</h4>
+        <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap">
+          <div id="modalExpiryBadge" style="min-width:120px"></div>
+          <div style="flex:1;min-width:160px">
+            <label style="font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:.3rem">Override Expiry Date</label>
+            <input type="date" class="expiry-input" id="modalExpiry"/>
+          </div>
+          <button class="act-btn" onclick="resetExpiry()" style="align-self:flex-end;white-space:nowrap">↺ Reset to 1yr</button>
+        </div>
       </div>
-      <div class="modal-section" id="modalLoansSection">
-        <h4>Loan Accounts</h4>
-        <div id="modalLoans"></div>
-      </div>
-      <div class="modal-section">
-        <h4>Payment</h4>
-        <div class="detail-grid" id="modalPayment"></div>
-      </div>
-      <div class="modal-section">
-        <h4>Case Description</h4>
-        <div id="modalDesc" style="font-size:.85rem;color:var(--ink2);line-height:1.7;
-             background:var(--off);border-radius:8px;padding:.8rem 1rem"></div>
-      </div>
-      <div class="modal-section">
-        <h4>Update Status</h4>
+      <div class="modal-section"><h4>Update Status</h4>
         <select class="status-select" id="modalStatus">
           <option value="new">New</option>
           <option value="payment_pending">Payment Pending</option>
@@ -715,29 +577,27 @@
           <option value="urgent">Urgent</option>
         </select>
       </div>
-      <div class="modal-section">
-        <h4>Assign Expert</h4>
-        <input class="assign-input" id="modalExpert" type="text" placeholder="Expert name e.g. Priya Sharma"/>
+      <div class="modal-section"><h4>Assign Agent</h4>
+        <select class="assign-input" id="modalExpert">
+          <option value="">— Select agent —</option>
+        </select>
       </div>
-      <div class="modal-section">
-        <h4>Internal Notes</h4>
+      <div class="modal-section"><h4>Internal Notes</h4>
         <textarea class="notes-area" id="modalNotes" placeholder="Add internal notes about this case..."></textarea>
       </div>
     </div>
     <div class="modal-footer">
       <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+      <button id="deleteCaseBtn" class="cancel-btn" onclick="deleteCurrentCase()" style="border-color:#FFCCCC;color:#C0392B;display:none">🗑 Delete Case</button>
       <button class="save-btn" onclick="saveCase()">Save Changes</button>
     </div>
   </div>
 </div>
 
-<!-- ADD CASE MODAL -->
+<!-- ═══ ADD CASE MODAL ═══ -->
 <div class="modal-overlay" id="addModal">
   <div class="modal">
-    <div class="modal-hdr">
-      <h3>Add Case Manually</h3>
-      <button class="modal-close" onclick="closeAddModal()">✕</button>
-    </div>
+    <div class="modal-hdr"><h3>Add Case Manually</h3><button class="modal-close" onclick="closeAddModal()">✕</button></div>
     <div class="modal-body">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.9rem">
         <div><label style="font-size:.7rem;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:.3rem">Full Name *</label>
@@ -747,7 +607,31 @@
         <div><label style="font-size:.7rem;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:.3rem">Email</label>
           <input class="assign-input" id="add-email" type="email" placeholder="rahul@email.com"/></div>
         <div><label style="font-size:.7rem;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:.3rem">City</label>
-          <input class="assign-input" id="add-city" type="text" placeholder="Mumbai, Maharashtra"/></div>
+          <input class="assign-input" id="add-city" type="text" placeholder="e.g. Chennai"/></div>
+        <div class="form-group" style="margin-top:.6rem">
+          <label style="font-size:.68rem;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:.3rem">State</label>
+          <select class="assign-input" id="add-state">
+            <option value="">— Select State —</option>
+            <optgroup label="States">
+              <option>Andhra Pradesh</option><option>Arunachal Pradesh</option><option>Assam</option>
+              <option>Bihar</option><option>Chhattisgarh</option><option>Goa</option>
+              <option>Gujarat</option><option>Haryana</option><option>Himachal Pradesh</option>
+              <option>Jharkhand</option><option>Karnataka</option><option>Kerala</option>
+              <option>Madhya Pradesh</option><option>Maharashtra</option><option>Manipur</option>
+              <option>Meghalaya</option><option>Mizoram</option><option>Nagaland</option>
+              <option>Odisha</option><option>Punjab</option><option>Rajasthan</option>
+              <option>Sikkim</option><option>Tamil Nadu</option><option>Telangana</option>
+              <option>Tripura</option><option>Uttar Pradesh</option><option>Uttarakhand</option>
+              <option>West Bengal</option>
+            </optgroup>
+            <optgroup label="Union Territories">
+              <option>Andaman &amp; Nicobar Islands</option><option>Chandigarh</option>
+              <option>Dadra &amp; Nagar Haveli and Daman &amp; Diu</option>
+              <option>Delhi</option><option>Jammu &amp; Kashmir</option><option>Ladakh</option>
+              <option>Lakshadweep</option><option>Puducherry</option>
+            </optgroup>
+          </select>
+        </div>
         <div><label style="font-size:.7rem;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:.3rem">Plan</label>
           <select class="status-select" id="add-plan">
             <option value="A">Plan A – ₹1,499</option>
@@ -777,142 +661,299 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ── CONSTANTS ──
+
+// ─────────────────────────────────────────
+// STARTUP: wait for Firebase init
+// ─────────────────────────────────────────
+window.addEventListener('fb_ready', function(){
+  if(window._fbError === 'no_config'){
+    // No config yet — show setup screen
+    document.getElementById('fbSetupScreen').style.display='flex';
+    document.getElementById('loginScreen').style.display='none';
+  } else if(window._fbError){
+    // Config present but init failed
+    document.getElementById('loginScreen').style.display='flex';
+    showToast('⚠️ Firebase error: '+window._fbError+'. Using local mode.');
+  } else {
+    // Firebase ready
+    document.getElementById('loginScreen').style.display='flex';
+    document.getElementById('fbSetupScreen').style.display='none';
+  }
+});
+
+// If no module script fires (e.g. very old browser), show login anyway
+setTimeout(()=>{
+  if(!window._fbReady && !document.getElementById('fbSetupScreen').style.display.includes('flex')){
+    document.getElementById('loginScreen').style.display='flex';
+  }
+}, 3000);
+
 const PLANS={A:{name:'Plan A',price:1499},B:{name:'Plan B',price:2499},C:{name:'Plan C',price:3999},D:{name:'Custom',price:4999}};
 
-// ── ROLE-AWARE CREDENTIAL SYSTEM ──
-// Built-in accounts: admin & manager
-// Dynamic agents stored in localStorage (crm_agents)
+// ─────────────────────────────────────────
+// FIREBASE SETUP HELPERS
+// ─────────────────────────────────────────
+const FB_CONFIG_KEY = 'gor_fb_config';
+
+function saveFbConfig(){
+  const raw = document.getElementById('fbConfigInput').value.trim();
+  let cfg;
+  try{
+    // Accept either raw JSON or the JS object literal (strip outer braces not needed)
+    cfg = JSON.parse(raw);
+  } catch(e){
+    document.getElementById('fbSetupErr').style.display='block';
+    return;
+  }
+  if(!cfg.projectId || !cfg.apiKey){
+    document.getElementById('fbSetupErr').style.display='block';
+    return;
+  }
+  localStorage.setItem(FB_CONFIG_KEY, JSON.stringify(cfg));
+  document.getElementById('fbSetupErr').style.display='none';
+  showToast('🔥 Firebase config saved! Reloading...');
+  setTimeout(()=>location.reload(), 1200);
+}
+
+function skipFbSetup(){
+  document.getElementById('fbSetupScreen').style.display='none';
+  document.getElementById('loginScreen').style.display='flex';
+}
+
+function clearFbConfig(){
+  if(!confirm('Remove Firebase config? The CRM will fall back to local-only mode.')) return;
+  localStorage.removeItem(FB_CONFIG_KEY);
+  showToast('Firebase config removed. Reloading...');
+  setTimeout(()=>location.reload(), 1200);
+}
+
+// ─────────────────────────────────────────
+// FIRESTORE HELPERS  (async wrappers)
+// Uses window._db and window._fs injected by module script
+// Falls back to localStorage if Firebase not configured
+// ─────────────────────────────────────────
+const USE_FIREBASE = () => window._fbReady && window._db;
+
+async function fsGetAll(colName){
+  if(!USE_FIREBASE()) return null;
+  const {collection,getDocs,query,orderBy} = window._fs;
+  const q = query(collection(window._db, colName), orderBy('submittedAt','desc'));
+  const snap = await getDocs(q);
+  return snap.docs.map(d=>({...d.data(), _docId:d.id}));
+}
+
+async function fsSet(colName, docId, data){
+  if(!USE_FIREBASE()) return;
+  const {doc,setDoc} = window._fs;
+  await setDoc(doc(window._db, colName, docId), data);
+}
+
+async function fsUpdate(colName, docId, data){
+  if(!USE_FIREBASE()) return;
+  const {doc,updateDoc} = window._fs;
+  await updateDoc(doc(window._db, colName, docId), data);
+}
+
+async function fsDelete(colName, docId){
+  if(!USE_FIREBASE()) return;
+  const {doc,deleteDoc} = window._fs;
+  await deleteDoc(doc(window._db, colName, docId));
+}
+
+async function fsAdd(colName, data){
+  if(!USE_FIREBASE()) return null;
+  const {collection,addDoc} = window._fs;
+  const ref = await addDoc(collection(window._db, colName), data);
+  return ref.id;
+}
+
+// ─────────────────────────────────────────
+// CREDENTIALS
+// Admin & Manager are built-in (no DB needed).
+// Agents are stored in Firestore collection "agents"
+// (or localStorage fallback).
+// ─────────────────────────────────────────
 const BUILTIN={
-  admin:{pass:'goresolve2025',role:'admin',name:'Admin'},
-  manager:{pass:'invok2025',role:'manager',name:'Manager'}
+  admin:  {pass:'goresolve2025', role:'admin',   name:'Admin'},
+  manager:{pass:'invok2025',     role:'manager', name:'Manager'}
 };
 
-let currentUser=null; // {username, role, name}
+let currentUser=null;
+let _agentsCache=[];
 
-function loadAgents(){
-  return JSON.parse(localStorage.getItem('crm_agents')||'[]');
-}
-function saveAgents(agents){
-  localStorage.setItem('crm_agents',JSON.stringify(agents));
-}
-
-function resolveUser(username, password){
-  // Check builtin first
-  if(BUILTIN[username] && BUILTIN[username].pass===password){
-    return {username, role:BUILTIN[username].role, name:BUILTIN[username].name};
+async function loadAgents(){
+  if(USE_FIREBASE()){
+    try{
+      const {collection,getDocs} = window._fs;
+      const snap = await getDocs(collection(window._db,'agents'));
+      _agentsCache = snap.docs.map(d=>({...d.data(), _docId:d.id}));
+    }catch(e){ console.warn('loadAgents error',e); }
+  } else {
+    _agentsCache = JSON.parse(localStorage.getItem('crm_agents')||'[]');
   }
-  // Check dynamic agents
-  const agents=loadAgents();
-  const agent=agents.find(a=>a.username===username && a.password===password);
-  if(agent) return {username, role:agent.role||'agent', name:agent.name||username};
+  return _agentsCache;
+}
+
+function getAgentsSync(){ return _agentsCache; }
+
+async function saveAgent(agent){
+  if(USE_FIREBASE()){
+    const {collection,doc,setDoc} = window._fs;
+    const docId = agent.username;
+    await setDoc(doc(window._db,'agents',docId), agent);
+  } else {
+    const all = JSON.parse(localStorage.getItem('crm_agents')||'[]');
+    const i = all.findIndex(a=>a.username===agent.username);
+    if(i>-1) all[i]=agent; else all.push(agent);
+    localStorage.setItem('crm_agents',JSON.stringify(all));
+  }
+}
+
+async function deleteAgentById(username){
+  if(USE_FIREBASE()){
+    await fsDelete('agents', username);
+  } else {
+    const all = JSON.parse(localStorage.getItem('crm_agents')||'[]');
+    localStorage.setItem('crm_agents', JSON.stringify(all.filter(a=>a.username!==username)));
+  }
+}
+
+async function resolveUserAsync(u,p){
+  if(BUILTIN[u]&&BUILTIN[u].pass===p) return {username:u,...BUILTIN[u]};
+  await loadAgents();
+  const a = _agentsCache.find(x=>x.username===u&&x.password===p);
+  if(a) return {username:u,role:a.role||'agent',name:a.name||u};
   return null;
 }
 
-// ── STATE ──
-let cases=[], currentCaseId=null, caseFilter='all';
+// ─────────────────────────────────────────
+// CASES STATE
+// ─────────────────────────────────────────
+let cases=[], currentCaseId=null, caseFilterVal='all';
 
-// ── SEED DEMO DATA ──
-function clearDemoData(){
-  if(!confirm('This will remove the 5 demo/sample cases and keep only real submitted cases. Continue?')) return;
-  const allCases=JSON.parse(localStorage.getItem('crm_cases')||'[]');
-  const demoIds=['GOR-A1B2C3','GOR-D4E5F6','GOR-G7H8I9','GOR-J1K2L3','GOR-M4N5O6'];
-  const realCases=allCases.filter(c=>!demoIds.includes(c.id));
-  localStorage.setItem('crm_cases',JSON.stringify(realCases));
-  loadCases(); renderDashboard();
-  showToast('✅ Demo data cleared. Showing real submissions only.');
+async function loadCases(){
+  if(USE_FIREBASE()){
+    try{
+      const all = await fsGetAll('cases');
+      if(all===null){ cases=[]; return; }
+      if(currentUser&&currentUser.role==='agent'){
+        cases = all.filter(c=>c.expert&&c.expert.toLowerCase()===currentUser.name.toLowerCase());
+      } else { cases=all; }
+    } catch(e){ console.warn('loadCases error',e); cases=[]; }
+  } else {
+    const all=JSON.parse(localStorage.getItem('crm_cases')||'[]');
+    if(currentUser&&currentUser.role==='agent'){
+      cases=all.filter(c=>c.expert&&c.expert.toLowerCase()===currentUser.name.toLowerCase());
+    } else { cases=all; }
+  }
 }
 
-function seedDemoData(){
-  if(localStorage.getItem('crm_cases')) return;
+async function saveCaseToDb(c){
+  if(USE_FIREBASE()){
+    await fsSet('cases', c.id, c);
+  } else {
+    const all=JSON.parse(localStorage.getItem('crm_cases')||'[]');
+    const i=all.findIndex(x=>x.id===c.id);
+    if(i>-1) all[i]=c; else all.unshift(c);
+    localStorage.setItem('crm_cases',JSON.stringify(all));
+  }
+}
+
+async function deleteCaseFromDb(id){
+  if(USE_FIREBASE()){
+    await fsDelete('cases', id);
+  } else {
+    const all=JSON.parse(localStorage.getItem('crm_cases')||'[]');
+    localStorage.setItem('crm_cases',JSON.stringify(all.filter(c=>c.id!==id)));
+  }
+}
+
+// ─────────────────────────────────────────
+// SEED DEMO DATA
+// ─────────────────────────────────────────
+async function seedDemoData(){
+  // Only seed if no cases exist
+  if(USE_FIREBASE()){
+    try{
+      const {collection,getDocs} = window._fs;
+      const snap = await getDocs(collection(window._db,'cases'));
+      if(!snap.empty) return; // already has data
+    }catch(e){ return; }
+  } else {
+    if(localStorage.getItem('crm_cases')) return;
+  }
   const demo=[
-    {id:'GOR-A1B2C3',name:'Ramesh Verma',phone:'9876543210',email:'ramesh@gmail.com',city:'Bangalore, Karnataka',
+    {id:'GOR-A1B2C3',name:'Ramesh Verma',phone:'9876543210',email:'ramesh@gmail.com',city:'Bangalore',state:'Karnataka',
      plan:'B',urgency:'🚨 Being Harassed',desc:'Getting 20+ calls daily. HDFC credit card ₹2.4L outstanding.',
      loans:[{type:'Credit Card',lender:'HDFC Bank',amount:'240000'}],
      status:'active',payStatus:'verified',utr:'324567891234',expert:'Priya Sharma',
-     notes:'Harassment stopped. Negotiation in progress.',submittedAt:new Date(Date.now()-2*86400000).toISOString()},
-    {id:'GOR-D4E5F6',name:'Priya Thakur',phone:'9812345678',email:'priya@yahoo.com',city:'Mumbai, Maharashtra',
+     notes:'Harassment stopped. Negotiation in progress.',submittedAt:new Date(Date.now()-2*86400000).toISOString(),expiryDate:new Date(Date.now()+5*86400000).toISOString().slice(0,10)},
+    {id:'GOR-D4E5F6',name:'Priya Thakur',phone:'9812345678',email:'priya@yahoo.com',city:'Mumbai',state:'Maharashtra',
      plan:'A',urgency:'🟡 Stressful',desc:'Personal loan overdue 3 months. Bajaj Finance.',
      loans:[{type:'Personal Loan',lender:'Bajaj Finance',amount:'95000'}],
-     status:'payment_pending',payStatus:'pending',utr:'',expert:'',
-     notes:'',submittedAt:new Date(Date.now()-1*86400000).toISOString()},
-    {id:'GOR-G7H8I9',name:'Arjun Kapoor',phone:'9988776655',email:'arjun@outlook.com',city:'Hyderabad, Telangana',
+     status:'payment_pending',payStatus:'pending',utr:'',expert:'',notes:'',submittedAt:new Date(Date.now()-86400000).toISOString(),expiryDate:new Date(Date.now()+25*86400000).toISOString().slice(0,10)},
+    {id:'GOR-G7H8I9',name:'Arjun Kapoor',phone:'9988776655',email:'arjun@outlook.com',city:'Hyderabad',state:'Telangana',
      plan:'D',urgency:'🔴 Urgent',desc:'Business loan default. Multiple banks. Legal notice received.',
      loans:[{type:'Business Loan',lender:'SBI',amount:'850000'},{type:'Personal Loan',lender:'ICICI',amount:'320000'}],
      status:'active',payStatus:'verified',utr:'987654321098',expert:'Rajesh Kumar',
-     notes:'High priority. Legal team informed.',submittedAt:new Date(Date.now()-3*86400000).toISOString()},
-    {id:'GOR-J1K2L3',name:'Sunita Mehta',phone:'9765432198',email:'sunita@gmail.com',city:'Delhi',
+     notes:'High priority. Legal team informed.',submittedAt:new Date(Date.now()-3*86400000).toISOString(),expiryDate:new Date(Date.now()-10*86400000).toISOString().slice(0,10)},
+    {id:'GOR-J1K2L3',name:'Sunita Mehta',phone:'9765432198',email:'sunita@gmail.com',city:'New Delhi',state:'Delhi',
      plan:'C',urgency:'🟢 Manageable',desc:'Home loan arrears. Bank of India.',
      loans:[{type:'Home Loan',lender:'Bank of India',amount:'680000'}],
-     status:'new',payStatus:'pending',utr:'',expert:'',
-     notes:'',submittedAt:new Date().toISOString()},
-    {id:'GOR-M4N5O6',name:'Vikram Singh',phone:'9654321087',email:'',city:'Chennai, Tamil Nadu',
+     status:'new',payStatus:'pending',utr:'',expert:'',notes:'',submittedAt:new Date().toISOString()},
+    {id:'GOR-M4N5O6',name:'Vikram Singh',phone:'9654321087',email:'',city:'Chennai',state:'Tamil Nadu',
      plan:'B',urgency:'🚨 Being Harassed',desc:'Recovery agents visiting home. Kotak Bank credit card.',
      loans:[{type:'Credit Card',lender:'Kotak Bank',amount:'185000'}],
-     status:'new',payStatus:'pending',utr:'',expert:'',
-     notes:'',submittedAt:new Date().toISOString()},
+     status:'new',payStatus:'pending',utr:'',expert:'',notes:'',submittedAt:new Date().toISOString()},
   ];
-  localStorage.setItem('crm_cases', JSON.stringify(demo));
+  for(const c of demo) await saveCaseToDb(c);
 }
 
-function loadCases(){
-  const raw=localStorage.getItem('crm_cases');
-  const all=raw?JSON.parse(raw):[];
-  // Agents only see cases assigned to them
-  if(currentUser&&currentUser.role==='agent'){
-    cases=all.filter(c=>c.expert&&c.expert.toLowerCase()===currentUser.name.toLowerCase());
-  } else {
-    cases=all;
-  }
-}
-function saveCases(){
-  localStorage.setItem('crm_cases',JSON.stringify(
-    // Agents can only update their own cases; for safety always merge
-    currentUser&&currentUser.role==='agent'
-      ? (() => {
-          const all=JSON.parse(localStorage.getItem('crm_cases')||'[]');
-          cases.forEach(c=>{ const idx=all.findIndex(x=>x.id===c.id); if(idx>-1) all[idx]=c; });
-          return all;
-        })()
-      : cases
-  ));
+// Available to Admin & Manager
+async function clearDemoData(){
+  if(!confirm('Remove the 5 sample/demo cases and keep only real submitted cases. Continue?')) return;
+  const demoIds=['GOR-A1B2C3','GOR-D4E5F6','GOR-G7H8I9','GOR-J1K2L3','GOR-M4N5O6'];
+  for(const id of demoIds) await deleteCaseFromDb(id);
+  await loadCases(); renderDashboard();
+  showToast('✅ Demo data cleared. Only real submissions remain.');
 }
 
-// ── LOGIN ──
-function doLogin(){
+// ─────────────────────────────────────────
+// LOGIN / LOGOUT
+// ─────────────────────────────────────────
+async function doLogin(){
   const u=document.getElementById('loginUser').value.trim();
   const p=document.getElementById('loginPass').value;
-  const user=resolveUser(u,p);
+  const user=await resolveUserAsync(u,p);
   if(user){
     currentUser=user;
     document.getElementById('loginScreen').style.display='none';
     document.getElementById('app').style.display='block';
     document.getElementById('sbUsername').textContent=user.name;
-    // Role badge in sidebar
     const roleEl=document.getElementById('sbRole');
     roleEl.textContent=user.role.charAt(0).toUpperCase()+user.role.slice(1);
     roleEl.className='sb-role '+user.role;
-    // Show/hide sidebar items based on role
     applyRoleUI(user.role);
-    seedDemoData(); loadCases();
+    // Update Firebase status badge
+    const badge = document.getElementById('fbStatusBadge');
+    if(badge){
+      if(USE_FIREBASE()){
+        badge.textContent='🔥 Firebase live';
+        badge.style.cssText='margin-top:.4rem;font-size:.64rem;font-weight:700;letter-spacing:.06em;padding:.12rem .45rem;border-radius:4px;display:inline-block;background:rgba(255,140,60,.2);color:#FFAA60';
+      } else {
+        badge.textContent='⬤ Local only';
+        badge.style.cssText='margin-top:.4rem;font-size:.64rem;font-weight:700;letter-spacing:.06em;padding:.12rem .45px;border-radius:4px;display:inline-block;background:rgba(255,255,255,.07);color:rgba(255,255,255,.35)';
+      }
+    }
+    if(USE_FIREBASE()) showToast('🔥 Connected to Firebase');
+    await seedDemoData();
+    await loadCases();
     renderDashboard();
     document.getElementById('dashDate').textContent=
       new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   } else {
     document.getElementById('loginErr').style.display='block';
   }
-}
-
-function applyRoleUI(role){
-  // Team page - admin & manager can see it
-  document.getElementById('sb-team-li').style.display=(role==='admin'||role==='manager')?'block':'none';
-  // Manager role option in add-agent form: only admin can assign manager role
-  const mgrOpt=document.getElementById('managerOption');
-  if(mgrOpt) mgrOpt.style.display=role==='admin'?'block':'none';
-  // Reports page clear demo btn - available to admin & manager
-  // (already in team page, also put in reports)
-  const addCaseBtn=document.querySelector('.topbar-right .add-case-btn');
-  // Add case - all can see
 }
 
 function doLogout(){
@@ -923,64 +964,113 @@ function doLogout(){
   document.getElementById('loginErr').style.display='none';
 }
 
-// ── PAGE NAV ──
-function showPage(id, el){
+// ─────────────────────────────────────────
+// ROLE-BASED UI
+// ─────────────────────────────────────────
+function applyRoleUI(role){
+  const isAdmin=role==='admin';
+  const isManager=role==='manager';
+  const isAgent=role==='agent';
+
+  // Sidebar — Team page visible to admin & manager
+  document.getElementById('sb-team-li').style.display=(isAdmin||isManager)?'block':'none';
+
+  // Manager option in role dropdown — admin only
+  const mgrOpt=document.getElementById('managerOption');
+  if(mgrOpt) mgrOpt.style.display=isAdmin?'block':'none';
+
+  // Team page top-right — clear demo button (admin & manager)
+  const teamRight=document.getElementById('teamTopbarRight');
+  if(isAdmin||isManager){
+    teamRight.innerHTML=`<button class="danger-btn" onclick="clearDemoData()">🗑 Clear Demo Data</button>`;
+  } else {
+    teamRight.innerHTML='';
+  }
+
+  // Reports — clear demo button (admin & manager)
+  const clearBtn=document.getElementById('clearDemoReportsBtn');
+  if(clearBtn) clearBtn.style.display=(isAdmin||isManager)?'inline-flex':'none';
+
+  // Sync banner — show for manager to indicate shared data with admin
+  const syncBanner=document.getElementById('syncBanner');
+  if(syncBanner) syncBanner.style.display=isManager?'flex':'none';
+
+  // Agent cannot add cases manually (hide button)
+  // Actually agents can log cases too — keep it visible
+
+  // Add agent section label
+  if(isManager){
+    document.getElementById('addAgentTitle').textContent='Add New Agent';
+    document.getElementById('addAgentSub').textContent='You can add agents. Changes are shared with Admin.';
+    // Hide role field for manager (they can only add agents)
+    const roleGrp=document.getElementById('roleFieldGroup');
+    if(roleGrp) roleGrp.style.display='none';
+  }
+}
+
+// ─────────────────────────────────────────
+// PAGE NAVIGATION
+// ─────────────────────────────────────────
+async function showPage(id,el){
   document.querySelectorAll('[id^="page-"]').forEach(p=>p.style.display='none');
   document.getElementById('page-'+id).style.display='block';
   document.querySelectorAll('.sb-nav a').forEach(a=>a.classList.remove('active'));
   if(el) el.classList.add('active');
-  if(id==='dashboard') renderDashboard();
-  if(id==='cases') renderCasesTable();
-  if(id==='payments') renderPayments();
-  if(id==='urgent') renderUrgent();
-  if(id==='experts') renderExperts();
-  if(id==='reports') renderReports();
-  if(id==='team') renderTeam();
+  if(id==='dashboard') await renderDashboard();
+  if(id==='cases') await renderCasesTable();
+  if(id==='payments') await renderPayments();
+  if(id==='urgent') await renderUrgent();
+  if(id==='experts') await renderExperts();
+  if(id==='reports') await renderReports();
+  if(id==='team') await renderTeam();
 }
 
-// ── RENDER DASHBOARD ──
-function renderDashboard(){
-  loadCases();
+// ─────────────────────────────────────────
+// DASHBOARD
+// ─────────────────────────────────────────
+async function renderDashboard(){
+  await loadCases();
   document.getElementById('stat-total').textContent=cases.length;
   document.getElementById('stat-pending').textContent=cases.filter(c=>c.payStatus==='pending').length;
   document.getElementById('stat-active').textContent=cases.filter(c=>c.status==='active').length;
   document.getElementById('stat-urgent').textContent=cases.filter(c=>c.urgency&&(c.urgency.includes('Urgent')||c.urgency.includes('Harassed'))).length;
+  // Expiry stats
+  const today=new Date();today.setHours(0,0,0,0);
+  const exp30=cases.filter(c=>{if(!c.expiryDate)return false;const d=new Date(c.expiryDate);d.setHours(0,0,0,0);const diff=Math.ceil((d-today)/86400000);return diff>=0&&diff<=30;}).length;
+  const exp7=cases.filter(c=>{if(!c.expiryDate)return false;const d=new Date(c.expiryDate);d.setHours(0,0,0,0);const diff=Math.ceil((d-today)/86400000);return diff>=0&&diff<=7;}).length;
+  const expired=cases.filter(c=>{if(!c.expiryDate)return false;const d=new Date(c.expiryDate);d.setHours(0,0,0,0);return d<today;}).length;
+  document.getElementById('stat-exp30').textContent=exp30;
+  document.getElementById('stat-exp7').textContent=exp7;
+  document.getElementById('stat-expired').textContent=expired;
 
-  const planCounts={A:0,B:0,C:0,D:0};
-  cases.forEach(c=>{ if(planCounts[c.plan]!==undefined) planCounts[c.plan]++; });
-  const maxP=Math.max(...Object.values(planCounts),1);
+  const pc={A:0,B:0,C:0,D:0};
+  cases.forEach(c=>{if(pc[c.plan]!==undefined)pc[c.plan]++;});
+  const maxP=Math.max(...Object.values(pc),1);
   document.getElementById('planChart').innerHTML=
-    Object.entries(planCounts).map(([k,v])=>
-      `<div class="bar-row">
-        <div class="bar-lbl">${PLANS[k]?.name||k}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:${(v/maxP*100).toFixed(0)}%"></div></div>
-        <div class="bar-val">${v}</div>
-      </div>`).join('');
+    Object.entries(pc).map(([k,v])=>`<div class="bar-row">
+      <div class="bar-lbl">${PLANS[k]?.name||k}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(v/maxP*100).toFixed(0)}%"></div></div>
+      <div class="bar-val">${v}</div></div>`).join('');
 
-  const sCounts={new:0,payment_pending:0,active:0,resolved:0,urgent:0};
-  cases.forEach(c=>{ if(sCounts[c.status]!==undefined) sCounts[c.status]++; });
-  const maxS=Math.max(...Object.values(sCounts),1);
-  const sLabels={new:'New',payment_pending:'Pay Pending',active:'Active',resolved:'Resolved',urgent:'Urgent'};
+  const sc={new:0,payment_pending:0,active:0,resolved:0,urgent:0};
+  cases.forEach(c=>{if(sc[c.status]!==undefined)sc[c.status]++;});
+  const maxS=Math.max(...Object.values(sc),1);
+  const sLbl={new:'New',payment_pending:'Pay Pending',active:'Active',resolved:'Resolved',urgent:'Urgent'};
+  const sCol={new:'var(--teal)',payment_pending:'var(--gold)',active:'#27AE60',resolved:'#1ABC9C',urgent:'#E74C3C'};
   document.getElementById('statusChart').innerHTML=
-    Object.entries(sCounts).map(([k,v])=>
-      `<div class="bar-row">
-        <div class="bar-lbl">${sLabels[k]}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:${(v/maxS*100).toFixed(0)}%;background:${k==='urgent'?'#E74C3C':k==='active'?'#27AE60':k==='resolved'?'#1ABC9C':'var(--teal)'}"></div></div>
-        <div class="bar-val">${v}</div>
-      </div>`).join('');
+    Object.entries(sc).map(([k,v])=>`<div class="bar-row">
+      <div class="bar-lbl">${sLbl[k]}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(v/maxS*100).toFixed(0)}%;background:${sCol[k]}"></div></div>
+      <div class="bar-val">${v}</div></div>`).join('');
 
   const recent=[...cases].sort((a,b)=>new Date(b.submittedAt)-new Date(a.submittedAt)).slice(0,10);
   const tbody=document.getElementById('recentTbody');
-  if(!recent.length){ tbody.innerHTML=`<tr><td colspan="8"><div class="empty-state"><div class="es-icon">📭</div><p>No cases yet. Cases submitted via the website will appear here.</p></div></td></tr>`; return; }
+  if(!recent.length){tbody.innerHTML=`<tr><td colspan="8"><div class="empty-state"><div class="es-icon">📭</div><p>No cases yet. Submissions from the website will appear here automatically.</p></div></td></tr>`;return;}
   tbody.innerHTML=recent.map(c=>caseRow(c,false)).join('');
 }
 
-// helper used by renderDashboard and showPage
-function refreshDashboard(){ renderDashboard(); }
-
-function caseRow(c, showAmt=true){
-  const dt=new Date(c.submittedAt);
-  const dtStr=dt.toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+function caseRow(c,showAmt=true){
+  const dt=new Date(c.submittedAt).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
   return `<tr>
     <td><span class="td-ref">${c.id}</span></td>
     <td><span class="td-name">${c.name}</span></td>
@@ -989,16 +1079,17 @@ function caseRow(c, showAmt=true){
     ${showAmt?`<td>₹${(PLANS[c.plan]?.price||0).toLocaleString('en-IN')}</td>`:''}
     <td>${urgencyBadge(c.urgency)}</td>
     <td>${statusBadge(c.status)}</td>
-    ${showAmt?`<td>${c.expert?`<span style="font-size:.78rem;color:var(--teal-d);font-weight:600">👤 ${c.expert}</span>`:'<span style="color:var(--muted);font-size:.78rem">Unassigned</span>'}</td>`:''}
-    <td style="font-size:.76rem;color:var(--muted)">${dtStr}</td>
+    <td>${expiryBadge(c.expiryDate||null)}</td>
+    ${showAmt?`<td style="font-size:.78rem;color:var(--teal-d);font-weight:600">${c.expert||'<span style="color:var(--muted)">Unassigned</span>'}</td>`:''}
+    <td style="font-size:.76rem;color:var(--muted)">${dt}</td>
     <td><button class="act-btn" onclick="openCase('${c.id}')">View</button></td>
   </tr>`;
 }
 
 function statusBadge(s){
-  const map={new:'new',payment_pending:'pending',active:'active',resolved:'resolved',urgent:'urgent'};
-  const lbl={new:'New',payment_pending:'Pay Pending',active:'Active',resolved:'Resolved',urgent:'Urgent'};
-  return `<span class="badge ${map[s]||'new'}">${lbl[s]||s}</span>`;
+  const m={new:'new',payment_pending:'pending',active:'active',resolved:'resolved',urgent:'urgent'};
+  const l={new:'New',payment_pending:'Pay Pending',active:'Active',resolved:'Resolved',urgent:'Urgent'};
+  return `<span class="badge ${m[s]||'new'}">${l[s]||s}</span>`;
 }
 function urgencyBadge(u){
   if(!u) return '<span class="badge new">—</span>';
@@ -1013,74 +1104,102 @@ function payBadge(s){
   return '<span class="badge pending">⏳ Pending</span>';
 }
 
-// ── CASES TABLE ──
-let caseFilterVal='all';
-function filterCases(val, el){
+
+// ─────────────────────────────────────────
+// EXPIRY HELPERS
+// ─────────────────────────────────────────
+function calcExpiry(submittedAt){
+  if(!submittedAt) return null;
+  const d = new Date(submittedAt);
+  d.setFullYear(d.getFullYear() + 1);
+  return d.toISOString().slice(0,10); // YYYY-MM-DD
+}
+
+function expiryBadge(expiryDate){
+  if(!expiryDate) return '<span class="expiry-badge unset">Not set</span>';
+  const today = new Date(); today.setHours(0,0,0,0);
+  const exp   = new Date(expiryDate); exp.setHours(0,0,0,0);
+  const days  = Math.ceil((exp - today) / 86400000);
+  const label = exp.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  if(days < 0)  return `<span class="expiry-badge expired">⚠ Expired ${Math.abs(days)}d ago</span>`;
+  if(days <= 7) return `<span class="expiry-badge warn7">🔴 Expires in ${days}d</span>`;
+  if(days <= 30)return `<span class="expiry-badge warn30">🟡 Expires ${label}</span>`;
+  return `<span class="expiry-badge active">✓ ${label}</span>`;
+}
+
+function countExpiring(days){
+  const today = new Date(); today.setHours(0,0,0,0);
+  return cases.filter(c=>{
+    if(!c.expiryDate) return false;
+    const exp = new Date(c.expiryDate); exp.setHours(0,0,0,0);
+    const d = Math.ceil((exp - today) / 86400000);
+    return d >= 0 && d <= days;
+  }).length;
+}
+// ─────────────────────────────────────────
+// CASES TABLE
+// ─────────────────────────────────────────
+function filterCases(val,el){
   caseFilterVal=val;
   document.querySelectorAll('#caseFilters .filter-btn').forEach(b=>b.classList.remove('on'));
   if(el) el.classList.add('on');
   renderCasesTable();
 }
-function renderCasesTable(){
-  loadCases();
-  const search=(document.getElementById('caseSearch')?.value||'').toLowerCase();
-  let filtered=cases.filter(c=>{
-    const matchFilter=caseFilterVal==='all'||c.status===caseFilterVal||
+async function renderCasesTable(){
+  await loadCases();
+  const q=(document.getElementById('caseSearch')?.value||'').toLowerCase();
+  let f=cases.filter(c=>{
+    const mF=caseFilterVal==='all'||c.status===caseFilterVal||
       (caseFilterVal==='urgent'&&c.urgency&&(c.urgency.includes('Urgent')||c.urgency.includes('Harassed')));
-    const matchSearch=!search||c.name.toLowerCase().includes(search)||
-      c.phone.includes(search)||c.id.toLowerCase().includes(search);
-    return matchFilter&&matchSearch;
+    const mQ=!q||c.name.toLowerCase().includes(q)||c.phone.includes(q)||c.id.toLowerCase().includes(q)||(c.city||'').toLowerCase().includes(q)||(c.state||'').toLowerCase().includes(q);
+    return mF&&mQ;
   });
   const tbody=document.getElementById('casesTbody');
-  if(!filtered.length){
-    tbody.innerHTML=`<tr><td colspan="10"><div class="empty-state"><div class="es-icon">🔍</div><p>No cases found.</p></div></td></tr>`;return;
-  }
-  tbody.innerHTML=filtered.map(c=>caseRow(c,true)).join('');
+  if(!f.length){tbody.innerHTML=`<tr><td colspan="10"><div class="empty-state"><div class="es-icon">🔍</div><p>No cases found.</p></div></td></tr>`;return;}
+  tbody.innerHTML=f.map(c=>caseRow(c,true)).join('');
 }
 
-// ── PAYMENTS ──
-function renderPayments(){
-  loadCases();
-  const pending=cases.filter(c=>c.payStatus==='pending').length;
-  const verified=cases.filter(c=>c.payStatus==='verified').length;
-  const revenue=cases.filter(c=>c.payStatus==='verified').reduce((s,c)=>s+(PLANS[c.plan]?.price||0),0);
-  document.getElementById('pay-pending-count').textContent=pending;
-  document.getElementById('pay-verified-count').textContent=verified;
-  document.getElementById('pay-revenue').textContent='₹'+revenue.toLocaleString('en-IN');
-  const tbody=document.getElementById('paymentsTbody');
-  tbody.innerHTML=cases.map(c=>`<tr>
+// ─────────────────────────────────────────
+// PAYMENTS
+// ─────────────────────────────────────────
+async function renderPayments(){
+  await loadCases();
+  document.getElementById('pay-pending-count').textContent=cases.filter(c=>c.payStatus==='pending').length;
+  document.getElementById('pay-verified-count').textContent=cases.filter(c=>c.payStatus==='verified').length;
+  const rev=cases.filter(c=>c.payStatus==='verified').reduce((s,c)=>s+(PLANS[c.plan]?.price||0),0);
+  document.getElementById('pay-revenue').textContent='₹'+rev.toLocaleString('en-IN');
+  document.getElementById('paymentsTbody').innerHTML=cases.map(c=>`<tr>
     <td><span class="td-ref">${c.id}</span></td>
     <td><span class="td-name">${c.name}</span></td>
     <td><span class="plan-pill ${c.plan}">${PLANS[c.plan]?.name||c.plan}</span></td>
     <td>₹${(PLANS[c.plan]?.price||0).toLocaleString('en-IN')}</td>
-    <td style="font-size:.78rem;color:var(--ink2)">${c.utr||'<span style="color:var(--muted)">Not provided</span>'}</td>
+    <td style="font-size:.78rem">${c.utr||'<span style="color:var(--muted)">Not provided</span>'}</td>
     <td>${payBadge(c.payStatus)}</td>
-    <td>
-      <div class="pay-verify">
-        ${c.payStatus!=='verified'?`<button class="verify-btn approve" onclick="verifyPayment('${c.id}','verified')">✓ Approve</button>`:''}
-        ${c.payStatus!=='rejected'?`<button class="verify-btn reject" onclick="verifyPayment('${c.id}','rejected')">✗ Reject</button>`:''}
-        <button class="act-btn" onclick="openCase('${c.id}')">View</button>
-      </div>
-    </td>
+    <td><div class="pay-verify">
+      ${c.payStatus!=='verified'?`<button class="verify-btn approve" onclick="verifyPayment('${c.id}','verified')">✓ Approve</button>`:''}
+      ${c.payStatus!=='rejected'?`<button class="verify-btn reject" onclick="verifyPayment('${c.id}','rejected')">✗ Reject</button>`:''}
+      <button class="act-btn" onclick="openCase('${c.id}')">View</button>
+    </div></td>
   </tr>`).join('');
 }
-function verifyPayment(id,status){
+async function verifyPayment(id,status){
   const c=cases.find(x=>x.id===id);if(!c)return;
-  c.payStatus=status;
-  if(status==='verified') c.status='active';
-  saveCases();renderPayments();
+  c.payStatus=status;if(status==='verified')c.status='active';
+  await saveCaseToDb(c);
+  await loadCases();
+  renderPayments();
   showToast(status==='verified'?'✅ Payment verified — case activated':'❌ Payment rejected');
 }
 
-// ── URGENT ──
-function renderUrgent(){
-  loadCases();
-  const urgent=cases.filter(c=>c.urgency&&(c.urgency.includes('Urgent')||c.urgency.includes('Harassed')));
-  const tbody=document.getElementById('urgentTbody');
-  if(!urgent.length){
-    tbody.innerHTML=`<tr><td colspan="8"><div class="empty-state"><div class="es-icon">✅</div><p>No urgent cases right now.</p></div></td></tr>`;return;
-  }
-  tbody.innerHTML=urgent.map(c=>`<tr>
+// ─────────────────────────────────────────
+// URGENT
+// ─────────────────────────────────────────
+async function renderUrgent(){
+  await loadCases();
+  const u=cases.filter(c=>c.urgency&&(c.urgency.includes('Urgent')||c.urgency.includes('Harassed')));
+  const t=document.getElementById('urgentTbody');
+  if(!u.length){t.innerHTML=`<tr><td colspan="8"><div class="empty-state"><div class="es-icon">✅</div><p>No urgent cases right now.</p></div></td></tr>`;return;}
+  t.innerHTML=u.map(c=>`<tr>
     <td><span class="td-ref">${c.id}</span></td>
     <td><span class="td-name">${c.name}</span></td>
     <td class="td-phone"><a href="tel:${c.phone}">${c.phone}</a></td>
@@ -1092,161 +1211,171 @@ function renderUrgent(){
   </tr>`).join('');
 }
 
-// ── EXPERTS (assignment page) ──
-function renderExperts(){
-  loadCases();
-  const agents=loadAgents();
-  const agentOptions=agents.map(a=>`<option value="${a.name}">${a.name} (${a.role})</option>`).join('');
-  const tbody=document.getElementById('expertsTbody');
-  tbody.innerHTML=cases.map(c=>`<tr>
+// ─────────────────────────────────────────
+// EXPERT ASSIGNMENT
+// ─────────────────────────────────────────
+async function renderExperts(){
+  await loadCases();
+  await loadAgents();
+  const agents=_agentsCache;
+  const agentOpts=agents.length
+    ? agents.map(a=>`<option value="${a.name}">${a.name} (${a.role})</option>`).join('')
+    : '<option value="" disabled>No agents added yet</option>';
+  document.getElementById('expertsTbody').innerHTML=cases.map(c=>`<tr>
     <td><span class="td-ref">${c.id}</span></td>
     <td><span class="td-name">${c.name}</span></td>
     <td><span class="plan-pill ${c.plan}">${PLANS[c.plan]?.name||c.plan}</span></td>
     <td>${urgencyBadge(c.urgency)}</td>
     <td>
-      <select class="assign-input" style="width:180px;padding:.35rem .7rem;font-size:.8rem"
-        onchange="quickAssign('${c.id}',this.value)">
+      <select class="assign-input" style="width:190px;padding:.35rem .7rem;font-size:.8rem" onchange="quickAssign('${c.id}',this.value)">
         <option value="">— Assign agent —</option>
-        ${agentOptions}
-        <option value="${c.expert||''}" ${c.expert?'selected':''} style="display:none">${c.expert||''}</option>
+        ${agentOpts}
       </select>
-      ${c.expert?`<span style="font-size:.75rem;color:var(--teal-d);margin-left:.4rem">👤 ${c.expert}</span>`:''}
+      ${c.expert?`<span style="font-size:.75rem;color:var(--teal-d);margin-left:.4rem;font-weight:600">👤 ${c.expert}</span>`:''}
     </td>
     <td>${statusBadge(c.status)}</td>
     <td><button class="act-btn" onclick="openCase('${c.id}')">View</button></td>
   </tr>`).join('');
-  // Also populate modal agent dropdown
-  const modalExpert=document.getElementById('modalExpert');
-  if(modalExpert && agents.length){
-    const current=modalExpert.value;
-    modalExpert.innerHTML=`<option value="">— Select —</option>${agentOptions}`;
-    if(current) modalExpert.value=current;
+  // Update modal expert dropdown too
+  const sel=document.getElementById('modalExpert');
+  if(sel){
+    const cur=sel.value;
+    sel.innerHTML=`<option value="">— Select agent —</option>${agentOpts}`;
+    if(cur) sel.value=cur;
   }
 }
-function quickAssign(id,expert){
+async function quickAssign(id,expert){
   const c=cases.find(x=>x.id===id);if(!c)return;
-  c.expert=expert; saveCases();
-  showToast(expert?'👤 Assigned to: '+expert:'👤 Assignment cleared');
+  c.expert=expert;
+  await saveCaseToDb(c);
+  await loadCases();
+  showToast(expert?'👤 Assigned: '+expert:'👤 Assignment cleared');
   renderExperts();
 }
 
-// ── REPORTS ──
-function renderReports(){
-  loadCases();
+// ─────────────────────────────────────────
+// REPORTS
+// ─────────────────────────────────────────
+async function renderReports(){
+  await loadCases();
   const rev={A:0,B:0,C:0,D:0};
-  cases.filter(c=>c.payStatus==='verified').forEach(c=>{if(rev[c.plan]!==undefined) rev[c.plan]+=(PLANS[c.plan]?.price||0);});
+  cases.filter(c=>c.payStatus==='verified').forEach(c=>{if(rev[c.plan]!==undefined)rev[c.plan]+=(PLANS[c.plan]?.price||0);});
   const maxR=Math.max(...Object.values(rev),1);
   document.getElementById('revenueChart').innerHTML=
-    Object.entries(rev).map(([k,v])=>
-      `<div class="bar-row"><div class="bar-lbl">${PLANS[k]?.name||k}</div>
-       <div class="bar-track"><div class="bar-fill" style="width:${(v/maxR*100).toFixed(0)}%;background:var(--gold)"></div></div>
-       <div class="bar-val" style="color:var(--gold-d)">₹${(v/1000).toFixed(0)}k</div></div>`).join('');
-
+    Object.entries(rev).map(([k,v])=>`<div class="bar-row">
+      <div class="bar-lbl">${PLANS[k]?.name||k}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(v/maxR*100).toFixed(0)}%;background:var(--gold)"></div></div>
+      <div class="bar-val" style="color:var(--gold-d)">₹${(v/1000).toFixed(0)}k</div></div>`).join('');
   const urg={'🟢 Manageable':0,'🟡 Stressful':0,'🔴 Urgent':0,'🚨 Being Harassed':0};
-  cases.forEach(c=>{ const k=Object.keys(urg).find(u=>c.urgency&&c.urgency.includes(u.slice(2)));
-    if(k) urg[k]++; });
+  cases.forEach(c=>{const k=Object.keys(urg).find(u=>c.urgency&&c.urgency.includes(u.slice(2)));if(k)urg[k]++;});
   const maxU=Math.max(...Object.values(urg),1);
-  const urgColors={'🟢 Manageable':'#27AE60','🟡 Stressful':'#F39C12','🔴 Urgent':'#E74C3C','🚨 Being Harassed':'#922B21'};
+  const urgCol={'🟢 Manageable':'#27AE60','🟡 Stressful':'#F39C12','🔴 Urgent':'#E74C3C','🚨 Being Harassed':'#922B21'};
   document.getElementById('urgencyChart').innerHTML=
-    Object.entries(urg).map(([k,v])=>
-      `<div class="bar-row"><div class="bar-lbl" style="font-size:.72rem">${k}</div>
-       <div class="bar-track"><div class="bar-fill" style="width:${(v/maxU*100).toFixed(0)}%;background:${urgColors[k]}"></div></div>
-       <div class="bar-val">${v}</div></div>`).join('');
-
+    Object.entries(urg).map(([k,v])=>`<div class="bar-row">
+      <div class="bar-lbl" style="font-size:.72rem">${k}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(v/maxU*100).toFixed(0)}%;background:${urgCol[k]}"></div></div>
+      <div class="bar-val">${v}</div></div>`).join('');
   document.getElementById('reportsTbody').innerHTML=cases.map(c=>{
     const dt=new Date(c.submittedAt).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
     return `<tr>
       <td><span class="td-ref">${c.id}</span></td>
       <td><span class="td-name">${c.name}</span></td>
-      <td>${c.phone}</td><td style="font-size:.78rem">${c.email||'—'}</td>
+      <td>${c.phone}</td><td style="font-size:.78rem">${c.city||'—'}</td><td style="font-size:.78rem">${c.state||'—'}</td><td style="font-size:.78rem">${c.email||'—'}</td>
       <td><span class="plan-pill ${c.plan}">${PLANS[c.plan]?.name||c.plan}</span></td>
       <td>₹${(PLANS[c.plan]?.price||0).toLocaleString('en-IN')}</td>
       <td>${statusBadge(c.status)}</td><td>${payBadge(c.payStatus)}</td>
+      <td>${expiryBadge(c.expiryDate||null)}</td>
       <td style="font-size:.78rem;color:var(--teal-d)">${c.expert||'—'}</td>
       <td style="font-size:.76rem;color:var(--muted)">${dt}</td>
     </tr>`;}).join('');
 }
 
-// ── TEAM & AGENTS ──
-function renderTeam(){
-  const agents=loadAgents();
+// ─────────────────────────────────────────
+// TEAM & AGENTS
+// ─────────────────────────────────────────
+async function renderTeam(){
+  await loadAgents();
+  const agents=_agentsCache;
   const role=currentUser?.role;
-  // Sub heading
   document.getElementById('teamPageSub').textContent=
-    role==='admin'?'Add agents and managers · Admin view':
-    role==='manager'?'Add agents to your team · Manager view':'Team overview';
+    role==='admin' ? 'Add agents and managers · Admin view — full control' :
+    role==='manager' ? 'Add agents to your team · Changes sync with Admin automatically' : 'Team overview';
   document.getElementById('teamCountLabel').textContent=
-    `${agents.length} agent${agents.length!==1?'s':''} registered`;
+    `${agents.length} member${agents.length!==1?'s':''} registered`;
 
-  // Manager can only add agents (not managers) — option hidden via applyRoleUI
-  // Build team cards
   const container=document.getElementById('teamList');
   if(!agents.length){
     container.innerHTML='<div class="empty-state"><div class="es-icon">👥</div><p>No agents added yet. Use the form above to add your first agent.</p></div>';
     return;
   }
-  const roleColors={admin:'#2E8B9A',manager:'#C49A1A',agent:'#27AE60'};
   container.innerHTML=agents.map((a,i)=>`
     <div class="team-card">
       <div class="tc-info">
-        <div class="tc-avatar">${a.name?a.name[0].toUpperCase():'?'}</div>
+        <div class="tc-avatar" style="background:${a.role==='manager'?'var(--gold-l)':a.role==='admin'?'var(--teal-l)':'#EAF7EE'};color:${a.role==='manager'?'var(--gold-d)':a.role==='admin'?'var(--teal-d)':'#1A6B3A'}">${a.name?a.name[0].toUpperCase():'?'}</div>
         <div>
           <div class="tc-name">${a.name} <span class="role-badge ${a.role}">${a.role}</span></div>
-          <div class="tc-meta">@${a.username} · Added ${new Date(a.addedAt||Date.now()).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</div>
+          <div class="tc-meta">
+            @${a.username}
+            &nbsp;·&nbsp;
+            Password: <span style="font-family:monospace;background:var(--off);padding:.1rem .4rem;border-radius:4px;font-size:.75rem;color:var(--ink);border:1px solid var(--border)">${a.password}</span>
+            &nbsp;·&nbsp;
+            Added ${new Date(a.addedAt||Date.now()).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}
+          </div>
         </div>
       </div>
       <div class="tc-actions">
-        ${role==='admin'||role==='manager'?`<button class="del-btn" onclick="deleteAgent(${i})">🗑 Remove</button>`:''}
+        ${(role==='admin'||(role==='manager'&&a.role==='agent'))?`<button class="del-btn" onclick="deleteAgent(${i})">🗑 Remove</button>`:''}
       </div>
     </div>`).join('');
 }
 
-function addAgent(){
+async function addAgent(){
   const name=document.getElementById('ag-name').value.trim();
   const username=document.getElementById('ag-user').value.trim().toLowerCase().replace(/\s+/g,'.');
   const password=document.getElementById('ag-pass').value.trim();
-  const role=document.getElementById('ag-role').value;
+  const roleEl=document.getElementById('ag-role');
+  const role=currentUser.role==='manager'?'agent':(roleEl?roleEl.value:'agent');
+
   if(!name||!username||!password){showToast('⚠️ Name, username and password are required');return;}
-  const agents=loadAgents();
-  if(agents.find(a=>a.username===username)||BUILTIN[username]){
-    showToast('⚠️ Username already exists');return;
-  }
-  // Manager can only add agents, not other managers
-  if(currentUser.role==='manager'&&role==='manager'){
-    showToast('⚠️ Managers can only add agents');return;
-  }
-  agents.push({name,username,password,role,addedAt:new Date().toISOString()});
-  saveAgents(agents);
+  await loadAgents();
+  if(_agentsCache.find(a=>a.username===username)||BUILTIN[username]){showToast('⚠️ Username already taken');return;}
+  if(currentUser.role==='manager'&&role==='manager'){showToast('⚠️ Managers can only add agents');return;}
+
+  const newAgent={name,username,password,role,addedBy:currentUser.username,addedAt:new Date().toISOString()};
+  await saveAgent(newAgent);
+  await loadAgents();
   document.getElementById('ag-name').value='';
   document.getElementById('ag-user').value='';
   document.getElementById('ag-pass').value='';
   renderTeam();
-  showToast('✅ Agent added: '+name+' (@'+username+')');
+  showToast(`✅ ${role==='manager'?'Manager':'Agent'} added: ${name} (@${username})`);
 }
 
-function deleteAgent(index){
-  const agents=loadAgents();
-  const agent=agents[index];
-  if(!agent)return;
-  if(!confirm(`Remove ${agent.name} (@${agent.username}) from the team?`))return;
-  agents.splice(index,1);
-  saveAgents(agents);
+async function deleteAgent(index){
+  const agents=_agentsCache;
+  const a=agents[index];if(!a)return;
+  if(currentUser.role==='manager'&&a.role!=='agent'){showToast('⚠️ Managers can only remove agents');return;}
+  if(!confirm(`Remove ${a.name} (@${a.username}) from the team?`))return;
+  await deleteAgentById(a.username);
+  await loadAgents();
   renderTeam();
-  showToast('🗑 Agent removed: '+agent.name);
+  showToast('🗑 Removed: '+a.name);
 }
 
-// ── CASE MODAL ──
+// ─────────────────────────────────────────
+// CASE MODAL
+// ─────────────────────────────────────────
 function openCase(id){
   const c=cases.find(x=>x.id===id);if(!c)return;
   currentCaseId=id;
   document.getElementById('modalTitle').textContent='Case: '+c.id+' — '+c.name;
   document.getElementById('modalPersonal').innerHTML=
-    detailItem('Name',c.name)+detailItem('Phone',`<a href="tel:${c.phone}" style="color:var(--teal)">${c.phone}</a>`)+
-    detailItem('Email',c.email||'—')+detailItem('City',c.city||'—')+
-    detailItem('Urgency',c.urgency)+detailItem('Submitted',new Date(c.submittedAt).toLocaleString('en-IN'));
+    di('Name',c.name)+di('Phone',`<a href="tel:${c.phone}" style="color:var(--teal)">${c.phone}</a>`)+
+    di('Email',c.email||'—')+di('City',c.city||'—')+di('State',c.state||'—')+
+    di('Urgency',c.urgency||'—')+di('Submitted',new Date(c.submittedAt).toLocaleString('en-IN'));
   if(c.loans&&c.loans.length){
-    document.getElementById('modalLoans').innerHTML=c.loans.map(l=>
-      `<div class="loan-detail-row">
+    document.getElementById('modalLoans').innerHTML=c.loans.map(l=>`
+      <div class="loan-detail-row">
         <span style="font-weight:600">${l.type||'Loan'} · ${l.lender||'—'}${l.accno?` <span style="font-size:.75rem;color:var(--muted);font-family:monospace">#${l.accno}</span>`:''}</span>
         <span style="font-weight:700;color:var(--teal-d)">${l.amount?'₹'+parseFloat(l.amount).toLocaleString('en-IN'):'—'}</span>
       </div>`).join('');
@@ -1254,69 +1383,95 @@ function openCase(id){
     document.getElementById('modalLoans').innerHTML='<p style="font-size:.82rem;color:var(--muted)">No loan data recorded.</p>';
   }
   document.getElementById('modalPayment').innerHTML=
-    detailItem('Plan',PLANS[c.plan]?.name||c.plan)+
-    detailItem('Amount','₹'+(PLANS[c.plan]?.price||0).toLocaleString('en-IN'))+
-    detailItem('Payment Status',payBadge(c.payStatus))+
-    detailItem('UTR / Txn ID',c.utr||'Not provided');
+    di('Plan',PLANS[c.plan]?.name||c.plan)+
+    di('Amount','₹'+(PLANS[c.plan]?.price||0).toLocaleString('en-IN'))+
+    di('Payment Status',payBadge(c.payStatus))+
+    di('UTR / Txn ID',c.utr||'Not provided');
   document.getElementById('modalDesc').textContent=c.desc||'No description provided.';
   document.getElementById('modalStatus').value=c.status||'new';
-  // Populate expert dropdown with agents list
-  const agents=loadAgents();
-  const expertSel=document.getElementById('modalExpert');
-  expertSel.innerHTML=`<option value="">— Select agent —</option>`+
+  // Populate agent dropdown
+  const agents=_agentsCache;
+  const sel=document.getElementById('modalExpert');
+  sel.innerHTML=`<option value="">— Select agent —</option>`+
     agents.map(a=>`<option value="${a.name}" ${c.expert===a.name?'selected':''}>${a.name} (${a.role})</option>`).join('')+
     (c.expert&&!agents.find(a=>a.name===c.expert)?`<option value="${c.expert}" selected>${c.expert}</option>`:'');
   document.getElementById('modalNotes').value=c.notes||'';
+  // Expiry
+  const expDate = c.expiryDate || calcExpiry(c.submittedAt);
+  document.getElementById('modalExpiry').value = expDate||'';
+  document.getElementById('modalExpiryBadge').innerHTML = expiryBadge(expDate);
+  // Show delete button for admin only
+  const delBtn = document.getElementById('deleteCaseBtn');
+  if(delBtn) delBtn.style.display = currentUser?.role==='admin' ? 'inline-block' : 'none';
   document.getElementById('caseModal').classList.add('open');
 }
-function detailItem(label,val){
-  return `<div class="detail-item"><div class="dl">${label}</div><div class="dv">${val}</div></div>`;
+function resetExpiry(){
+  const c=cases.find(x=>x.id===currentCaseId);if(!c)return;
+  const d=calcExpiry(c.submittedAt);
+  document.getElementById('modalExpiry').value=d||'';
+  document.getElementById('modalExpiryBadge').innerHTML=expiryBadge(d);
 }
-function closeModal(){ document.getElementById('caseModal').classList.remove('open'); }
-function saveCase(){
+function di(l,v){return `<div class="detail-item"><div class="dl">${l}</div><div class="dv">${v}</div></div>`;}
+function closeModal(){document.getElementById('caseModal').classList.remove('open');}
+
+async function deleteCurrentCase(){
+  const c=cases.find(x=>x.id===currentCaseId);if(!c)return;
+  if(!confirm(`⚠️ Permanently delete case ${c.id} — ${c.name}?\n\nThis cannot be undone.`))return;
+  await deleteCaseFromDb(c.id);
+  closeModal();
+  await loadCases();
+  renderDashboard();
+  showToast('🗑 Case deleted: '+c.id);
+}
+async function saveCase(){
   const c=cases.find(x=>x.id===currentCaseId);if(!c)return;
   c.status=document.getElementById('modalStatus').value;
   c.expert=document.getElementById('modalExpert').value;
   c.notes=document.getElementById('modalNotes').value;
-  saveCases(); closeModal();
+  c.expiryDate=document.getElementById('modalExpiry').value||c.expiryDate||calcExpiry(c.submittedAt);
+  await saveCaseToDb(c);
+  closeModal();
+  await loadCases();
   showToast('✅ Case updated successfully');
   renderDashboard();
 }
 
-// ── ADD CASE ──
-function openAddCase(){ document.getElementById('addModal').classList.add('open'); }
-function closeAddModal(){ document.getElementById('addModal').classList.remove('open'); }
-function addCaseManual(){
+// ─────────────────────────────────────────
+// ADD CASE MANUALLY
+// ─────────────────────────────────────────
+function openAddCase(){document.getElementById('addModal').classList.add('open');}
+function closeAddModal(){document.getElementById('addModal').classList.remove('open');}
+async function addCaseManual(){
   const name=document.getElementById('add-name').value.trim();
   const phone=document.getElementById('add-phone').value.trim();
-  if(!name||!phone){ showToast('⚠️ Name and phone are required'); return; }
-  const newCase={
+  if(!name||!phone){showToast('⚠️ Name and phone are required');return;}
+  const nc={
     id:'GOR-'+Date.now().toString(36).toUpperCase().slice(-6),
-    name, phone,
+    name,phone,
     email:document.getElementById('add-email').value.trim(),
     city:document.getElementById('add-city').value.trim(),
+    state:document.getElementById('add-state')?.value||'—',
     plan:document.getElementById('add-plan').value,
     urgency:document.getElementById('add-urgency').value,
     desc:document.getElementById('add-desc').value.trim(),
-    loans:[], status:'new', payStatus:'pending',
-    utr:'', expert:'', notes:'',
-    submittedAt:new Date().toISOString()
+    loans:[],status:'new',payStatus:'pending',utr:'',expert:'',notes:'',
+    submittedAt:new Date().toISOString(),addedBy:currentUser?.username||'manual'
   };
-  // Always write to full storage regardless of role
-  const all=JSON.parse(localStorage.getItem('crm_cases')||'[]');
-  all.unshift(newCase);
-  localStorage.setItem('crm_cases',JSON.stringify(all));
-  loadCases();
-  closeAddModal(); renderDashboard();
-  showToast('✅ Case added: '+newCase.id);
+  await saveCaseToDb(nc);
+  await loadCases();
+  closeAddModal();renderDashboard();
+  ['add-name','add-phone','add-email','add-city','add-desc'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';}); const ss=document.getElementById('add-state');if(ss)ss.value='';
+  showToast('✅ Case added: '+nc.id);
 }
 
-// ── CSV EXPORT ──
+// ─────────────────────────────────────────
+// CSV EXPORT
+// ─────────────────────────────────────────
 function exportCSV(){
-  const headers=['Ref#','Name','Phone','Email','City','Plan','Amount','Urgency','Status','Payment','UTR','Expert','Notes','Submitted'];
+  const headers=['Ref#','Name','Phone','City','State','Email','Plan','Amount','Urgency','Status','Payment','UTR','Expert','Notes','Submitted'];
   const rows=cases.map(c=>[
-    c.id,c.name,c.phone,c.email||'',c.city||'',
-    PLANS[c.plan]?.name||c.plan, PLANS[c.plan]?.price||0,
+    c.id,c.name,c.phone,c.city||'',c.state||'',c.email||'',
+    PLANS[c.plan]?.name||c.plan,PLANS[c.plan]?.price||0,
     c.urgency,c.status,c.payStatus,c.utr||'',c.expert||'',
     (c.notes||'').replace(/,/g,';'),
     new Date(c.submittedAt).toLocaleString('en-IN')
@@ -1329,11 +1484,14 @@ function exportCSV(){
   showToast('⬇️ CSV exported successfully');
 }
 
-// ── TOAST ──
+// ─────────────────────────────────────────
+// TOAST
+// ─────────────────────────────────────────
 function showToast(msg){
   const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2800);
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
 }
 </script>
 </body>
+</html>
