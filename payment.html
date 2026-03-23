@@ -412,7 +412,9 @@ window._writeCaseToFirestore=async function(caseObj){
     return false;
   }
 };
+</script>
 
+<script>
 // ── LOAD INTAKE DATA ──
 (function(){
   const raw=sessionStorage.getItem('goresolve_intake');
@@ -459,7 +461,13 @@ function switchPay(t){
 
 // ── PROOF TABS ──
 function switchProof(m){
-  ['both','ss','utr'].forEach(x=>document.getElementById('pt-'+x).classList.toggle('on',x===m));
+  // Remove 'on' from all tabs first
+  document.getElementById('pt-both').classList.remove('on');
+  document.getElementById('pt-ss').classList.remove('on');
+  document.getElementById('pt-utr').classList.remove('on');
+  // Add 'on' to selected tab
+  document.getElementById('pt-'+m).classList.add('on');
+  // Show/hide sections
   document.getElementById('pr-ss').style.display=(m==='both'||m==='ss')?'block':'none';
   document.getElementById('pr-utr').style.display=(m==='both'||m==='utr')?'block':'none';
 }
@@ -547,7 +555,30 @@ async function submitPayment(){
   }
 
   sessionStorage.setItem('goresolve_intake',JSON.stringify(d));
-  window.location.href='success.html';
+
+  // ── WHATSAPP NOTIFICATION ──
+  // Build a pre-filled WhatsApp message so you get notified instantly
+  const planNames={A:'Plan A (₹1,499)',B:'Plan B (₹2,499)',C:'Plan C (₹3,999)',D:'Custom Plan'};
+  const waMsg = encodeURIComponent(
+    `🔔 New GOresolve Case Submitted!\n\n` +
+    `Ref: ${d.ref}\n` +
+    `Name: ${d.name||'—'}\n` +
+    `Phone: ${d.phone||'—'}\n` +
+    `Plan: ${planNames[d.plan]||d.plan}\n` +
+    `City: ${d.city||'—'}, ${d.state||'—'}\n` +
+    `UTR: ${d.utr||'Not provided'}\n` +
+    `Urgency: ${d.urgency||'—'}\n\n` +
+    `Please verify payment and activate the plan.`
+  );
+
+  // Open WhatsApp in background then redirect to success
+  // Using a short delay so Firestore write completes
+  setTimeout(()=>{
+    // Send WhatsApp notification to your number
+    window.open(`https://wa.me/919884696343?text=${waMsg}`, '_blank');
+    // Redirect customer to success page
+    window.location.href='success.html';
+  }, 800);
 }
 function showErr(msg){
   const b=document.getElementById('payAlert');
