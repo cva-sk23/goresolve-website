@@ -537,7 +537,8 @@ async function submitPayment(){
     expert: '',
     notes: '',
     submittedAt: d.submittedAt,
-    expiryDate: (()=>{ const e=new Date(d.submittedAt); e.setFullYear(e.getFullYear()+1); return e.toISOString().slice(0,10); })()
+    expiryDate: (()=>{ const e=new Date(d.submittedAt); e.setFullYear(e.getFullYear()+1); return e.toISOString().slice(0,10); })(),
+    mindset: d.mindset || { defaultReason:'', negotiation:'', recoveryContact:'', harassment:'' }
   };
 
   // Write to Firestore (works from any device, any browser)

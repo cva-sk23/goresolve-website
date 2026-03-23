@@ -558,6 +558,7 @@
       <div class="modal-section" id="modalLoansSection"><h4>Loan Accounts</h4><div id="modalLoans"></div></div>
       <div class="modal-section"><h4>Payment</h4><div class="detail-grid" id="modalPayment"></div></div>
       <div class="modal-section"><h4>Case Description</h4><div id="modalDesc" style="font-size:.85rem;color:var(--ink2);line-height:1.7;background:var(--off);border-radius:8px;padding:.8rem 1rem"></div></div>
+      <div class="modal-section" id="modalMindsetSection"><h4>&#129504; Mindset Assessment</h4><div class="detail-grid" id="modalMindset"></div></div>
       <div class="modal-section"><h4>Plan Expiry</h4>
         <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap">
           <div id="modalExpiryBadge" style="min-width:120px"></div>
@@ -1373,6 +1374,18 @@ function openCase(id){
     di('Name',c.name)+di('Phone',`<a href="tel:${c.phone}" style="color:var(--teal)">${c.phone}</a>`)+
     di('Email',c.email||'—')+di('City',c.city||'—')+di('State',c.state||'—')+
     di('Urgency',c.urgency||'—')+di('Submitted',new Date(c.submittedAt).toLocaleString('en-IN'));
+
+  // Mindset Assessment
+  const ms = c.mindset||{};
+  const hasAnyMindset = ms.defaultReason||ms.negotiation||ms.recoveryContact||ms.harassment;
+  document.getElementById('modalMindsetSection').style.display = hasAnyMindset ? 'block' : 'none';
+  if(hasAnyMindset){
+    document.getElementById('modalMindset').innerHTML =
+      (ms.defaultReason ? di('Default Reason', ms.defaultReason) : '') +
+      (ms.negotiation   ? di('Negotiation Intent', ms.negotiation) : '') +
+      (ms.recoveryContact ? di('Recovery Agent Contact', ms.recoveryContact) : '') +
+      (ms.harassment    ? di('Harassment Status', ms.harassment) : '');
+  }
   if(c.loans&&c.loans.length){
     document.getElementById('modalLoans').innerHTML=c.loans.map(l=>`
       <div class="loan-detail-row">

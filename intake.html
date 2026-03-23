@@ -149,6 +149,13 @@
            transition:all .2s;color:var(--ink2)}
     .chip:hover,.chip.on{border-color:var(--teal);background:var(--teal-l);color:var(--teal-d)}
 
+    /* MINDSET ASSESSMENT CHIPS */
+    .ma-chip{padding:.32rem .8rem;border-radius:8px;border:1.5px solid var(--border);
+             background:var(--off);font-size:.76rem;font-weight:600;cursor:pointer;
+             transition:all .2s;color:var(--ink2);white-space:nowrap}
+    .ma-chip:hover{border-color:var(--teal);background:var(--teal-l);color:var(--teal-d)}
+    .ma-chip.on{border-color:var(--teal);background:var(--teal-l);color:var(--teal-d);font-weight:700}
+
     /* BUTTONS */
     .btn-row{display:flex;gap:.8rem;margin-top:1.4rem;justify-content:space-between;align-items:center}
     .btn-next{background:var(--gold);color:white;padding:.82rem 2rem;border-radius:8px;border:none;
@@ -449,6 +456,60 @@
     <textarea id="f-desc" placeholder="Tell us what's happening — missed EMIs, harassment calls, bank notices, legal threats, etc. The more you share the better we can help."></textarea>
   </div>
 
+  <!-- ── MINDSET ASSESSMENT ── -->
+  <div style="background:white;border:1.5px solid var(--border);border-radius:12px;padding:1.3rem 1.4rem;margin-top:1rem;box-shadow:0 2px 12px rgba(30,100,110,.06)">
+    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem">
+      <span style="font-size:1.1rem">&#129504;</span>
+      <div>
+        <div style="font-size:.82rem;font-weight:700;color:var(--ink)">Mindset Assessment</div>
+        <div style="font-size:.72rem;color:var(--muted)">Helps us assign the right expert and approach for your case</div>
+      </div>
+    </div>
+
+    <!-- Q1: What led to default -->
+    <div style="margin-bottom:1rem">
+      <label style="font-size:.78rem;font-weight:700;color:var(--ink2);display:block;margin-bottom:.5rem">What led to your loan default?</label>
+      <div style="display:flex;flex-wrap:wrap;gap:.4rem" id="defaultReasonChips">
+        <div class="ma-chip" onclick="pickMAChip(this,'defaultReason')">&#128188; Job Loss</div>
+        <div class="ma-chip" onclick="pickMAChip(this,'defaultReason')">&#127973; Medical Emergency</div>
+        <div class="ma-chip" onclick="pickMAChip(this,'defaultReason')">&#128200; Business Loss</div>
+        <div class="ma-chip" onclick="pickMAChip(this,'defaultReason')">&#128172; Dispute with Lender</div>
+        <div class="ma-chip" onclick="pickMAChip(this,'defaultReason')">&#128178; Income Reduced</div>
+        <div class="ma-chip" onclick="pickMAChip(this,'defaultReason')">&#128100; Other</div>
+      </div>
+    </div>
+
+    <!-- Q2: Willing to negotiate -->
+    <div style="margin-bottom:1rem">
+      <label style="font-size:.78rem;font-weight:700;color:var(--ink2);display:block;margin-bottom:.5rem">Are you willing to negotiate with lenders?</label>
+      <div style="display:flex;flex-wrap:wrap;gap:.4rem" id="negotiationChips">
+        <div class="ma-chip" onclick="pickMAChip(this,'negotiation')">&#9989; Yes, ready to settle</div>
+        <div class="ma-chip" onclick="pickMAChip(this,'negotiation')">&#129300; Maybe, need clarity</div>
+        <div class="ma-chip" onclick="pickMAChip(this,'negotiation')">&#10062; No, not right now</div>
+      </div>
+    </div>
+
+    <!-- Q3: Recovery agent contact -->
+    <div style="margin-bottom:1rem">
+      <label style="font-size:.78rem;font-weight:700;color:var(--ink2);display:block;margin-bottom:.5rem">Have recovery agents been contacting you?</label>
+      <div style="display:flex;flex-wrap:wrap;gap:.4rem" id="recoveryChips">
+        <div class="ma-chip" onclick="pickMAChip(this,'recoveryContact')">&#128308; Frequently (10+ calls/day)</div>
+        <div class="ma-chip" onclick="pickMAChip(this,'recoveryContact')">&#128993; Occasionally</div>
+        <div class="ma-chip" onclick="pickMAChip(this,'recoveryContact')">&#128994; Not yet</div>
+      </div>
+    </div>
+
+    <!-- Q4: Harassment -->
+    <div>
+      <label style="font-size:.78rem;font-weight:700;color:var(--ink2);display:block;margin-bottom:.5rem">Are you or your family being harassed?</label>
+      <div style="display:flex;flex-wrap:wrap;gap:.4rem" id="harassmentChips">
+        <div class="ma-chip" onclick="pickMAChip(this,'harassment')">&#128680; Yes — threatening calls or visits</div>
+        <div class="ma-chip" onclick="pickMAChip(this,'harassment')">&#128165; Family members being contacted</div>
+        <div class="ma-chip" onclick="pickMAChip(this,'harassment')">&#128077; No harassment so far</div>
+      </div>
+    </div>
+  </div>
+
   <!-- CIBIL UPLOAD -->
   <div class="cibil-section">
     <div class="cibil-section-title">📊 Upload Your CIBIL / Credit Report</div>
@@ -704,6 +765,16 @@ function pickChip(el){
   el.classList.add('on');
 }
 
+// ── MINDSET ASSESSMENT CHIP PICKER ──
+const maSelections = { defaultReason:'', negotiation:'', recoveryContact:'', harassment:'' };
+function pickMAChip(el, group){
+  // Remove 'on' from all chips in same group
+  el.closest('[id$="Chips"]').querySelectorAll('.ma-chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  // Store plain text (strip emoji using regex)
+  maSelections[group] = el.textContent.trim().replace(/^[\u{1F300}-\u{1FFFF}\u2600-\u27FF]\s*/u,'').trim();
+}
+
 // ── CIBIL UPLOAD ──
 function handleCibilUpload(e){
   const f=e.target.files[0];
@@ -831,6 +902,13 @@ function toPayment(){
     state:   document.getElementById('f-state').value.trim(),
     urgency: document.querySelector('.chip.on')?.textContent||'',
     desc:    document.getElementById('f-desc').value.trim(),
+    // Mindset Assessment
+    mindset: {
+      defaultReason:   maSelections.defaultReason   || '',
+      negotiation:     maSelections.negotiation     || '',
+      recoveryContact: maSelections.recoveryContact || '',
+      harassment:      maSelections.harassment      || ''
+    },
     plan:    selPlan,
     planName:PLANS[selPlan].name,
     price:   PLANS[selPlan].price,
