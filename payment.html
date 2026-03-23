@@ -379,16 +379,19 @@
   <div class="tf-item">&#10003; DPIIT: DIPP237434</div>
 </div>
 
-<script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-
+<script>
+// Global PLANS — accessible by all scripts
 const PLANS={
   A:{name:'Plan A',price:1499,exp:'Outstanding below ₹2 Lakh'},
   B:{name:'Plan B ⭐',price:2499,exp:'Outstanding below ₹5 Lakh'},
   C:{name:'Plan C',price:3999,exp:'₹5 Lakh – ₹10 Lakh'},
   D:{name:'Custom Plan',price:4999,exp:'Outstanding above ₹10 Lakh'}
 };
+</script>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 // ── FIREBASE: write case directly from payment page ──
 // Hardcoded config — works from any customer device
