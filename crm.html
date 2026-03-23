@@ -237,8 +237,9 @@
     // Paste your Firebase project config here after setup
     const FB_CONFIG_KEY = 'gor_fb_config';
 
+    const _HARDCODED_CFG = {"apiKey":"AIzaSyB8_iaikomXvnvTaNjLl-3txwRntX-EMEo","authDomain":"goresolve-49f52.firebaseapp.com","projectId":"goresolve-49f52","storageBucket":"goresolve-49f52.firebasestorage.app","messagingSenderId":"850006302718","appId":"1:850006302718:web:a1fc24f4821d0b91c7aaaf","measurementId":"G-9FVLEPMKF9"};
     function getSavedConfig(){
-      try{ return JSON.parse(localStorage.getItem(FB_CONFIG_KEY)||'null'); }catch(e){return null;}
+      try{ return JSON.parse(localStorage.getItem(FB_CONFIG_KEY)||'null') || _HARDCODED_CFG; }catch(e){ return _HARDCODED_CFG; }
     }
 
     // Expose globals so non-module scripts can call them

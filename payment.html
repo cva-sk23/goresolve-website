@@ -391,16 +391,21 @@ const PLANS={
 };
 
 // ── FIREBASE: write case directly from payment page ──
-const FB_CONFIG_KEY='gor_fb_config';
+// Hardcoded config — works from any customer device
+const _FB_CFG = {
+  apiKey: "AIzaSyB8_iaikomXvnvTaNjLl-3txwRntX-EMEo",
+  authDomain: "goresolve-49f52.firebaseapp.com",
+  projectId: "goresolve-49f52",
+  storageBucket: "goresolve-49f52.firebasestorage.app",
+  messagingSenderId: "850006302718",
+  appId: "1:850006302718:web:a1fc24f4821d0b91c7aaaf",
+  measurementId: "G-9FVLEPMKF9"
+};
 let _db=null;
 try{
-  const cfgRaw=localStorage.getItem(FB_CONFIG_KEY);
-  if(cfgRaw){
-    const cfg=JSON.parse(cfgRaw);
-    const app=initializeApp(cfg,'payment-page');
-    _db=getFirestore(app);
-  }
-}catch(e){ _db=null; }
+  const app=initializeApp(_FB_CFG,'payment-page');
+  _db=getFirestore(app);
+}catch(e){ console.warn('Firebase:',e); _db=null; }
 
 window._writeCaseToFirestore=async function(caseObj){
   if(!_db) return false;

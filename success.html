@@ -283,10 +283,10 @@ async function writeCaseToFirestore(db, caseObj){
 
     // Try Firebase first, fall back to localStorage
     try{
-      const cfgRaw=localStorage.getItem(FB_CONFIG_KEY);
-      if(cfgRaw){
-        const cfg=JSON.parse(cfgRaw);
-        const app=initializeApp(cfg, 'success-page');
+      // Hardcoded config — works from any device
+      const cfg={apiKey:"AIzaSyB8_iaikomXvnvTaNjLl-3txwRntX-EMEo",authDomain:"goresolve-49f52.firebaseapp.com",projectId:"goresolve-49f52",storageBucket:"goresolve-49f52.firebasestorage.app",messagingSenderId:"850006302718",appId:"1:850006302718:web:a1fc24f4821d0b91c7aaaf"};
+      if(cfg){
+        const app=initializeApp(cfg,'success-page');
         const db=getFirestore(app);
         // Check not duplicate
         const existing=await getDoc(doc(db,'cases',ref));
