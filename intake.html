@@ -441,16 +441,6 @@
     </div>
   </div>
 
-  <div class="fg" style="margin-top:.8rem">
-    <label>How urgent is your situation?</label>
-    <div class="chips">
-      <div class="chip" onclick="pickChip(this)">&#128994; Manageable</div>
-      <div class="chip" onclick="pickChip(this)">&#128993; Stressful</div>
-      <div class="chip" onclick="pickChip(this)">&#128308; Urgent</div>
-      <div class="chip" onclick="pickChip(this)">&#128680; Being Harassed</div>
-    </div>
-  </div>
-
   <div class="fg">
     <label>Describe your situation</label>
     <textarea id="f-desc" placeholder="Tell us what's happening — missed EMIs, harassment calls, bank notices, legal threats, etc. The more you share the better we can help."></textarea>
@@ -900,7 +890,7 @@ function toPayment(){
     email:   document.getElementById('f-email').value.trim(),
     city:    document.getElementById('f-city').value.trim(),
     state:   document.getElementById('f-state').value.trim(),
-    urgency: document.querySelector('.chip.on')?.textContent||'',
+    urgency: maSelections.harassment || 'Not specified',
     desc:    document.getElementById('f-desc').value.trim(),
     // Mindset Assessment
     mindset: {

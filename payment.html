@@ -118,15 +118,6 @@
 
     /* PROOF */
     .proof-title{font-size:.82rem;font-weight:700;color:var(--ink);margin-bottom:.6rem}
-    .proof-tabs{display:flex;gap:.42rem;margin-bottom:.9rem;flex-wrap:wrap}
-    .proof-tab{padding:.32rem .82rem;border-radius:999px;border:1.5px solid var(--border);
-                font-size:.75rem;font-weight:600;cursor:pointer;
-                color:var(--ink2);background:var(--off);transition:all .2s}
-    .proof-tab.on{border-color:var(--teal);background:var(--teal-l);color:var(--teal-d)}
-    .upload-zone{border:2px dashed var(--teal-m);border-radius:10px;padding:1.7rem;
-                  text-align:center;cursor:pointer;background:var(--teal-l);transition:background .2s}
-    .upload-zone:hover{background:#D0ECEC}
-    .upload-zone input{display:none}
     .uz-icon{font-size:1.7rem;margin-bottom:.4rem}
     .uz-text{font-size:.82rem;color:var(--teal-d);font-weight:600}
     .uz-sub{font-size:.7rem;color:var(--muted);margin-top:.18rem}
@@ -313,32 +304,11 @@
 
   <hr style="border:none;border-top:1px solid var(--border);margin:1.3rem 0"/>
 
-  <!-- PAYMENT PROOF -->
-  <div class="proof-title">Payment Proof *</div>
-  <div class="proof-tabs">
-    <div class="proof-tab on" id="pt-both" onclick="switchProof('both')">Screenshot + UTR</div>
-    <div class="proof-tab" id="pt-ss"   onclick="switchProof('ss')">Screenshot Only</div>
-    <div class="proof-tab" id="pt-utr"  onclick="switchProof('utr')">UTR / Txn ID Only</div>
-  </div>
-
-  <div id="pr-ss">
-    <div class="upload-zone" onclick="document.getElementById('ssFile').click()">
-      <input type="file" id="ssFile" accept="image/*" onchange="previewUpload(event)"/>
-      <div class="uz-icon">&#128248;</div>
-      <div class="uz-text">Tap to upload payment screenshot</div>
-      <div class="uz-sub">JPG or PNG &middot; max 5MB</div>
-    </div>
-    <div class="preview-wrap" id="previewWrap">
-      <img id="previewImg" src="" alt="Payment screenshot preview"/>
-    </div>
-  </div>
-
-  <div id="pr-utr">
-    <div class="fg" style="margin-top:.7rem">
-      <label>UTR / Transaction ID</label>
-      <input id="utrInput" type="text" placeholder="e.g. 425678901234 or UPI Reference Number"/>
-      <div class="utr-note">Find in your UPI app &#8594; Transaction History &#8594; UTR / Reference Number</div>
-    </div>
+  <!-- UTR ONLY -->
+  <div class="proof-title">Transaction ID (UTR) *</div>
+  <div class="fg" style="margin-top:.5rem">
+    <input id="utrInput" type="text" placeholder="e.g. 425678901234 or UPI Reference Number"/>
+    <div class="utr-note">Find in your UPI app &#8594; Transaction History &#8594; UTR / Reference Number</div>
   </div>
 
   <div class="btn-row">
@@ -468,28 +438,6 @@ function switchPay(t){
 }
 
 // ── PROOF TABS ──
-function switchProof(m){
-  // Remove 'on' from all tabs first
-  document.getElementById('pt-both').classList.remove('on');
-  document.getElementById('pt-ss').classList.remove('on');
-  document.getElementById('pt-utr').classList.remove('on');
-  // Add 'on' to selected tab
-  document.getElementById('pt-'+m).classList.add('on');
-  // Show/hide sections
-  document.getElementById('pr-ss').style.display=(m==='both'||m==='ss')?'block':'none';
-  document.getElementById('pr-utr').style.display=(m==='both'||m==='utr')?'block':'none';
-}
-
-// ── UPLOAD PREVIEW ──
-function previewUpload(e){
-  const f=e.target.files[0];if(!f)return;
-  const r=new FileReader();
-  r.onload=ev=>{
-    document.getElementById('previewImg').src=ev.target.result;
-    document.getElementById('previewWrap').style.display='block';
-  };
-  r.readAsDataURL(f);
-}
 
 // ── COPY ──
 function copyTxt(text,btnId){
@@ -506,13 +454,8 @@ function copyTxt(text,btnId){
 
 // ── SUBMIT ──
 async function submitPayment(){
-  const mode=document.querySelector('.proof-tab.on')?.id||'';
-  const hasFile=document.getElementById('ssFile').files.length>0;
   const hasUTR=document.getElementById('utrInput').value.trim().length>0;
-  if(mode==='pt-both'&&!hasFile&&!hasUTR){
-    showErr('Please upload a payment screenshot and/or enter your UTR number.');return;}
-  if(mode==='pt-ss'&&!hasFile){showErr('Please upload your payment screenshot.');return;}
-  if(mode==='pt-utr'&&!hasUTR){showErr('Please enter your UTR / Transaction ID.');return;}
+  if(!hasUTR){showErr('Please enter your UTR / Transaction ID.');return;}
 
   // Save payment proof info + generate ref
   const raw=sessionStorage.getItem('goresolve_intake')||'{}';
