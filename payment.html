@@ -325,7 +325,7 @@
 
   <div class="btn-row">
     <a href="intake.html" class="btn-back">&#8592; Back</a>
-    <button class="btn-next" onclick="submitPayment()">Submit &amp; Confirm &#8594;</button>
+    <button class="btn-next" id="submitBtn" onclick="submitPayment()">Submit &amp; Confirm &#8594;</button>
   </div>
 </div>
 </div>
@@ -406,7 +406,7 @@ window._writeCaseToFirestore=async function(caseObj){
 
 <script>
 // ── LOAD INTAKE DATA ──
-(function(){
+document.addEventListener('DOMContentLoaded', function(){
   const raw=sessionStorage.getItem('goresolve_intake');
   if(!raw){return;}
   try{
@@ -439,7 +439,7 @@ window._writeCaseToFirestore=async function(caseObj){
       if(hasLoan) document.getElementById('s-loans-wrap').style.display='block';
     }
   }catch(e){}
-})();
+});
 
 // ── PAY TABS ──
 function switchPay(t){
@@ -466,8 +466,19 @@ function copyTxt(text,btnId){
 
 // ── SUBMIT ──
 async function submitPayment(){
+  // Prevent duplicate submissions
+  const submitBtn = document.getElementById('submitBtn');
+  if(submitBtn.disabled) return;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Submitting...';
+
   const hasUTR=document.getElementById('utrInput').value.trim().length>0;
-  if(!hasUTR){showErr('Please enter your UTR / Transaction ID.');return;}
+  if(!hasUTR){
+    showErr('Please enter your UTR / Transaction ID.');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit & Confirm →';
+    return;
+  }
 
   // Save payment proof info + generate ref
   const raw=sessionStorage.getItem('goresolve_intake')||'{}';
@@ -563,14 +574,10 @@ async function submitPayment(){
     `Please verify payment and activate the plan.`
   );
 
-  // Open WhatsApp in background then redirect to success
-  // Using a short delay so Firestore write completes
-  setTimeout(()=>{
-    // Send WhatsApp notification to your number
-    window.open(`https://wa.me/919884696343?text=${waMsg}`, '_blank');
-    // Redirect customer to success page
-    window.location.href='success.html';
-  }, 800);
+  // Store WA message for success page, redirect immediately
+  // (window.open blocked on mobile in async context)
+  sessionStorage.setItem('gor_wa_notify', `https://wa.me/919884696343?text=${waMsg}`);
+  window.location.href='success.html';
 }
 function showErr(msg){
   const b=document.getElementById('payAlert');

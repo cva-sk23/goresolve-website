@@ -313,6 +313,14 @@ async function writeCaseToFirestore(db, caseObj){
     }
 
     sessionStorage.removeItem('goresolve_intake');
+
+    // Auto-trigger WhatsApp notification to admin (stored from payment page)
+    const waUrl = sessionStorage.getItem('gor_wa_notify');
+    if(waUrl){
+      sessionStorage.removeItem('gor_wa_notify');
+      // Small delay so page renders first, then open WA
+      setTimeout(()=>{ window.open(waUrl, '_blank'); }, 1200);
+    }
   }catch(e){}
 })();
 </script>
