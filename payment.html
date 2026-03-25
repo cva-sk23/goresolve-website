@@ -536,27 +536,37 @@ async function submitPayment(){
 
   // ── EMAIL NOTIFICATIONS via EmailJS ──
   if(typeof emailjs !== 'undefined'){
-    const emailParams = {
-      case_id:        d.ref,
-      customer_name:  d.name||'—',
-      customer_phone: d.phone||'—',
-      customer_email: d.email||'—',
-      city:           d.city||'—',
-      state:          d.state||'—',
-      plan:           planNames[d.plan]||d.plan,
-      amount:         '₹'+(PLANS[d.plan]?.price||0).toLocaleString('en-IN'),
-      utr:            d.utr||'Not provided',
-      urgency:        d.urgency||'—',
-      default_reason: d.mindset?.defaultReason||'—',
-      negotiation:    d.mindset?.negotiation||'—',
-      submitted_at:   new Date(d.submittedAt).toLocaleString('en-IN'),
-    };
-    // Alert to support@goresolve.in
-    emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ALERT, emailParams)
+    const amt = '₹'+(PLANS[d.plan]?.price||0).toLocaleString('en-IN');
+    const submittedAt = new Date(d.submittedAt).toLocaleString('en-IN');
+
+    // Alert to support@goresolve.in — send regardless of customer email
+    emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ALERT, {
+      to_email:       'support@goresolve.in',
+      case_id:        d.ref       || '—',
+      customer_name:  d.name      || '—',
+      customer_phone: d.phone     || '—',
+      customer_email: d.email     || '—',
+      city:           (d.city||'—') + ', ' + (d.state||'—'),
+      plan:           planNames[d.plan] || d.plan || '—',
+      amount:         amt,
+      utr:            d.utr       || 'Not provided',
+      urgency:        d.urgency   || '—',
+      default_reason: d.mindset?.defaultReason || '—',
+      negotiation:    d.mindset?.negotiation   || '—',
+      submitted_at:   submittedAt,
+    }).then(()=>console.log('Alert email sent'))
       .catch(e=>console.warn('Alert email failed:',e));
-    // Confirmation to customer (only if email provided)
-    if(d.email){
-      emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_CONF, emailParams)
+
+    // Confirmation to customer — only if they provided email
+    if(d.email && d.email !== '—'){
+      emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_CONF, {
+        to_email:      d.email,
+        case_id:       d.ref   || '—',
+        customer_name: d.name  || '—',
+        plan:          planNames[d.plan] || d.plan || '—',
+        amount:        amt,
+        submitted_at:  submittedAt,
+      }).then(()=>console.log('Confirmation email sent'))
         .catch(e=>console.warn('Confirmation email failed:',e));
     }
   }
