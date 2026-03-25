@@ -217,7 +217,7 @@
     const EJS_SERVICE_ID    = 'service_qxqgr3j';
     const EJS_TEMPLATE_ALERT = 'template_1zihq6q';   // new_case_alert → to you
     const EJS_TEMPLATE_CONF  = 'template_3l9ckn8';    // case_confirmation → to customer
-    if(EJS_PUBLIC_KEY !== 'qIBJZjVqW6CyF8OMp'){
+    if(EJS_PUBLIC_KEY){
       emailjs.init({ publicKey: EJS_PUBLIC_KEY });
     }
   </script>
@@ -520,9 +520,11 @@ async function submitPayment(){
 
   sessionStorage.setItem('goresolve_intake',JSON.stringify(d));
 
-  // ── EMAIL NOTIFICATIONS via EmailJS ──
+  // Shared plan names for email + WhatsApp
   const planNames={A:'Plan A (₹1,499)',B:'Plan B (₹2,499)',C:'Plan C (₹3,999)',D:'Custom Plan'};
-  if(typeof emailjs !== 'undefined' && EJS_PUBLIC_KEY !== 'qIBJZjVqW6CyF8OMp'){
+
+  // ── EMAIL NOTIFICATIONS via EmailJS ──
+  if(typeof emailjs !== 'undefined'){
     const emailParams = {
       case_id:        d.ref,
       customer_name:  d.name||'—',
@@ -549,8 +551,6 @@ async function submitPayment(){
   }
 
   // ── WHATSAPP NOTIFICATION ──
-  // Build a pre-filled WhatsApp message so you get notified instantly
-  const planNames={A:'Plan A (₹1,499)',B:'Plan B (₹2,499)',C:'Plan C (₹3,999)',D:'Custom Plan'};
   const waMsg = encodeURIComponent(
     `🔔 New GOresolve Case Submitted!\n\n` +
     `Ref: ${d.ref}\n` +
