@@ -558,16 +558,18 @@ async function submitPayment(){
       .catch(e=>console.warn('Alert email failed:',e));
 
     // Confirmation to customer — only if they provided email
-    if(d.email && d.email !== '—'){
+    if(d.email && d.email !== '—' && d.email.includes('@')){
       emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_CONF, {
         to_email:      d.email,
+        to_name:       d.name || 'Customer',
+        reply_to:      'support@goresolve.in',
         case_id:       d.ref   || '—',
         customer_name: d.name  || '—',
         plan:          planNames[d.plan] || d.plan || '—',
         amount:        amt,
         submitted_at:  submittedAt,
-      }).then(()=>console.log('Confirmation email sent'))
-        .catch(e=>console.warn('Confirmation email failed:',e));
+      }).then(()=>console.log('✅ Confirmation email sent to', d.email))
+        .catch(e=>console.warn('❌ Confirmation email failed:', e.text || e));
     }
   }
 
