@@ -589,7 +589,7 @@
     <div style="font-size:.72rem;color:var(--muted);margin-top:.4rem" id="sumTotal"></div>
   </div>
   <div class="sum-total">
-    <span class="st-lbl">Annual Plan</span>
+    <span class="st-lbl" id="sumLbl">Annual Plan</span>
     <span class="st-price" id="sumPrice">&#8377;—</span>
   </div>
   <div class="sum-shield">
@@ -717,11 +717,18 @@ function recalc(){
 function updateSumPlan(k){
   const b=document.getElementById('sumBadge');
   const p=document.getElementById('sumPrice');
-  if(!k){b.classList.remove('show');b.textContent='';p.textContent='₹—';return;}
+  const lbl=document.getElementById('sumLbl');
+  if(!k){b.classList.remove('show');b.textContent='';p.textContent='₹—';if(lbl)lbl.textContent='Annual Plan';return;}
   const pl=PLANS[k];
   b.textContent='⭐ '+pl.name+' – '+pl.exp;
   b.classList.add('show');
-  p.textContent = pl.premium ? (window._premiumFee?'₹'+window._premiumFee.toLocaleString('en-IN')+'/yr':'Premium Resolution') : '₹'+pl.price.toLocaleString('en-IN');
+  if(pl.premium){
+    if(lbl) lbl.textContent='Premium Resolution';
+    p.textContent = window._premiumFee ? '₹'+window._premiumFee.toLocaleString('en-IN')+'/yr' : '—';
+  } else {
+    if(lbl) lbl.textContent='Annual Plan';
+    p.textContent = '₹'+pl.price.toLocaleString('en-IN');
+  }
 }
 
 function updateSumLoans(total){
