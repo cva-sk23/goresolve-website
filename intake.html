@@ -686,7 +686,7 @@ function recalc(){
     if(i>=detIdx){
       const opt=document.createElement('option');
       opt.value=k;
-      var priceText = PLANS[k].premium ? '2% of OTS amount' : '₹'+PLANS[k].price.toLocaleString('en-IN')+'/yr';
+      var priceText = PLANS[k].premium ? 'Premium Resolution' : '₹'+PLANS[k].price.toLocaleString('en-IN')+'/yr';
       opt.textContent=PLANS[k].name+' – '+priceText+(k===p?' ✓ Recommended':'');
       overrideSel.appendChild(opt);
     }
@@ -700,7 +700,15 @@ function recalc(){
   selPlan=overrideSel.value||p;
   const pl=PLANS[selPlan];
   document.getElementById('dName').textContent=pl.name;
-  document.getElementById('dPrice').textContent = pl.premium ? '2% of estimated OTS amount (min ₹7,200/yr)' : '₹'+pl.price.toLocaleString('en-IN')+'/yr';
+  if(pl.premium){
+    // Internal calculation only — not shown to user
+    const calcFee = Math.max(7200, Math.round(total * 0.30 * 0.02));
+    window._premiumFee = calcFee;
+    document.getElementById('dPrice').textContent = '₹'+calcFee.toLocaleString('en-IN')+'/yr';
+  } else {
+    window._premiumFee = null;
+    document.getElementById('dPrice').textContent = '₹'+pl.price.toLocaleString('en-IN')+'/yr';
+  }
   document.getElementById('dExp').textContent=pl.exp+' · Your total: ₹'+total.toLocaleString('en-IN');
   document.getElementById('detectBox').classList.add('show');
   updateSumPlan(selPlan);
@@ -713,7 +721,7 @@ function updateSumPlan(k){
   const pl=PLANS[k];
   b.textContent='⭐ '+pl.name+' – '+pl.exp;
   b.classList.add('show');
-  p.textContent = pl.premium ? '2% of OTS' : '₹'+pl.price.toLocaleString('en-IN');
+  p.textContent = pl.premium ? (window._premiumFee?'₹'+window._premiumFee.toLocaleString('en-IN')+'/yr':'Premium Resolution') : '₹'+pl.price.toLocaleString('en-IN');
 }
 
 function updateSumLoans(total){
@@ -866,17 +874,36 @@ function buildPlanCards(){
       ${isRecommended?'<span class="rec-tag">✓ RECOMMENDED</span>':''}
       ${isLocked?'<span class="lock-tag">🔒 LOCKED</span>':''}`;
 
-    d.innerHTML=`
-      <div>
-        <div class="pm-name">${pl.name}${tags}</div>
-        <div class="pm-exp">${pl.exp}${isLocked?' · Not eligible based on your outstanding':''}</div>
-      </div>
-      <div style="text-align:right">
-        <div class="pm-price" style="${isLocked?'color:var(--muted)':''}">
-          ${pl.premium ? '2% of OTS' : '₹'+pl.price.toLocaleString('en-IN')}
+    if(pl.premium && !isLocked){
+      const premFee = window._premiumFee ? '₹'+window._premiumFee.toLocaleString('en-IN') : '—';
+      d.innerHTML=`
+        <div style="width:100%">
+          <div class="pm-name">Premium Resolution Plan${tags}</div>
+          <div class="pm-exp" style="margin-bottom:.5rem">${pl.exp}</div>
+          <div style="font-size:.82rem;color:var(--muted);line-height:1.5;margin-bottom:.75rem">
+            Due to higher effort and case complexity, your case qualifies for our Premium Resolution Plan. This includes dedicated expert handling, advanced negotiation strategy, and priority resolution support.
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:.6rem">
+            <span style="font-size:.82rem;color:var(--muted);font-weight:600">Annual Premium Fee</span>
+            <div style="text-align:right">
+              <div class="pm-price">${premFee}</div>
+              <div class="pm-yr">per year</div>
+            </div>
+          </div>
+        </div>`;
+    } else {
+      d.innerHTML=`
+        <div>
+          <div class="pm-name">${pl.name}${tags}</div>
+          <div class="pm-exp">${pl.exp}${isLocked?' · Not eligible based on your outstanding':''}</div>
         </div>
-        <div class="pm-yr">${isLocked?'unavailable':pl.premium?'of settlement amount':'per year'}</div>
-      </div>`;
+        <div style="text-align:right">
+          <div class="pm-price" style="${isLocked?'color:var(--muted)':''}">
+            ${pl.premium ? (window._premiumFee?'₹'+window._premiumFee.toLocaleString('en-IN'):'—') : '₹'+pl.price.toLocaleString('en-IN')}
+          </div>
+          <div class="pm-yr">${isLocked?'unavailable':'per year'}</div>
+        </div>`;
+    }
     c.appendChild(d);
   });
 }
@@ -902,7 +929,8 @@ function toPayment(){
     },
     plan:    selPlan,
     planName:PLANS[selPlan].name,
-    price:   PLANS[selPlan].premium ? null : PLANS[selPlan].price,
+    price:   PLANS[selPlan].premium ? (window._premiumFee || null) : PLANS[selPlan].price,
+    premiumFee: PLANS[selPlan].premium ? (window._premiumFee || null) : null,
     loans:   []
   };
   document.querySelectorAll('.loan-row').forEach(r=>{
