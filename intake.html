@@ -614,7 +614,7 @@ const PLANS = {
   A:{name:'Plan A',          price:1499, exp:'Outstanding below ₹2 Lakh',  max:200000},
   B:{name:'Plan B',          price:2499, exp:'Outstanding below ₹5 Lakh',  max:500000, pop:true},
   C:{name:'Plan C',          price:3999, exp:'₹5 Lakh – ₹10 Lakh', max:1000000},
-  D:{name:'Custom Plan',     price:4999, exp:'Outstanding above ₹10 Lakh', max:Infinity}
+  D:{name:'Premium Resolution', price:null, exp:'Outstanding above ₹10 Lakh', max:Infinity, premium:true}
 };
 
 let lc=0, selPlan=null, detPlan=null;
@@ -686,7 +686,8 @@ function recalc(){
     if(i>=detIdx){
       const opt=document.createElement('option');
       opt.value=k;
-      opt.textContent=PLANS[k].name+' – ₹'+PLANS[k].price.toLocaleString('en-IN')+'/yr'+(k===p?' ✓ Recommended':'');
+      var priceText = PLANS[k].premium ? '2% of OTS amount' : '₹'+PLANS[k].price.toLocaleString('en-IN')+'/yr';
+      opt.textContent=PLANS[k].name+' – '+priceText+(k===p?' ✓ Recommended':'');
       overrideSel.appendChild(opt);
     }
   });
@@ -699,7 +700,7 @@ function recalc(){
   selPlan=overrideSel.value||p;
   const pl=PLANS[selPlan];
   document.getElementById('dName').textContent=pl.name;
-  document.getElementById('dPrice').textContent='₹'+pl.price.toLocaleString('en-IN')+'/yr';
+  document.getElementById('dPrice').textContent = pl.premium ? '2% of estimated OTS amount (min ₹7,200/yr)' : '₹'+pl.price.toLocaleString('en-IN')+'/yr';
   document.getElementById('dExp').textContent=pl.exp+' · Your total: ₹'+total.toLocaleString('en-IN');
   document.getElementById('detectBox').classList.add('show');
   updateSumPlan(selPlan);
@@ -712,7 +713,7 @@ function updateSumPlan(k){
   const pl=PLANS[k];
   b.textContent='⭐ '+pl.name+' – '+pl.exp;
   b.classList.add('show');
-  p.textContent='₹'+pl.price.toLocaleString('en-IN');
+  p.textContent = pl.premium ? '2% of OTS' : '₹'+pl.price.toLocaleString('en-IN');
 }
 
 function updateSumLoans(total){
@@ -871,8 +872,10 @@ function buildPlanCards(){
         <div class="pm-exp">${pl.exp}${isLocked?' · Not eligible based on your outstanding':''}</div>
       </div>
       <div style="text-align:right">
-        <div class="pm-price" style="${isLocked?'color:var(--muted)':''}">₹${pl.price.toLocaleString('en-IN')}</div>
-        <div class="pm-yr">${isLocked?'unavailable':'per year'}</div>
+        <div class="pm-price" style="${isLocked?'color:var(--muted)':''}">
+          ${pl.premium ? '2% of OTS' : '₹'+pl.price.toLocaleString('en-IN')}
+        </div>
+        <div class="pm-yr">${isLocked?'unavailable':pl.premium?'of settlement amount':'per year'}</div>
       </div>`;
     c.appendChild(d);
   });
@@ -899,7 +902,7 @@ function toPayment(){
     },
     plan:    selPlan,
     planName:PLANS[selPlan].name,
-    price:   PLANS[selPlan].price,
+    price:   PLANS[selPlan].premium ? null : PLANS[selPlan].price,
     loans:   []
   };
   document.querySelectorAll('.loan-row').forEach(r=>{

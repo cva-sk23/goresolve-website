@@ -690,7 +690,7 @@ setTimeout(()=>{
   }
 }, 3000);
 
-const PLANS={A:{name:'Plan A',price:1499},B:{name:'Plan B',price:2499},C:{name:'Plan C',price:3999},D:{name:'Custom',price:4999}};
+const PLANS={A:{name:'Plan A',price:1499},B:{name:'Plan B',price:2499},C:{name:'Plan C',price:3999},D:{name:'Premium',price:null,premium:true}};
 
 // ─────────────────────────────────────────
 // FIREBASE SETUP HELPERS
@@ -874,16 +874,21 @@ async function deleteCaseFromDb(id){
 // SEED DEMO DATA
 // ─────────────────────────────────────────
 async function seedDemoData(){
-  // Never seed if admin has already cleared demo data
-  if(localStorage.getItem('gor_demo_cleared')==='1') return;
-  // Only seed if no cases exist
+  // Check Firestore first for permanent cleared flag
   if(USE_FIREBASE()){
     try{
-      const {collection,getDocs} = window._fs;
+      const {doc,getDoc,collection,getDocs} = window._fs;
+      // Check permanent flag in Firestore config collection
+      const flagDoc = await getDoc(doc(window._db,'config','demo_cleared'));
+      if(flagDoc.exists()) return; // permanently cleared
+      // Also check localStorage as backup
+      if(localStorage.getItem('gor_demo_cleared')==='1') return;
+      // Only seed if no real cases exist
       const snap = await getDocs(collection(window._db,'cases'));
-      if(!snap.empty) return; // already has real data
+      if(!snap.empty) return;
     }catch(e){ return; }
   } else {
+    if(localStorage.getItem('gor_demo_cleared')==='1') return;
     if(localStorage.getItem('crm_cases')) return;
   }
   const demo=[
@@ -918,10 +923,21 @@ async function clearDemoData(){
   if(!confirm('Remove the 5 sample/demo cases and keep only real submitted cases. Continue?')) return;
   const demoIds=['GOR-A1B2C3','GOR-D4E5F6','GOR-G7H8I9','GOR-J1K2L3','GOR-M4N5O6'];
   for(const id of demoIds) await deleteCaseFromDb(id);
-  // Set permanent flag so demo data never reseeds again
+  // Set PERMANENT flag in Firestore — survives browser clears, works on all devices
+  if(USE_FIREBASE()){
+    try{
+      const {doc,setDoc} = window._fs;
+      await setDoc(doc(window._db,'config','demo_cleared'),{
+        cleared: true,
+        clearedAt: new Date().toISOString(),
+        clearedBy: currentUser?.username || 'admin'
+      });
+    }catch(e){ console.warn('Could not set Firestore flag',e); }
+  }
+  // Also set localStorage as backup
   localStorage.setItem('gor_demo_cleared','1');
   await loadCases(); renderDashboard();
-  showToast('✅ Demo data cleared. Only real submissions remain.');
+  showToast('✅ Demo data cleared permanently. Will never reappear.');
 }
 
 // ─────────────────────────────────────────

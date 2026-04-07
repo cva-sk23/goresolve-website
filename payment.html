@@ -367,7 +367,7 @@ const PLANS={
   A:{name:'Plan A',price:1499,exp:'Outstanding below ₹2 Lakh'},
   B:{name:'Plan B ⭐',price:2499,exp:'Outstanding below ₹5 Lakh'},
   C:{name:'Plan C',price:3999,exp:'₹5 Lakh – ₹10 Lakh'},
-  D:{name:'Custom Plan',price:4999,exp:'Outstanding above ₹10 Lakh'}
+  D:{name:'Premium Resolution',price:null,exp:'Outstanding above ₹10 Lakh',premium:true}
 };
 </script>
 
@@ -536,7 +536,7 @@ async function submitPayment(){
 
   // ── EMAIL NOTIFICATIONS via EmailJS ──
   if(typeof emailjs !== 'undefined'){
-    const amt = '₹'+(PLANS[d.plan]?.price||0).toLocaleString('en-IN');
+    const amt = PLANS[d.plan]?.premium ? '2% of OTS' : '₹'+(PLANS[d.plan]?.price||0).toLocaleString('en-IN');
     const submittedAt = new Date(d.submittedAt).toLocaleString('en-IN');
 
     // Alert to support@goresolve.in — send regardless of customer email
