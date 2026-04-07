@@ -39,7 +39,11 @@
     nav{background:white;border-bottom:1px solid var(--border);padding:0 5vw;height:66px;
         display:flex;align-items:center;justify-content:space-between;
         box-shadow:0 2px 12px rgba(30,100,110,.06)}
-    .nav-logo img{height:42px;width:auto}
+    .nav-logo{display:flex;align-items:center;text-decoration:none}
+    .nav-logo-wordmark{display:flex;flex-direction:column;line-height:1}
+    .nav-logo-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+    .nav-logo-name span{color:var(--teal)}
+    .nav-logo-tagline{font-size:.5rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:1px}
 
     /* STEPPER — all done */
     .stepper-bar{background:white;border-bottom:1px solid var(--border);padding:.85rem 5vw}
@@ -206,7 +210,7 @@
   <!-- CONTACT -->
   <div class="contact-card">
     <p>Questions or urgent situations? Reach us directly:</p>
-    <p><strong>Email:</strong> <a href="mailto:support@goresolve.in">support@goresolve.in</a></p>
+    <p><strong>Email:</strong> <a href="/cdn-cgi/l/email-protection#6a191f1a1a05181e2a0d05180f1905061c0f440304"><span class="__cf_email__" data-cfemail="0f7c7a7f7f607d7b4f68607d6a7c6063796a216661">[email&#160;protected]</span></a></p>
     <p style="margin-top:.3rem;font-size:.78rem;color:var(--muted)">Please quote your reference number in any email.</p>
     <a href="index.html" class="btn-home">&#8592; Back to Home</a>
   </div>
@@ -217,16 +221,16 @@
   <div class="tf-item">&#10003; Borrower-First Platform</div>
   <div class="tf-item">&#10003; Not a Recovery Agency</div>
   <div class="tf-item">&#10003; DPIIT: DIPP237434</div>
-  <div class="tf-item">&#10003; support@goresolve.in</div>
+  <div class="tf-item">&#10003; <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dba8aeababb4a9af9bbcb4a9bea8b4b7adbef5b2b5">[email&#160;protected]</a></div>
 </div>
 
-<script type="module">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const PLANS={
-  A:{name:'Plan A',price:1499},B:{name:'Plan B',price:2499},
-  C:{name:'Plan C',price:3999},D:{name:'Custom Plan',price:4999}
+  A:{name:'Plan A',price:1499},B:{name:'Plan B ⭐',price:2499},
+  C:{name:'Plan C',price:3999},D:{name:'Premium Resolution',price:null,premium:true}
 };
 
 const FB_CONFIG_KEY='gor_fb_config';
@@ -246,7 +250,8 @@ async function writeCaseToFirestore(db, caseObj){
     if(d.plan&&PLANS[d.plan]){
       const pl=PLANS[d.plan];
       document.getElementById('refPlan').textContent=pl.name;
-      document.getElementById('refAmt').textContent='₹'+pl.price.toLocaleString('en-IN')+' / year';
+      document.getElementById('refAmt').textContent=
+        pl.premium ? '2% of OTS (Custom)' : '₹'+pl.price.toLocaleString('en-IN')+' / year';
     }
     if(d.submittedAt){
       const dt=new Date(d.submittedAt);
@@ -255,10 +260,10 @@ async function writeCaseToFirestore(db, caseObj){
         ' '+dt.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
     }
 
-    // Build case object
+    // Build case object (fallback only — payment.html already wrote to Firestore)
     const loans=[];
-    if(d.loanTypes&&Array.isArray(d.loanTypes)){
-      d.loanTypes.forEach(t=>loans.push({type:t,lender:d.lenders||'',amount:d.totalDebt||''}));
+    if(Array.isArray(d.loans)){
+      d.loans.forEach(l=>loans.push({type:l.type||'',lender:l.lender||'',accno:l.accno||'',amount:l.amount||''}));
     }
     if(!loans.length&&d.totalDebt) loans.push({type:'Loan',lender:'',amount:d.totalDebt});
 
@@ -271,14 +276,16 @@ async function writeCaseToFirestore(db, caseObj){
       state: d.state||'—',
       plan: d.plan||'A',
       urgency: d.urgency||'—',
-      desc: d.situation||d.urgency||'Submitted via website',
+      desc: d.desc||d.situation||d.urgency||'Submitted via website',
       loans: loans,
       status: 'new',
       payStatus: d.utr?'paid':'pending',
       utr: d.utr||'',
       expert: '',
       notes: '',
-      submittedAt: d.submittedAt||new Date().toISOString()
+      submittedAt: d.submittedAt||new Date().toISOString(),
+      expiryDate: (()=>{ const e=new Date(d.submittedAt||new Date()); e.setFullYear(e.getFullYear()+1); return e.toISOString().slice(0,10); })(),
+      mindset: d.mindset || { defaultReason:'', negotiation:'', recoveryContact:'', harassment:'' }
     };
 
     // Try Firebase first, fall back to localStorage
@@ -328,12 +335,4 @@ async function writeCaseToFirestore(db, caseObj){
   <!-- WhatsApp Float Button -->
   <a class="wa-float" href="https://wa.me/919884696343?text=Hi+GOresolve+%F0%9F%91%8B+I+just+submitted+my+case+on+your+website.+When+will+your+team+contact+me%3F" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
         <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;flex-shrink:0">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-    </svg>
-    <div class="wa-text">
-      <span class="wa-main">Talk to an Expert</span>
-      <span class="wa-sub">Free · Reply in minutes</span>
-    </div>
-  </a>
-</body>
-</html>
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.0

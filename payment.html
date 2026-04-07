@@ -506,7 +506,7 @@ async function submitPayment(){
     desc: d.desc||d.situation||d.urgency||'Submitted via website',
     loans: loans,
     status: 'new',
-    payStatus: d.utr?'pending':'pending',
+    payStatus: 'pending',
     utr: d.utr||'',
     expert: '',
     notes: '',

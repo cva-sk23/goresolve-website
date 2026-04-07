@@ -577,9 +577,9 @@
       </div>
       <div class="plan-card custom-plan">
         <div class="plan-lbl">Premium Resolution</div>
-        <div class="plan-price-range" id="premiumPriceDisplay">2% of Settlement</div>
-        <div class="plan-yr">of estimated OTS amount</div>
-        <div class="plan-exp">&#128202; Outstanding above &#8377;10 Lakh &middot; Min &#8377;7,200</div>
+        <div class="plan-price-range" id="premiumPriceDisplay">Premium Resolution Plan</div>
+        <div class="plan-yr">Dedicated expert handling</div>
+        <div class="plan-exp">&#128202; Outstanding above &#8377;10 Lakh</div>
         <div class="plan-div"></div>
         <ul class="plan-features">
           <li>High-value OTS negotiation</li>
@@ -860,8 +860,7 @@ function runCalc(){
     document.getElementById('crSettleRange').innerHTML = 'No OTS at SMA stage';
     document.getElementById('crSave').innerHTML = '—';
     var p0 = amt < 200000 ? 'Plan A' : amt < 500000 ? 'Plan B' : amt < 1000000 ? 'Plan C' : 'Premium Resolution';
-    var premSMA = amt >= 1000000 ? ' (est. &#8377;' + Math.round(amt*0.30*0.02).toLocaleString('en-IN') + '/yr)' : '';
-    var pr0 = amt < 200000 ? '&#8377;1,499/yr' : amt < 500000 ? '&#8377;2,499/yr' : amt < 1000000 ? '&#8377;3,999/yr' : '2% of OTS' + premSMA;
+    var pr0 = amt < 200000 ? '&#8377;1,499/yr' : amt < 500000 ? '&#8377;2,499/yr' : amt < 1000000 ? '&#8377;3,999/yr' : (function(){ var f=Math.max(7200,Math.round(amt*0.30*0.02)); return '&#8377;'+f.toLocaleString('en-IN')+'/yr'; })();
     document.getElementById('crPlan').textContent = p0;
     document.getElementById('crPlanPrice').innerHTML = pr0;
     document.querySelector('.calc-note').innerHTML = '&#9432; Your account is in <strong>SMA (Special Mention Account)</strong> stage. Banks do not offer One-Time Settlements before the account turns NPA (90+ days overdue). GOresolve can still help you with restructuring guidance and lender communication at this stage. <a href="intake.html" style="color:var(--teal);font-weight:700;margin-left:.4rem">Talk to us &#8594;</a>';
@@ -908,11 +907,10 @@ function runCalc(){
   } else if(amt < 1000000){
     plan='Plan C'; price='&#8377;3,999/yr';
   } else {
-    // Premium: outstanding × 30% settlement × 2% subscription
-    var premAmt = Math.round(amt * 0.30 * 0.02 / 100) * 100;
-    if(premAmt < 7200) premAmt = 7200; // minimum ₹7,200
+    // Premium: outstanding × 30% settlement × 2% subscription (internal only)
+    var premAmt = Math.max(7200, Math.round(amt * 0.30 * 0.02));
     plan='Premium Resolution';
-    price='&#8377;' + premAmt.toLocaleString('en-IN') + '/yr (2% of OTS est.)';
+    price='&#8377;' + premAmt.toLocaleString('en-IN') + '/yr';
   }
   document.getElementById('crPlan').textContent = plan;
   document.getElementById('crPlanPrice').innerHTML = price;

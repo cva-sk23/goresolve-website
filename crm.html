@@ -691,6 +691,8 @@ setTimeout(()=>{
 }, 3000);
 
 const PLANS={A:{name:'Plan A',price:1499},B:{name:'Plan B',price:2499},C:{name:'Plan C',price:3999},D:{name:'Premium',price:null,premium:true}};
+// Helper: get effective price for a case (uses premiumFee for Plan D)
+function casePrice(c){ return PLANS[c.plan]?.premium ? (c.premiumFee||0) : (PLANS[c.plan]?.price||0); }
 
 // ─────────────────────────────────────────
 // FIREBASE SETUP HELPERS
@@ -1098,7 +1100,7 @@ function caseRow(c,showAmt=true){
     <td><span class="td-name">${c.name}</span></td>
     <td class="td-phone"><a href="tel:${c.phone}">${c.phone}</a></td>
     <td><span class="plan-pill ${c.plan}">${PLANS[c.plan]?.name||c.plan}</span></td>
-    ${showAmt?`<td>₹${(PLANS[c.plan]?.price||0).toLocaleString('en-IN')}</td>`:''}
+    ${showAmt?`<td>₹${casePrice(c).toLocaleString('en-IN')}</td>`:''}
     <td>${urgencyBadge(c.urgency)}</td>
     <td>${statusBadge(c.status)}</td>
     <td>${expiryBadge(c.expiryDate||null)}</td>
@@ -1188,13 +1190,13 @@ async function renderPayments(){
   await loadCases();
   document.getElementById('pay-pending-count').textContent=cases.filter(c=>c.payStatus==='pending').length;
   document.getElementById('pay-verified-count').textContent=cases.filter(c=>c.payStatus==='verified').length;
-  const rev=cases.filter(c=>c.payStatus==='verified').reduce((s,c)=>s+(PLANS[c.plan]?.price||0),0);
+  const rev=cases.filter(c=>c.payStatus==='verified').reduce((s,c)=>s+casePrice(c),0);
   document.getElementById('pay-revenue').textContent='₹'+rev.toLocaleString('en-IN');
   document.getElementById('paymentsTbody').innerHTML=cases.map(c=>`<tr>
     <td><span class="td-ref">${c.id}</span></td>
     <td><span class="td-name">${c.name}</span></td>
     <td><span class="plan-pill ${c.plan}">${PLANS[c.plan]?.name||c.plan}</span></td>
-    <td>₹${(PLANS[c.plan]?.price||0).toLocaleString('en-IN')}</td>
+    <td>₹${casePrice(c).toLocaleString('en-IN')}</td>
     <td style="font-size:.78rem">${c.utr||'<span style="color:var(--muted)">Not provided</span>'}</td>
     <td>${payBadge(c.payStatus)}</td>
     <td><div class="pay-verify">
@@ -1281,7 +1283,7 @@ async function quickAssign(id,expert){
 async function renderReports(){
   await loadCases();
   const rev={A:0,B:0,C:0,D:0};
-  cases.filter(c=>c.payStatus==='verified').forEach(c=>{if(rev[c.plan]!==undefined)rev[c.plan]+=(PLANS[c.plan]?.price||0);});
+  cases.filter(c=>c.payStatus==='verified').forEach(c=>{if(rev[c.plan]!==undefined)rev[c.plan]+=casePrice(c);});
   const maxR=Math.max(...Object.values(rev),1);
   document.getElementById('revenueChart').innerHTML=
     Object.entries(rev).map(([k,v])=>`<div class="bar-row">
@@ -1304,7 +1306,7 @@ async function renderReports(){
       <td><span class="td-name">${c.name}</span></td>
       <td>${c.phone}</td><td style="font-size:.78rem">${c.city||'—'}</td><td style="font-size:.78rem">${c.state||'—'}</td><td style="font-size:.78rem">${c.email||'—'}</td>
       <td><span class="plan-pill ${c.plan}">${PLANS[c.plan]?.name||c.plan}</span></td>
-      <td>₹${(PLANS[c.plan]?.price||0).toLocaleString('en-IN')}</td>
+      <td>₹${casePrice(c).toLocaleString('en-IN')}</td>
       <td>${statusBadge(c.status)}</td><td>${payBadge(c.payStatus)}</td>
       <td>${expiryBadge(c.expiryDate||null)}</td>
       <td style="font-size:.78rem;color:var(--teal-d)">${c.expert||'—'}</td>
@@ -1418,7 +1420,7 @@ function openCase(id){
   }
   document.getElementById('modalPayment').innerHTML=
     di('Plan',PLANS[c.plan]?.name||c.plan)+
-    di('Amount','₹'+(PLANS[c.plan]?.price||0).toLocaleString('en-IN'))+
+    di('Amount','₹'+casePrice(c).toLocaleString('en-IN'))+
     di('Payment Status',payBadge(c.payStatus)+
       (c.payStatus!=='verified'&&(currentUser?.role==='admin'||currentUser?.role==='manager')?
         ` <button onclick="verifyPayment('${c.id}','verified');closeModal()" style="margin-left:.5rem;padding:.2rem .7rem;background:#27AE60;color:white;border:none;border-radius:5px;font-size:.72rem;font-weight:700;cursor:pointer">✓ Approve</button>
@@ -1509,7 +1511,7 @@ function exportCSV(){
   const headers=['Ref#','Name','Phone','City','State','Email','Plan','Amount','Urgency','Status','Payment','UTR','Expert','Notes','Submitted'];
   const rows=cases.map(c=>[
     c.id,c.name,c.phone,c.city||'',c.state||'',c.email||'',
-    PLANS[c.plan]?.name||c.plan,PLANS[c.plan]?.price||0,
+    PLANS[c.plan]?.name||c.plan,casePrice(c),
     c.urgency,c.status,c.payStatus,c.utr||'',c.expert||'',
     (c.notes||'').replace(/,/g,';'),
     new Date(c.submittedAt).toLocaleString('en-IN')
