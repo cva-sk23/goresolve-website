@@ -420,9 +420,15 @@ document.addEventListener('DOMContentLoaded', function(){
     if(d.plan&&PLANS[d.plan]){
       const pl=PLANS[d.plan];
       document.getElementById('s-plan').textContent='⭐ '+pl.name+' – '+pl.exp;
-      document.getElementById('s-price').textContent='₹'+pl.price.toLocaleString('en-IN');
-      document.getElementById('payAmt').textContent='₹'+pl.price.toLocaleString('en-IN');
-      document.getElementById('planLabel').textContent=pl.name+' · Annual Subscription';
+      if(pl.premium){
+        document.getElementById('s-price').textContent='2% of OTS';
+        document.getElementById('payAmt').textContent='2% of OTS';
+        document.getElementById('planLabel').textContent=pl.name+' · Custom Pricing';
+      } else {
+        document.getElementById('s-price').textContent='₹'+pl.price.toLocaleString('en-IN');
+        document.getElementById('payAmt').textContent='₹'+pl.price.toLocaleString('en-IN');
+        document.getElementById('planLabel').textContent=pl.name+' · Annual Subscription';
+      }
     }
     if(d.loans&&d.loans.length){
       const list=document.getElementById('s-loans');

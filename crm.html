@@ -635,12 +635,16 @@
           </select>
         </div>
         <div><label style="font-size:.7rem;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:.3rem">Plan</label>
-          <select class="status-select" id="add-plan">
+          <select class="status-select" id="add-plan" onchange="toggleCustomFee()">
             <option value="A">Plan A – ₹1,499</option>
             <option value="B" selected>Plan B – ₹2,499</option>
             <option value="C">Plan C – ₹3,999</option>
-            <option value="D">Custom – ₹4,999</option>
-          </select></div>
+            <option value="D">Premium Resolution (Custom)</option>
+          </select>
+          <div id="customFeeRow" style="display:none;margin-top:.5rem">
+            <label style="font-size:.68rem;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:.3rem">Custom Fee (₹) *</label>
+            <input class="assign-input" id="add-premium-fee" type="number" min="0" step="1" placeholder="e.g. 15600"/>
+          </div></div>
         <div><label style="font-size:.7rem;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:.3rem">Urgency</label>
           <select class="status-select" id="add-urgency">
             <option>🟢 Manageable</option>
@@ -1423,8 +1427,8 @@ function openCase(id){
     di('Amount','₹'+casePrice(c).toLocaleString('en-IN'))+
     di('Payment Status',payBadge(c.payStatus)+
       (c.payStatus!=='verified'&&(currentUser?.role==='admin'||currentUser?.role==='manager')?
-        ` <button onclick="verifyPayment('${c.id}','verified');closeModal()" style="margin-left:.5rem;padding:.2rem .7rem;background:#27AE60;color:white;border:none;border-radius:5px;font-size:.72rem;font-weight:700;cursor:pointer">✓ Approve</button>
-          <button onclick="verifyPayment('${c.id}','rejected');closeModal()" style="margin-left:.3rem;padding:.2rem .7rem;background:#C0392B;color:white;border:none;border-radius:5px;font-size:.72rem;font-weight:700;cursor:pointer">✗ Reject</button>`
+        ` <button onclick="verifyPaymentModal('${c.id}','verified')" style="margin-left:.5rem;padding:.2rem .7rem;background:#27AE60;color:white;border:none;border-radius:5px;font-size:.72rem;font-weight:700;cursor:pointer">✓ Approve</button>
+          <button onclick="verifyPaymentModal('${c.id}','rejected')" style="margin-left:.3rem;padding:.2rem .7rem;background:#C0392B;color:white;border:none;border-radius:5px;font-size:.72rem;font-weight:700;cursor:pointer">✗ Reject</button>`
         :''))+
     di('UTR / Txn ID',c.utr||'Not provided');
   document.getElementById('modalDesc').textContent=c.desc||'No description provided.';
@@ -1485,13 +1489,17 @@ async function addCaseManual(){
   const name=document.getElementById('add-name').value.trim();
   const phone=document.getElementById('add-phone').value.trim();
   if(!name||!phone){showToast('⚠️ Name and phone are required');return;}
+  const selPlan=document.getElementById('add-plan').value;
+  const feeInput=document.getElementById('add-premium-fee')?.value.trim();
+  if(selPlan==='D'&&!feeInput){showToast('⚠️ Please enter the custom fee for Premium plan');return;}
   const nc={
     id:'GOR-'+Date.now().toString(36).toUpperCase().slice(-6),
     name,phone,
     email:document.getElementById('add-email').value.trim(),
     city:document.getElementById('add-city').value.trim(),
     state:document.getElementById('add-state')?.value||'—',
-    plan:document.getElementById('add-plan').value,
+    plan:selPlan,
+    premiumFee:selPlan==='D'?parseFloat(feeInput)||0:null,
     urgency:document.getElementById('add-urgency').value,
     desc:document.getElementById('add-desc').value.trim(),
     loans:[],status:'new',payStatus:'pending',utr:'',expert:'',notes:'',
@@ -1500,7 +1508,9 @@ async function addCaseManual(){
   await saveCaseToDb(nc);
   await loadCases();
   closeAddModal();renderDashboard();
-  ['add-name','add-phone','add-email','add-city','add-desc'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';}); const ss=document.getElementById('add-state');if(ss)ss.value='';
+  ['add-name','add-phone','add-email','add-city','add-desc','add-premium-fee'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('customFeeRow').style.display='none';
+  document.getElementById('add-plan').value='B'; const ss=document.getElementById('add-state');if(ss)ss.value='';
   showToast('✅ Case added: '+nc.id);
 }
 
@@ -1527,6 +1537,30 @@ function exportCSV(){
 // ─────────────────────────────────────────
 // TOAST
 // ─────────────────────────────────────────
+async function verifyPaymentModal(id,status){
+  const c=cases.find(x=>x.id===id);if(!c)return;
+  c.payStatus=status;if(status==='verified')c.status='active';
+  await saveCaseToDb(c);
+  await loadCases();
+  // Re-render payment section in modal without closing it
+  const PLANS_={A:{name:'Plan A',price:1499},B:{name:'Plan B',price:2499},C:{name:'Plan C',price:3999},D:{name:'Premium',price:null,premium:true}};
+  document.getElementById('modalPayment').innerHTML=
+    di('Plan',PLANS_[c.plan]?.name||c.plan)+
+    di('Amount','₹'+casePrice(c).toLocaleString('en-IN'))+
+    di('Payment Status',payBadge(c.payStatus)+
+      (c.payStatus!=='verified'&&(currentUser?.role==='admin'||currentUser?.role==='manager')?
+        ` <button onclick="verifyPaymentModal('${c.id}','verified')" style="margin-left:.5rem;padding:.2rem .7rem;background:#27AE60;color:white;border:none;border-radius:5px;font-size:.72rem;font-weight:700;cursor:pointer">✓ Approve</button>
+          <button onclick="verifyPaymentModal('${c.id}','rejected')" style="margin-left:.3rem;padding:.2rem .7rem;background:#C0392B;color:white;border:none;border-radius:5px;font-size:.72rem;font-weight:700;cursor:pointer">✗ Reject</button>`
+        :''))+
+    di('UTR / Txn ID',c.utr||'Not provided');
+  renderPayments();renderDashboard();
+  showToast(status==='verified'?'✅ Payment verified — case activated':'❌ Payment rejected');
+}
+function toggleCustomFee(){
+  const plan=document.getElementById('add-plan').value;
+  document.getElementById('customFeeRow').style.display=plan==='D'?'block':'none';
+  if(plan!=='D') document.getElementById('add-premium-fee').value='';
+}
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
