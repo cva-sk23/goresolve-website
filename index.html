@@ -136,6 +136,16 @@
     .who-icon{font-size:2rem;margin-bottom:.9rem}
     .who-card h3{font-size:.98rem;font-weight:700;color:var(--ink);margin-bottom:.5rem}
     .who-card p{font-size:.85rem;color:var(--muted);line-height:1.7}
+    /* SERVICES */
+    .services{background:var(--off)}
+    .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:2.5rem}
+    .service-card{background:white;border-radius:14px;border:1.5px solid var(--border);padding:2rem;box-shadow:var(--shadow);transition:box-shadow .25s,transform .25s}
+    .service-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px)}
+    .service-card-title{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--teal-d);margin-bottom:1.3rem;display:flex;align-items:center;gap:.6rem}
+    .service-card-title::before{content:'';width:4px;height:20px;background:var(--teal);border-radius:2px}
+    .service-list{list-style:none;display:flex;flex-direction:column;gap:.85rem}
+    .service-list li{display:flex;align-items:center;gap:.7rem;font-size:.88rem;color:var(--ink2);font-weight:500;line-height:1.5}
+    .service-list li::before{content:'✓';color:var(--gold);font-weight:700;font-size:.95rem;min-width:16px}
     /* HOW */
     .how-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
     .steps{display:flex;flex-direction:column;position:relative}
@@ -433,26 +443,26 @@
   <div class="hero-blob1"></div><div class="hero-blob2"></div><div class="hero-grid"></div>
   <div class="hero-inner">
     <div>
-      <div class="hero-eyebrow"><span></span>RBI-Compliant Borrower Protection</div>
-      <h1>Stop Loan Harassment.<br/>Resolve with <em>Dignity.</em></h1>
-      <p class="hero-sub">GOresolve provides ethical, RBI-compliant support to stop recovery harassment, guide safe negotiation, and help you close your loan — the smart way.</p>
+      <div class="hero-eyebrow"><span></span>Leading Premium Loan Negotiation Services</div>
+      <h1>GOresolve<br/><em>Borrower Protection Platform</em></h1>
+      <p class="hero-sub">Protect yourself from harassment. Negotiate smarter. Settle strategically.</p>
       <div class="hero-btns">
         <a href="intake.html" class="btn-gold">Start Your Resolution &#8594;</a>
         <a href="#how" class="btn-outline">See How It Works</a>
       </div>
       <div class="hero-trust">
         <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-        100% Confidential &nbsp;&#183;&nbsp; Borrower-First &nbsp;&#183;&nbsp; No Recovery Pressure &nbsp;&#183;&nbsp; DRA Trained Experts
+        100% Confidential &nbsp;&#183;&nbsp; Borrower-First &nbsp;&#183;&nbsp; 100+ Negotiations &nbsp;&#183;&nbsp; DRA Trained Experts
       </div>
     </div>
     <div class="hero-right">
       <div class="stats-card">
         <div class="stats-card-tag">&#127470;&#127475; Govt. Recognized Startup</div>
         <div class="stats-grid">
-          <div class="stat-box"><div class="stat-num">15+</div><div class="stat-lbl">Yrs Industry Expertise</div></div>
+          <div class="stat-box"><div class="stat-num">100+</div><div class="stat-lbl">Negotiations</div></div>
+          <div class="stat-box"><div class="stat-num">15+</div><div class="stat-lbl">Yrs Expertise</div></div>
           <div class="stat-box"><div class="stat-num">100%</div><div class="stat-lbl">RBI Compliant</div></div>
-          <div class="stat-box"><div class="stat-num">24hr</div><div class="stat-lbl">Avg. Response</div></div>
-          <div class="stat-box"><div class="stat-num">DRA</div><div class="stat-lbl">Trained Experts</div></div>
+          <div class="stat-box"><div class="stat-num">DRA</div><div class="stat-lbl">Trained Team</div></div>
         </div>
         <div class="dpiit-strip">
           <div style="font-size:1.5rem">&#127963;&#65039;</div>
@@ -464,12 +474,60 @@
 </section>
 
 <div class="trust-bar">
-  <div class="trust-item">&#10003; RBI Recovery Guidelines Compliant</div>
-  <div class="trust-item">&#10003; Strict Data Confidentiality</div>
-  <div class="trust-item">&#10003; DRA-Trained Professionals</div>
-  <div class="trust-item">&#10003; DPIIT Recognized Startup</div>
-  <div class="trust-item">&#10003; Bank of Baroda Merchant</div>
+  <div class="trust-item">✓ 100+ Negotiations Completed</div>
+  <div class="trust-item">✓ Multiple Banks Structured Approach</div>
+  <div class="trust-item">✓ RBI-Compliant Process</div>
+  <div class="trust-item">✓ DRA-Trained Professionals</div>
+  <div class="trust-item">✓ DPIIT Recognized Startup</div>
 </div>
+
+<!-- POSITIONING -->
+<div style="max-width:1140px;margin:3rem auto;padding:0 5vw">
+  <div style="background:linear-gradient(135deg,var(--teal-l),#EAF5F7);border:1.5px solid var(--teal-m);border-radius:14px;padding:2.2rem;text-align:center">
+    <p style="font-size:1.1rem;color:var(--teal-d);line-height:1.85;font-weight:600;margin-bottom:0"><strong>GOresolve is a borrower protection platform that helps individuals stop loan harassment and lead premium negotiations with lenders using RBI-compliant strategies.</strong></p>
+  </div>
+</div>
+
+<!-- WHY GORESOLVE IS DIFFERENT -->
+<section style="padding:5rem 5vw;background:white">
+  <div class="sw">
+    <div class="stag">What Sets Us Apart</div>
+    <h2>Why <em>GOresolve</em> is Different</h2>
+    <p class="subdesc">We don't just offer services — we offer a fundamentally different approach built on borrower protection, not recovery pressure.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.8rem;margin-top:3rem">
+      <div style="background:var(--teal-l);border:1.5px solid var(--teal-m);border-radius:12px;padding:1.8rem;display:flex;flex-direction:column;gap:.8rem">
+        <div style="font-size:1.6rem">🛡️</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--teal-d);font-family:'Playfair Display',serif">Borrower-First Approach</div>
+        <div style="font-size:.86rem;color:var(--ink2);line-height:1.7">100% on your side. We never work for lenders, banks, or recovery agencies. Your protection is our priority.</div>
+      </div>
+      <div style="background:#F0FAF8;border:1.5px solid #9DD0D8;border-radius:12px;padding:1.8rem;display:flex;flex-direction:column;gap:.8rem">
+        <div style="font-size:1.6rem">💼</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--teal-d);font-family:'Playfair Display',serif">Premium Negotiation Expertise</div>
+        <div style="font-size:.86rem;color:var(--ink2);line-height:1.7">Bank-wise strategies backed by 100+ successful negotiations. We know how each lender operates and what they'll accept.</div>
+      </div>
+      <div style="background:#EAF5F7;border:1.5px solid #9DD0D8;border-radius:12px;padding:1.8rem;display:flex;flex-direction:column;gap:.8rem">
+        <div style="font-size:1.6rem">⚖️</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--teal-d);font-family:'Playfair Display',serif">RBI-Compliant Escalation</div>
+        <div style="font-size:.86rem;color:var(--ink2);line-height:1.7">Every communication follows RBI guidelines. We escalate properly, protecting your rights at every step.</div>
+      </div>
+      <div style="background:var(--gold-l);border:1.5px solid var(--gold-m);border-radius:12px;padding:1.8rem;display:flex;flex-direction:column;gap:.8rem">
+        <div style="font-size:1.6rem">💰</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--gold-d);font-family:'Playfair Display',serif">Transparent Subscription Pricing</div>
+        <div style="font-size:.86rem;color:var(--ink2);line-height:1.7">No recovery pressures. Fixed annual rates from ₹1,499. You know exactly what you're paying — nothing more.</div>
+      </div>
+      <div style="background:#F5EEEA;border:1.5px solid #D5C5B8;border-radius:12px;padding:1.8rem;display:flex;flex-direction:column;gap:.8rem">
+        <div style="font-size:1.6rem">👨‍💼</div>
+        <div style="font-size:.95rem;font-weight:700;color:#5A4010;font-family:'Playfair Display',serif">DRA-Trained Experts</div>
+        <div style="font-size:.86rem;color:var(--ink2);line-height:1.7">Our team is trained in Debt Recovery Arbitration and RBI practices. Professional guidance you can trust.</div>
+      </div>
+      <div style="background:var(--off);border:1.5px solid var(--border);border-radius:12px;padding:1.8rem;display:flex;flex-direction:column;gap:.8rem">
+        <div style="font-size:1.6rem">✓</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--teal-d);font-family:'Playfair Display',serif">100+ Structured Negotiations</div>
+        <div style="font-size:.86rem;color:var(--ink2);line-height:1.7">Proven methodology across multiple banks. Consistent, effective outcomes that protect your interests.</div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="who" id="about">
   <div class="sw">
@@ -480,6 +538,74 @@
       <div class="who-card"><div class="who-icon">&#128560;</div><h3>Facing Recovery Harassment?</h3><p>Being threatened, called repeatedly, or visited at home by recovery agents? We help you assert your RBI-protected rights immediately.</p></div>
       <div class="who-card"><div class="who-icon">&#128179;</div><h3>Credit Card or Personal Loan Stress?</h3><p>Overwhelmed by accumulating interest and penalties? Our experts guide you toward a fair, negotiated settlement that works for your situation.</p></div>
       <div class="who-card"><div class="who-icon">&#127970;</div><h3>Business Loan in Default?</h3><p>Navigating bank communication for a business loan gone wrong? We provide structured guidance to protect your assets and negotiate professionally.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services">
+  <div class="sw">
+    <div class="stag">What We Offer</div>
+    <h2>Premium Borrower <em>Protection Services</em></h2>
+    <p class="subdesc">Comprehensive solutions designed to protect your rights and lead successful negotiations with lenders.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-card-title">Borrower Protection</div>
+        <ul class="service-list">
+          <li>Stop harassment</li>
+          <li>RBI escalation</li>
+          <li>Communication shield</li>
+        </ul>
+      </div>
+      <div class="service-card">
+        <div class="service-card-title">Premium Negotiation</div>
+        <ul class="service-list">
+          <li>Settlement strategy</li>
+          <li>Negotiation support</li>
+          <li>Documentation validation</li>
+        </ul>
+      </div>
+      <div class="service-card">
+        <div class="service-card-title">Credit Recovery</div>
+        <ul class="service-list">
+          <li>NOC support</li>
+          <li>CIBIL guidance</li>
+          <li>Future loan eligibility</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREMIUM NEGOTIATION EXPLAINED -->
+<section style="padding:5rem 5vw;background:var(--teal-l);border-top:1.5px solid var(--teal-m);border-bottom:1.5px solid var(--teal-m)">
+  <div class="sw">
+    <div style="max-width:820px;margin:0 auto">
+      <h2 style="text-align:center;font-family:'Playfair Display',serif;font-size:clamp(1.7rem,3vw,2.4rem);color:var(--teal-d);margin-bottom:.6rem">What <em style="color:var(--teal)">Premium Negotiation</em> Actually Means</h2>
+      <p style="text-align:center;font-size:.98rem;color:var(--ink2);line-height:1.8;margin-bottom:2.5rem">We don't just facilitate — we strategically negotiate. Here's what's included in every premium negotiation service:</p>
+      
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.6rem">
+        <div style="background:white;border-radius:10px;padding:1.5rem;border-left:4px solid var(--teal)">
+          <h4 style="font-size:.95rem;font-weight:700;color:var(--teal-d);margin-bottom:.6rem;font-family:'Playfair Display',serif">📋 Strategy Planning</h4>
+          <p style="font-size:.86rem;color:var(--ink2);line-height:1.65">We analyze your loan type, bank profile, outstanding amount, and account age to develop a bank-specific negotiation strategy.</p>
+        </div>
+        <div style="background:white;border-radius:10px;padding:1.5rem;border-left:4px solid var(--teal)">
+          <h4 style="font-size:.95rem;font-weight:700;color:var(--teal-d);margin-bottom:.6rem;font-family:'Playfair Display',serif">🏦 Bank-Wise Negotiation</h4>
+          <p style="font-size:.86rem;color:var(--ink2);line-height:1.65">Every bank has different settlement patterns. We know what HDFC, ICICI, Axis, SBI, and others typically accept — and we guide you accordingly.</p>
+        </div>
+        <div style="background:white;border-radius:10px;padding:1.5rem;border-left:4px solid var(--teal)">
+          <h4 style="font-size:.95rem;font-weight:700;color:var(--teal-d);margin-bottom:.6rem;font-family:'Playfair Display',serif">✅ Settlement Guidance</h4>
+          <p style="font-size:.86rem;color:var(--ink2);line-height:1.65">We help you understand what settlement amount is realistic for your situation, when to offer it, and how to structure the conversation.</p>
+        </div>
+        <div style="background:white;border-radius:10px;padding:1.5rem;border-left:4px solid var(--teal)">
+          <h4 style="font-size:.95rem;font-weight:700;color:var(--teal-d);margin-bottom:.6rem;font-family:'Playfair Display',serif">📄 Documentation Review</h4>
+          <p style="font-size:.86rem;color:var(--ink2);line-height:1.65">Before you communicate with the bank, we review every document, letter, and communication to ensure it's RBI-compliant and optimally persuasive.</p>
+        </div>
+        <div style="background:white;border-radius:10px;padding:1.5rem;border-left:4px solid var(--teal);grid-column:1/-1">
+          <h4 style="font-size:.95rem;font-weight:700;color:var(--teal-d);margin-bottom:.6rem;font-family:'Playfair Display',serif">📞 Escalation Support</h4>
+          <p style="font-size:.86rem;color:var(--ink2);line-height:1.65">If your bank doesn't respond or refuses negotiation, we escalate properly — to RBI ombudsman, internal escalation teams, or regulatory channels — always within your rights.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
