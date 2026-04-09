@@ -1422,9 +1422,24 @@ function openCase(id){
   } else {
     document.getElementById('modalLoans').innerHTML='<p style="font-size:.82rem;color:var(--muted)">No loan data recorded.</p>';
   }
+  const isPremium = PLANS[c.plan]?.premium;
+  const premFeeVal = c.premiumFee||'';
+  const amtDisplay = isPremium
+    ? `<div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
+        <span style="font-size:.78rem;color:var(--muted)">₹</span>
+        <input id="modalPremiumFee" type="number" min="0" step="1"
+          value="${premFeeVal}"
+          placeholder="Enter fee amount"
+          style="padding:.35rem .7rem;border-radius:6px;border:1.5px solid var(--border);background:var(--off);font-size:.85rem;font-weight:700;color:var(--teal-d);font-family:'Plus Jakarta Sans',sans-serif;outline:none;width:160px;transition:border-color .2s"
+          onfocus="this.style.borderColor='var(--teal)'"
+          onblur="this.style.borderColor='var(--border)'"
+        />
+        <span style="font-size:.73rem;color:var(--muted)">/yr · editable</span>
+      </div>`
+    : '₹'+casePrice(c).toLocaleString('en-IN');
   document.getElementById('modalPayment').innerHTML=
     di('Plan',PLANS[c.plan]?.name||c.plan)+
-    di('Amount','₹'+casePrice(c).toLocaleString('en-IN'))+
+    di('Amount',amtDisplay)+
     di('Payment Status',payBadge(c.payStatus)+
       (c.payStatus!=='verified'&&(currentUser?.role==='admin'||currentUser?.role==='manager')?
         ` <button onclick="verifyPaymentModal('${c.id}','verified')" style="margin-left:.5rem;padding:.2rem .7rem;background:#27AE60;color:white;border:none;border-radius:5px;font-size:.72rem;font-weight:700;cursor:pointer">✓ Approve</button>
@@ -1473,6 +1488,8 @@ async function saveCase(){
   c.expert=document.getElementById('modalExpert').value;
   c.notes=document.getElementById('modalNotes').value;
   c.expiryDate=document.getElementById('modalExpiry').value||c.expiryDate||calcExpiry(c.submittedAt);
+  const feeEl=document.getElementById('modalPremiumFee');
+  if(feeEl&&feeEl.value.trim()!=='') c.premiumFee=parseFloat(feeEl.value)||0;
   await saveCaseToDb(c);
   closeModal();
   await loadCases();
@@ -1540,6 +1557,8 @@ function exportCSV(){
 async function verifyPaymentModal(id,status){
   const c=cases.find(x=>x.id===id);if(!c)return;
   c.payStatus=status;if(status==='verified')c.status='active';
+  const feeEl=document.getElementById('modalPremiumFee');
+  if(feeEl&&feeEl.value.trim()!=='') c.premiumFee=parseFloat(feeEl.value)||0;
   await saveCaseToDb(c);
   await loadCases();
   // Re-render payment section in modal without closing it
