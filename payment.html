@@ -420,17 +420,9 @@ document.addEventListener('DOMContentLoaded', function(){
     if(d.plan&&PLANS[d.plan]){
       const pl=PLANS[d.plan];
       document.getElementById('s-plan').textContent='⭐ '+pl.name+' – '+pl.exp;
-      if(pl.premium){
-        const fee=d.premiumFee||d.price||null;
-        const feeStr=fee?'₹'+parseFloat(fee).toLocaleString('en-IN'):'Custom (2% of OTS)';
-        document.getElementById('s-price').textContent=feeStr;
-        document.getElementById('payAmt').textContent=feeStr;
-        document.getElementById('planLabel').textContent=pl.name+' · Premium Annual Fee';
-      } else {
-        document.getElementById('s-price').textContent='₹'+pl.price.toLocaleString('en-IN');
-        document.getElementById('payAmt').textContent='₹'+pl.price.toLocaleString('en-IN');
-        document.getElementById('planLabel').textContent=pl.name+' · Annual Subscription';
-      }
+      document.getElementById('s-price').textContent='₹'+pl.price.toLocaleString('en-IN');
+      document.getElementById('payAmt').textContent='₹'+pl.price.toLocaleString('en-IN');
+      document.getElementById('planLabel').textContent=pl.name+' · Annual Subscription';
     }
     if(d.loans&&d.loans.length){
       const list=document.getElementById('s-loans');
@@ -514,13 +506,14 @@ async function submitPayment(){
     desc: d.desc||d.situation||d.urgency||'Submitted via website',
     loans: loans,
     status: 'new',
-    payStatus: d.utr?'pending':'pending',
+    payStatus: 'pending',
     utr: d.utr||'',
     expert: '',
     notes: '',
     submittedAt: d.submittedAt,
     expiryDate: (()=>{ const e=new Date(d.submittedAt); e.setFullYear(e.getFullYear()+1); return e.toISOString().slice(0,10); })(),
-    mindset: d.mindset || { defaultReason:'', negotiation:'', recoveryContact:'', harassment:'' }
+    mindset: d.mindset || { defaultReason:'', negotiation:'', recoveryContact:'', harassment:'' },
+    premiumFee: (d.premiumFee && d.premiumFee > 0) ? d.premiumFee : (d.price && d.price > 0 ? d.price : null)
   };
 
   // Write to Firestore (works from any device, any browser)
@@ -540,13 +533,11 @@ async function submitPayment(){
   sessionStorage.setItem('goresolve_intake',JSON.stringify(d));
 
   // Shared plan names for email + WhatsApp
-  const fee=d.premiumFee||d.price||null;
-  const planNames={A:'Plan A (₹1,499)',B:'Plan B (₹2,499)',C:'Plan C (₹3,999)',D:'Premium Resolution'+(fee?' (₹'+parseFloat(fee).toLocaleString('en-IN')+')':' (Custom)')};
+  const planNames={A:'Plan A (₹1,499)',B:'Plan B (₹2,499)',C:'Plan C (₹3,999)',D:'Custom Plan'};
 
   // ── EMAIL NOTIFICATIONS via EmailJS ──
   if(typeof emailjs !== 'undefined'){
-    const fee=d.premiumFee||d.price||null;
-    const amt = PLANS[d.plan]?.premium ? (fee?'₹'+parseFloat(fee).toLocaleString('en-IN'):'Custom (2% of OTS)') : '₹'+(PLANS[d.plan]?.price||0).toLocaleString('en-IN');
+    const amt = PLANS[d.plan]?.premium ? '2% of OTS' : '₹'+(PLANS[d.plan]?.price||0).toLocaleString('en-IN');
     const submittedAt = new Date(d.submittedAt).toLocaleString('en-IN');
 
     // Alert to support@goresolve.in — send regardless of customer email
