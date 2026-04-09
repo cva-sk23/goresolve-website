@@ -232,6 +232,10 @@
       getDocs, getDoc, setDoc, updateDoc, deleteDoc, addDoc,
       query, orderBy, onSnapshot, serverTimestamp, writeBatch
     } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+    import {
+      getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged,
+      createUserWithEmailAndPassword, sendPasswordResetEmail
+    } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
     // ── FIREBASE CONFIG ─────────────────────────────────────────
     // Paste your Firebase project config here after setup
@@ -253,8 +257,13 @@
       try{
         const app = initializeApp(cfg);
         const db  = getFirestore(app);
+        const auth = getAuth(app);
         window._db = db;
+        window._auth = auth;
         window._fbReady = true;
+        // Expose Auth helpers globally
+        window._fbAuth = { signInWithEmailAndPassword, signOut, onAuthStateChanged,
+                           createUserWithEmailAndPassword, sendPasswordResetEmail };
         // Expose Firestore helpers globally
         window._fs = { collection, doc, getDocs, getDoc, setDoc, updateDoc,
                        deleteDoc, addDoc, query, orderBy, onSnapshot,
@@ -281,14 +290,17 @@
     <p>Internal use only — Invok Nectar Pvt. Ltd.</p>
     <div class="login-err" id="loginErr">Incorrect credentials. Please try again.</div>
     <div class="login-fg">
-      <label>Username</label>
-      <input id="loginUser" type="text" placeholder="admin / manager / agent" onkeydown="if(event.key==='Enter')doLogin()"/>
+      <label>Email</label>
+      <input id="loginUser" type="email" placeholder="your@goresolve.in" onkeydown="if(event.key==='Enter')doLogin()"/>
     </div>
     <div class="login-fg">
       <label>Password</label>
       <input id="loginPass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
     </div>
     <button class="login-btn" onclick="doLogin()">Login to Dashboard</button>
+    <div style="text-align:right;margin-top:.5rem">
+      <a href="#" onclick="doForgotPassword(event)" style="font-size:.72rem;color:var(--teal);text-decoration:none">Forgot password?</a>
+    </div>
     <div class="login-note" id="loginNote">🔒 Authorised personnel only · GOresolve Internal</div>
   </div>
 </div>
@@ -776,15 +788,9 @@ async function fsAdd(colName, data){
 }
 
 // ─────────────────────────────────────────
-// CREDENTIALS
-// Admin & Manager are built-in (no DB needed).
-// Agents are stored in Firestore collection "agents"
-// (or localStorage fallback).
+// CREDENTIALS — managed via Firebase Auth
+// Roles stored in Firestore /users/{uid}
 // ─────────────────────────────────────────
-const BUILTIN={
-  admin:  {pass:'goresolve2025', role:'admin',   name:'Admin'},
-  manager:{pass:'invok2025',     role:'manager', name:'Manager'}
-};
 
 let currentUser=null;
 let _agentsCache=[];
@@ -827,10 +833,7 @@ async function deleteAgentById(username){
 }
 
 async function resolveUserAsync(u,p){
-  if(BUILTIN[u]&&BUILTIN[u].pass===p) return {username:u,...BUILTIN[u]};
-  await loadAgents();
-  const a = _agentsCache.find(x=>x.username===u&&x.password===p);
-  if(a) return {username:u,role:a.role||'agent',name:a.name||u};
+  // Legacy function — no longer used for login (Firebase Auth handles it)
   return null;
 }
 
@@ -950,46 +953,73 @@ async function clearDemoData(){
 // LOGIN / LOGOUT
 // ─────────────────────────────────────────
 async function doLogin(){
-  const u=document.getElementById('loginUser').value.trim();
-  const p=document.getElementById('loginPass').value;
-  const user=await resolveUserAsync(u,p);
-  if(user){
-    currentUser=user;
+  const email = document.getElementById('loginUser').value.trim();
+  const pass  = document.getElementById('loginPass').value;
+  const errEl = document.getElementById('loginErr');
+  const btnEl = document.querySelector('.login-btn');
+  errEl.style.display='none';
+  if(!email||!pass){ errEl.textContent='Please enter your email and password.'; errEl.style.display='block'; return; }
+  if(!window._auth){ errEl.textContent='Firebase not ready. Please refresh.'; errEl.style.display='block'; return; }
+  btnEl.textContent='Signing in…'; btnEl.disabled=true;
+  try{
+    const { signInWithEmailAndPassword } = window._fbAuth;
+    const cred = await signInWithEmailAndPassword(window._auth, email, pass);
+    const uid  = cred.user.uid;
+    // Fetch role from Firestore /users/{uid}
+    const { doc, getDoc } = window._fs;
+    const snap = await getDoc(doc(window._db,'users',uid));
+    if(!snap.exists()){ await window._fbAuth.signOut(window._auth); errEl.textContent='Account not found in system. Contact admin.'; errEl.style.display='block'; btnEl.textContent='Login to Dashboard'; btnEl.disabled=false; return; }
+    const userData = snap.data();
+    currentUser = { uid, email, role: userData.role||'agent', name: userData.name||email };
     document.getElementById('loginScreen').style.display='none';
     document.getElementById('app').style.display='block';
-    document.getElementById('sbUsername').textContent=user.name;
+    document.getElementById('sbUsername').textContent=currentUser.name;
     const roleEl=document.getElementById('sbRole');
-    roleEl.textContent=user.role.charAt(0).toUpperCase()+user.role.slice(1);
-    roleEl.className='sb-role '+user.role;
-    applyRoleUI(user.role);
-    // Update Firebase status badge
-    const badge = document.getElementById('fbStatusBadge');
-    if(badge){
-      if(USE_FIREBASE()){
-        badge.textContent='🔥 Firebase live';
-        badge.style.cssText='margin-top:.4rem;font-size:.64rem;font-weight:700;letter-spacing:.06em;padding:.12rem .45rem;border-radius:4px;display:inline-block;background:rgba(255,140,60,.2);color:#FFAA60';
-      } else {
-        badge.textContent='⬤ Local only';
-        badge.style.cssText='margin-top:.4rem;font-size:.64rem;font-weight:700;letter-spacing:.06em;padding:.12rem .45px;border-radius:4px;display:inline-block;background:rgba(255,255,255,.07);color:rgba(255,255,255,.35)';
-      }
-    }
-    if(USE_FIREBASE()) showToast('🔥 Connected to Firebase');
+    roleEl.textContent=currentUser.role.charAt(0).toUpperCase()+currentUser.role.slice(1);
+    roleEl.className='sb-role '+currentUser.role;
+    applyRoleUI(currentUser.role);
+    const badge=document.getElementById('fbStatusBadge');
+    if(badge){ badge.textContent='🔥 Firebase live'; badge.style.cssText='margin-top:.4rem;font-size:.64rem;font-weight:700;letter-spacing:.06em;padding:.12rem .45rem;border-radius:4px;display:inline-block;background:rgba(255,140,60,.2);color:#FFAA60'; }
+    showToast('🔥 Connected to Firebase');
     await seedDemoData();
     await loadCases();
     renderDashboard();
-    document.getElementById('dashDate').textContent=
-      new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  } else {
-    document.getElementById('loginErr').style.display='block';
+    document.getElementById('dashDate').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  } catch(e){
+    let msg='Login failed. Please try again.';
+    if(e.code==='auth/invalid-credential'||e.code==='auth/wrong-password'||e.code==='auth/user-not-found') msg='Incorrect email or password.';
+    else if(e.code==='auth/too-many-requests') msg='Too many attempts. Please wait a few minutes.';
+    else if(e.code==='auth/invalid-email') msg='Please enter a valid email address.';
+    errEl.textContent=msg; errEl.style.display='block';
+  }
+  btnEl.textContent='Login to Dashboard'; btnEl.disabled=false;
+}
+
+async function doForgotPassword(e){
+  e.preventDefault();
+  const email=document.getElementById('loginUser').value.trim();
+  const errEl=document.getElementById('loginErr');
+  if(!email){ errEl.textContent='Enter your email above first, then click Forgot password.'; errEl.style.display='block'; return; }
+  try{
+    await window._fbAuth.sendPasswordResetEmail(window._auth, email);
+    errEl.style.background='#EAF5F7'; errEl.style.borderColor='var(--teal-m)'; errEl.style.color='var(--teal-d)';
+    errEl.textContent='✅ Password reset email sent. Check your inbox.'; errEl.style.display='block';
+  } catch(e){
+    errEl.style.background=''; errEl.style.borderColor=''; errEl.style.color='';
+    errEl.textContent='Could not send reset email. Check the address and try again.'; errEl.style.display='block';
   }
 }
 
-function doLogout(){
+async function doLogout(){
+  if(window._auth) await window._fbAuth.signOut(window._auth);
   currentUser=null;
   document.getElementById('app').style.display='none';
   document.getElementById('loginScreen').style.display='flex';
   document.getElementById('loginPass').value='';
   document.getElementById('loginErr').style.display='none';
+  document.getElementById('loginErr').style.background='';
+  document.getElementById('loginErr').style.borderColor='';
+  document.getElementById('loginErr').style.color='';
 }
 
 // ─────────────────────────────────────────
@@ -1366,7 +1396,7 @@ async function addAgent(){
 
   if(!name||!username||!password){showToast('⚠️ Name, username and password are required');return;}
   await loadAgents();
-  if(_agentsCache.find(a=>a.username===username)||BUILTIN[username]){showToast('⚠️ Username already taken');return;}
+  if(_agentsCache.find(a=>a.username===username)){showToast('⚠️ Username already taken');return;}
   if(currentUser.role==='manager'&&role==='manager'){showToast('⚠️ Managers can only add agents');return;}
 
   const newAgent={name,username,password,role,addedBy:currentUser.username,addedAt:new Date().toISOString()};
