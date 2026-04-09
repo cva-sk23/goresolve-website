@@ -39,7 +39,11 @@
     nav{background:white;border-bottom:1px solid var(--border);padding:0 5vw;height:66px;
         display:flex;align-items:center;justify-content:space-between;
         box-shadow:0 2px 12px rgba(30,100,110,.06)}
-    .nav-logo img{height:42px;width:auto}
+    .nav-logo{display:flex;align-items:center;text-decoration:none}
+    .nav-logo-wordmark{display:flex;flex-direction:column;line-height:1}
+    .nav-logo-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+    .nav-logo-name span{color:var(--teal)}
+    .nav-logo-tagline{font-size:.5rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:1px}
 
     /* STEPPER — all done */
     .stepper-bar{background:white;border-bottom:1px solid var(--border);padding:.85rem 5vw}
@@ -206,7 +210,7 @@
   <!-- CONTACT -->
   <div class="contact-card">
     <p>Questions or urgent situations? Reach us directly:</p>
-    <p><strong>Email:</strong> <a href="/cdn-cgi/l/email-protection#cebdbbbebea1bcba8ea9a1bcabbda1a2b8abe0a7a0"><span class="__cf_email__" data-cfemail="ccbfb9bcbca3beb88caba3bea9bfa3a0baa9e2a5a2">[email&#160;protected]</span></a></p>
+    <p><strong>Email:</strong> <a href="/cdn-cgi/l/email-protection#5b282e2b2b34292f1b3c34293e2834372d3e753235"><span class="__cf_email__" data-cfemail="55262025253a272115323a2730263a3923307b3c3b">[email&#160;protected]</span></a></p>
     <p style="margin-top:.3rem;font-size:.78rem;color:var(--muted)">Please quote your reference number in any email.</p>
     <a href="index.html" class="btn-home">&#8592; Back to Home</a>
   </div>
@@ -217,7 +221,7 @@
   <div class="tf-item">&#10003; Borrower-First Platform</div>
   <div class="tf-item">&#10003; Not a Recovery Agency</div>
   <div class="tf-item">&#10003; DPIIT: DIPP237434</div>
-  <div class="tf-item">&#10003; <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d5a6a0a5a5baa7a195b2baa7b0a6bab9a3b0fbbcbb">[email&#160;protected]</a></div>
+  <div class="tf-item">&#10003; <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0774727777687573476068756274686b7162296e69">[email&#160;protected]</a></div>
 </div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
@@ -225,8 +229,8 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const PLANS={
-  A:{name:'Plan A',price:1499},B:{name:'Plan B',price:2499},
-  C:{name:'Plan C',price:3999},D:{name:'Custom Plan',price:4999}
+  A:{name:'Plan A',price:1499},B:{name:'Plan B ⭐',price:2499},
+  C:{name:'Plan C',price:3999},D:{name:'Premium Resolution',price:null,premium:true}
 };
 
 const FB_CONFIG_KEY='gor_fb_config';
@@ -260,10 +264,10 @@ async function writeCaseToFirestore(db, caseObj){
         ' '+dt.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
     }
 
-    // Build case object
+    // Build case object (fallback only — payment.html already wrote to Firestore)
     const loans=[];
-    if(d.loanTypes&&Array.isArray(d.loanTypes)){
-      d.loanTypes.forEach(t=>loans.push({type:t,lender:d.lenders||'',amount:d.totalDebt||''}));
+    if(Array.isArray(d.loans)){
+      d.loans.forEach(l=>loans.push({type:l.type||'',lender:l.lender||'',accno:l.accno||'',amount:l.amount||''}));
     }
     if(!loans.length&&d.totalDebt) loans.push({type:'Loan',lender:'',amount:d.totalDebt});
 
@@ -275,15 +279,18 @@ async function writeCaseToFirestore(db, caseObj){
       city: d.city||'—',
       state: d.state||'—',
       plan: d.plan||'A',
+      premiumFee: d.premiumFee||null,
       urgency: d.urgency||'—',
-      desc: d.situation||d.urgency||'Submitted via website',
+      desc: d.desc||d.situation||d.urgency||'Submitted via website',
       loans: loans,
       status: 'new',
-      payStatus: d.utr?'paid':'pending',
+      payStatus: 'pending',
       utr: d.utr||'',
       expert: '',
       notes: '',
-      submittedAt: d.submittedAt||new Date().toISOString()
+      submittedAt: d.submittedAt||new Date().toISOString(),
+      expiryDate: (()=>{ const e=new Date(d.submittedAt||new Date()); e.setFullYear(e.getFullYear()+1); return e.toISOString().slice(0,10); })(),
+      mindset: d.mindset||{defaultReason:'',negotiation:'',recoveryContact:'',harassment:''}
     };
 
     // Try Firebase first, fall back to localStorage
