@@ -419,9 +419,11 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     if(d.plan&&PLANS[d.plan]){
       const pl=PLANS[d.plan];
+      const feeValue = pl.premium ? (d.premiumFee || d.price) : pl.price;
+      const feeText = feeValue ? '₹'+parseFloat(feeValue).toLocaleString('en-IN')+' / year' : (pl.premium ? 'Custom (2% of OTS)' : '₹—');
       document.getElementById('s-plan').textContent='⭐ '+pl.name+' – '+pl.exp;
-      document.getElementById('s-price').textContent='₹'+pl.price.toLocaleString('en-IN');
-      document.getElementById('payAmt').textContent='₹'+pl.price.toLocaleString('en-IN');
+      document.getElementById('s-price').textContent=feeText;
+      document.getElementById('payAmt').textContent=feeText;
       document.getElementById('planLabel').textContent=pl.name+' · Annual Subscription';
     }
     if(d.loans&&d.loans.length){
@@ -513,6 +515,7 @@ async function submitPayment(){
     submittedAt: d.submittedAt,
     expiryDate: (()=>{ const e=new Date(d.submittedAt); e.setFullYear(e.getFullYear()+1); return e.toISOString().slice(0,10); })(),
     mindset: d.mindset || { defaultReason:'', negotiation:'', recoveryContact:'', harassment:'' },
+    price: (d.price && d.price > 0) ? d.price : ((d.premiumFee && d.premiumFee > 0) ? d.premiumFee : null),
     premiumFee: (d.premiumFee && d.premiumFee > 0) ? d.premiumFee : (d.price && d.price > 0 ? d.price : null)
   };
 
