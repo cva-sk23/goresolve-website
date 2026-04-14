@@ -707,8 +707,13 @@ setTimeout(()=>{
 }, 3000);
 
 const PLANS={A:{name:'Plan A',price:1499},B:{name:'Plan B',price:2499},C:{name:'Plan C',price:3999},D:{name:'Premium Resolution Plan',price:null,premium:true}};
+function calcPremiumFee(c){
+  if(!c?.loans?.length) return 0;
+  const total = c.loans.reduce((sum,l)=> sum + (parseFloat(l.amount)||0), 0);
+  return total > 0 ? Math.max(7200, Math.round(total * 0.30 * 0.02)) : 0;
+}
 // Helper: get effective price for a case (uses premiumFee or legacy price for Plan D)
-function casePrice(c){ return PLANS[c.plan]?.premium ? (c.premiumFee||c.price||0) : (PLANS[c.plan]?.price||0); }
+function casePrice(c){ return PLANS[c.plan]?.premium ? (c.premiumFee||c.price||calcPremiumFee(c)||0) : (PLANS[c.plan]?.price||0); }
 
 // ─────────────────────────────────────────
 // FIREBASE SETUP HELPERS
@@ -1454,7 +1459,11 @@ function openCase(id){
   }
   const isPremium = PLANS[c.plan]?.premium;
   // premiumFee comes from Firestore (set by payment.html for website cases, or manually entered for CRM-added cases)
-  const premFeeVal = (c.premiumFee && c.premiumFee > 0) ? c.premiumFee : ((c.price && c.price > 0) ? c.price : '');
+  const premFeeVal = (c.premiumFee && c.premiumFee > 0)
+    ? c.premiumFee
+    : ((c.price && c.price > 0)
+      ? c.price
+      : (isPremium ? calcPremiumFee(c) : ''));
   const amtDisplay = isPremium
     ? `<div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
         <span style="font-size:.78rem;color:var(--muted)">₹</span>
