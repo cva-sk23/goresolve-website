@@ -252,7 +252,7 @@ async function writeCaseToFirestore(db, caseObj){
       document.getElementById('refPlan').textContent=pl.name;
       if(pl.premium){
         const fee=d.premiumFee||d.price||null;
-        document.getElementById('refAmt').textContent=fee?'₹'+parseFloat(fee).toLocaleString('en-IN')+' / year':'Custom (2% of OTS)';
+        document.getElementById('refAmt').textContent=fee?'₹'+parseFloat(fee).toLocaleString('en-IN')+' / year':'Premium Resolution Plan (custom rate)';
       } else {
         document.getElementById('refAmt').textContent='₹'+pl.price.toLocaleString('en-IN')+' / year';
       }

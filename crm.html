@@ -651,7 +651,7 @@
             <option value="A">Plan A – ₹1,499</option>
             <option value="B" selected>Plan B – ₹2,499</option>
             <option value="C">Plan C – ₹3,999</option>
-            <option value="D">Premium Resolution (Custom)</option>
+            <option value="D">Premium Resolution Plan (Custom)</option>
           </select>
           <div id="customFeeRow" style="display:none;margin-top:.5rem">
             <label style="font-size:.68rem;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:.3rem">Custom Fee (₹) *</label>
@@ -706,7 +706,7 @@ setTimeout(()=>{
   }
 }, 3000);
 
-const PLANS={A:{name:'Plan A',price:1499},B:{name:'Plan B',price:2499},C:{name:'Plan C',price:3999},D:{name:'Premium',price:null,premium:true}};
+const PLANS={A:{name:'Plan A',price:1499},B:{name:'Plan B',price:2499},C:{name:'Plan C',price:3999},D:{name:'Premium Resolution Plan',price:null,premium:true}};
 // Helper: get effective price for a case (uses premiumFee or legacy price for Plan D)
 function casePrice(c){ return PLANS[c.plan]?.premium ? (c.premiumFee||c.price||0) : (PLANS[c.plan]?.price||0); }
 
@@ -1539,7 +1539,7 @@ async function addCaseManual(){
   if(!name||!phone){showToast('⚠️ Name and phone are required');return;}
   const selPlan=document.getElementById('add-plan').value;
   const feeInput=document.getElementById('add-premium-fee')?.value.trim();
-  if(selPlan==='D'&&!feeInput){showToast('⚠️ Please enter the custom fee for Premium plan');return;}
+  if(selPlan==='D'&&!feeInput){showToast('⚠️ Please enter the custom fee for Premium Resolution Plan');return;}
   const nc={
     id:'GOR-'+Date.now().toString(36).toUpperCase().slice(-6),
     name,phone,
