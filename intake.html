@@ -827,6 +827,64 @@ function hideAlert(id){
   b.className='alert';b.textContent='';
 }
 
+async function initIntakeFirestore(){
+  if(window._intakeDb !== undefined) return window._intakeDb;
+  try{
+    const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+    const { getFirestore, doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    const cfg={
+      apiKey:"AIzaSyB8_iaikomXvnvTaNjLl-3txwRntX-EMEo",
+      authDomain:"goresolve-49f52.firebaseapp.com",
+      projectId:"goresolve-49f52",
+      storageBucket:"goresolve-49f52.firebasestorage.app",
+      messagingSenderId:"850006302718",
+      appId:"1:850006302718:web:a1fc24f4821d0b91c7aaaf",
+      measurementId:"G-9FVLEPMKF9"
+    };
+    const app = initializeApp(cfg, 'intake-page');
+    const db = getFirestore(app);
+    window._intakeDb = db;
+    window._intakeFs = { doc, setDoc };
+    return db;
+  }catch(e){
+    console.warn('Intake Firestore init failed:', e);
+    window._intakeDb = false;
+    return false;
+  }
+}
+
+async function saveLeadToFirestore(caseObj){
+  const db = await initIntakeFirestore();
+  if(!db) return false;
+  try{
+    await window._intakeFs.setDoc(window._intakeFs.doc(db,'cases',caseObj.id), caseObj);
+    return true;
+  }catch(e){
+    console.warn('Intake Firestore write failed:', e);
+    return false;
+  }
+}
+
+function saveLeadToLocalStorage(caseObj){
+  try{
+    const all = JSON.parse(localStorage.getItem('crm_cases')||'[]');
+    const idx = all.findIndex(c=>c.id===caseObj.id);
+    if(idx > -1) all[idx] = caseObj;
+    else all.unshift(caseObj);
+    localStorage.setItem('crm_cases', JSON.stringify(all));
+  }catch(e){
+    console.warn('Local CRM write failed:', e);
+  }
+}
+
+async function saveLeadCase(caseObj){
+  if(!caseObj.id) caseObj.id = 'GOR-'+Date.now().toString(36).toUpperCase().slice(-8);
+  if(!caseObj.submittedAt) caseObj.submittedAt = new Date().toISOString();
+  caseObj.expiryDate = caseObj.expiryDate || (()=>{ const e=new Date(caseObj.submittedAt); e.setFullYear(e.getFullYear()+1); return e.toISOString().slice(0,10); })();
+  const ok = await saveLeadToFirestore(caseObj);
+  if(!ok) saveLeadToLocalStorage(caseObj);
+}
+
 function toStep2(){
   const name=document.getElementById('f-name').value.trim();
   const phone=document.getElementById('f-phone').value.trim();
@@ -916,7 +974,7 @@ function buildPlanCards(){
 }
 
 // ── PROCEED TO PAYMENT ──
-function toPayment(){
+async function toPayment(){
   if(!selPlan){showAlert('alert2','Please select a plan.');return;}
   // Save form data to sessionStorage for payment page
   const data={
@@ -950,6 +1008,38 @@ function toPayment(){
       amount: ins[2]?.value||''
     });
   });
+  data.ref = data.ref || 'GOR-'+Date.now().toString(36).toUpperCase().slice(-8);
+  data.submittedAt = data.submittedAt || new Date().toISOString();
+
+  const leadCase = {
+    id: data.ref,
+    name: data.name||'—',
+    email: data.email||'—',
+    phone: data.phone||'—',
+    city: data.city||'—',
+    state: data.state||'—',
+    plan: data.plan||'A',
+    urgency: data.urgency||'—',
+    desc: data.desc||'Submitted via website',
+    loans: data.loans||[],
+    status: 'lead',
+    payStatus: 'pending',
+    utr: '',
+    expert: '',
+    notes: '',
+    submittedAt: data.submittedAt,
+    expiryDate: (()=>{ const e=new Date(data.submittedAt); e.setFullYear(e.getFullYear()+1); return e.toISOString().slice(0,10); })(),
+    mindset: data.mindset || {defaultReason:'',negotiation:'',recoveryContact:'',harassment:''},
+    price: data.price || null,
+    premiumFee: data.premiumFee || null
+  };
+
+  try{
+    await saveLeadCase(leadCase);
+  }catch(e){
+    console.warn('Lead save failed:',e);
+  }
+
   sessionStorage.setItem('goresolve_intake', JSON.stringify(data));
   goStep(3);
   // Short delay then redirect
